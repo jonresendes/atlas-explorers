@@ -241,6 +241,16 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
 .map .no { fill: var(--coral) !important; stroke: var(--ink); stroke-width: 2.2; }
 .map .lbl, .map .clbl { font-family: var(--display); fill: var(--ink); stroke: #fff; stroke-width: 4px; paint-order: stroke; stroke-linejoin: round; pointer-events: none; text-anchor: middle; }
 .map .clbl { font-size: 26px; }
+.map, .pinsvg { touch-action: none; }
+.mapvis, .mapcard .vis { position: relative; }
+.zoombtns { position: absolute; right: 8px; bottom: 8px; display: grid; gap: 6px; z-index: 2; }
+.zoombtns button { width: 38px; height: 38px; border-radius: 12px; background: var(--paper); border: 2px solid var(--ink); box-shadow: 0 2px 0 var(--shadow); font-family: var(--display); font-size: 1.35rem; line-height: 1; color: var(--ink); display: grid; place-items: center; }
+.zoombtns button:active { transform: translateY(2px); box-shadow: none; }
+.zoombtns button:last-child { font-size: 1.1rem; }
+.zoomed .map { cursor: grab; }
+@media (max-height: 460px) { .zoombtns { grid-auto-flow: column; } .zoombtns button { width: 32px; height: 32px; font-size: 1.15rem; } }
+.map .leaders line { stroke: var(--ink); stroke-width: 1.4; vector-effect: non-scaling-stroke; }
+.map .leaders circle { fill: var(--ink); }
 .map .ring { fill: none; stroke: var(--ink); stroke-width: 3; vector-effect: non-scaling-stroke; transform-box: fill-box; transform-origin: center; animation: ring 1.2s ease-out 2; }
 .mapcard .vis { border-radius: 14px; border: 2px solid var(--ink); overflow: hidden; }
 .mprompt { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
@@ -1639,10 +1649,11 @@ function mapColors(id) {
 }
 function mapSVG(id, mode) {
   const M = MAPS[id], col = mapColors(id);
-  return `<svg class="map ${mode}" viewBox="0 0 ${M.w} ${M.h}" preserveAspectRatio="xMidYMid meet" data-map="${id}">
+  return `<svg class="map ${mode}" viewBox="0 0 ${M.w} ${M.h}" preserveAspectRatio="xMidYMid meet" data-map="${id}" data-w="${M.w}" data-h="${M.h}">
     <path class="land" d="${M.land}"/>
     <g>${M.c.map(([cid, d]) => `<path class="cty" data-id="${cid}" d="${d}" style="--f:${col[cid]}"/>`).join("")}</g>
-    <g>${M.m.map(([cid, x, y]) => `<circle class="mk" data-id="${cid}" cx="${x}" cy="${y}" r="9" style="--f:${col[cid]}"/>`).join("")}</g>
+    <g class="leaders"></g>
+    <g>${M.m.map(([cid, x, y]) => `<circle class="mk" data-id="${cid}" data-x0="${x}" data-y0="${y}" cx="${x}" cy="${y}" r="9" style="--f:${col[cid]}"/>`).join("")}</g>
     <g class="fx"></g></svg>`;
 }
 function worldSVG() {
@@ -1657,37 +1668,119 @@ function svgPoint(svg, e) {
   return pt.matrixTransform(svg.getScreenCTM().inverse());
 }
 const svgScale = svg => { const m = svg.getScreenCTM(); return m ? m.a : 1; };
+/* Size the small-country dots for fingers, then push apart any that would overlap,
+   with a thin line back to each country's real spot. */
 function scaleMarkers(svg) {
-  const r = Math.max(8, 6 / svgScale(svg));
-  svg.querySelectorAll(".mk").forEach(m => m.setAttribute("r", r.toFixed(1)));
+  const k = 1 / svgScale(svg), r = 7.5 * k, min = 2 * r + 10 * k;
+  const W = +svg.dataset.w || svg.viewBox.baseVal.width, H = +svg.dataset.h || svg.viewBox.baseVal.height;
+  const mk = [...svg.querySelectorAll(".mk")].map((el, i) => ({ el, x0: +el.dataset.x0, y0: +el.dataset.y0, x: +el.dataset.x0, y: +el.dataset.y0, i }));
+  for (let it = 0; it < 120; it++) {
+    let moved = false;
+    for (let a = 0; a < mk.length; a++) for (let b = a + 1; b < mk.length; b++) {
+      const A = mk[a], B = mk[b];
+      let dx = B.x - A.x, dy = B.y - A.y, d = Math.hypot(dx, dy);
+      if (d >= min) continue;
+      if (d < .01) { const ang = (A.i * 2.39996) % (2 * Math.PI); dx = Math.cos(ang); dy = Math.sin(ang); d = 1; }
+      const push = (min - d) / 2 + .5;
+      A.x -= dx / d * push; A.y -= dy / d * push; B.x += dx / d * push; B.y += dy / d * push;
+      moved = true;
+    }
+    mk.forEach(m => { m.x = Math.min(W - r, Math.max(r, m.x)); m.y = Math.min(H - r, Math.max(r, m.y)); });
+    if (!moved) break;
+  }
+  const lead = svg.querySelector(".leaders"); let html = "";
+  mk.forEach(m => {
+    m.el.setAttribute("r", r.toFixed(1)); m.el.setAttribute("cx", m.x.toFixed(1)); m.el.setAttribute("cy", m.y.toFixed(1));
+    if (Math.hypot(m.x - m.x0, m.y - m.y0) > r * .6) html += `<line x1="${m.x0}" y1="${m.y0}" x2="${m.x.toFixed(1)}" y2="${m.y.toFixed(1)}"/><circle cx="${m.x0}" cy="${m.y0}" r="${(2.2 * k).toFixed(1)}"/>`;
+  });
+  if (lead) lead.innerHTML = html;
   return r;
 }
 function hitCountry(svg, e) {
   if (e.target.classList && e.target.classList.contains("mk")) return e.target.dataset.id;
   const p = svgPoint(svg, e), k = 1 / svgScale(svg);
   const onLand = e.target.closest && e.target.closest(".cty");
-  const tol = Math.max(8, 6 * k) + (onLand ? 2 : 10) * k;
+  const tol = 7.5 * k + (onLand ? 3 : 10) * k;
   let best = null, bd = 1e9;
   svg.querySelectorAll(".mk").forEach(m => { const d = Math.hypot(+m.getAttribute("cx") - p.x, +m.getAttribute("cy") - p.y); if (d < bd) { bd = d; best = m.dataset.id; } });
   if (bd <= tol) return best;
   const el = e.target.closest && e.target.closest("[data-id]");
   return el ? el.dataset.id : null;
 }
+/* Pinch, drag, mouse-wheel and +/- buttons to zoom a map. */
+function enableZoom(svg, holder) {
+  const b0 = svg.viewBox.baseVal, base = { x: b0.x, y: b0.y, w: b0.width, h: b0.height };
+  let vb = { ...base }, start = null, dragged = false, raf = 0;
+  const ptrs = new Map();
+  const apply = () => {
+    svg.setAttribute("viewBox", `${vb.x.toFixed(2)} ${vb.y.toFixed(2)} ${vb.w.toFixed(2)} ${vb.h.toFixed(2)}`);
+    holder.classList.toggle("zoomed", vb.w < base.w - .5);
+    cancelAnimationFrame(raf); raf = requestAnimationFrame(() => { scaleMarkers(svg); svg.dispatchEvent(new Event("zoomed")); });
+  };
+  const clamp = () => {
+    vb.w = Math.min(base.w, Math.max(base.w / 16, vb.w)); vb.h = vb.w * base.h / base.w;
+    vb.x = Math.min(base.x + base.w - vb.w, Math.max(base.x, vb.x)); vb.y = Math.min(base.y + base.h - vb.h, Math.max(base.y, vb.y));
+  };
+  const toSvg = (cx, cy) => { const pt = svg.createSVGPoint(); pt.x = cx; pt.y = cy; return pt.matrixTransform(svg.getScreenCTM().inverse()); };
+  const zoomAt = (f, cx, cy) => {
+    const p = toSvg(cx, cy), nw = Math.min(base.w, Math.max(base.w / 16, vb.w / f)), k = nw / vb.w;
+    vb.x = p.x - (p.x - vb.x) * k; vb.y = p.y - (p.y - vb.y) * k; vb.w = nw; clamp(); apply();
+  };
+  svg.addEventListener("pointerdown", e => {
+    ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (ptrs.size === 1) { start = { x: e.clientX, y: e.clientY, vb: { ...vb } }; dragged = false; } else { start = null; dragged = true; }
+  });
+  svg.addEventListener("pointermove", e => {
+    if (!ptrs.has(e.pointerId)) return;
+    if (ptrs.size === 2) {
+      const [a, b] = [...ptrs.values()], d0 = Math.hypot(a.x - b.x, a.y - b.y);
+      ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      const [c, d] = [...ptrs.values()], d1 = Math.hypot(c.x - d.x, c.y - d.y);
+      if (d0 > 0 && d1 > 0) zoomAt(d1 / d0, (c.x + d.x) / 2, (c.y + d.y) / 2);
+      return;
+    }
+    ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (!start) return;
+    const dx = e.clientX - start.x, dy = e.clientY - start.y;
+    if (!dragged && Math.hypot(dx, dy) < 8) return;
+    dragged = true;
+    if (vb.w >= base.w - .5) return;
+    const s = svgScale(svg) * (vb.w / start.vb.w);
+    vb.x = start.vb.x - dx / s; vb.y = start.vb.y - dy / s; vb.w = start.vb.w; clamp(); apply();
+  });
+  const end = e => { ptrs.delete(e.pointerId); if (!ptrs.size) start = null; };
+  svg.addEventListener("pointerup", end); svg.addEventListener("pointercancel", end);
+  svg.addEventListener("click", e => { if (dragged) { e.stopImmediatePropagation(); e.preventDefault(); dragged = false; } }, true);
+  svg.addEventListener("wheel", e => { e.preventDefault(); zoomAt(e.deltaY < 0 ? 1.25 : .8, e.clientX, e.clientY); }, { passive: false });
+  holder.insertAdjacentHTML("beforeend", `<div class="zoombtns"><button type="button" aria-label="Zoom in">+</button><button type="button" aria-label="Zoom out">−</button><button type="button" aria-label="Show the whole map">⤢</button></div>`);
+  const [bi, bo, br] = holder.querySelectorAll(".zoombtns button");
+  const mid = () => { const r = svg.getBoundingClientRect(); return [r.x + r.width / 2, r.y + r.height / 2]; };
+  bi.onclick = e => { e.stopPropagation(); sfx("tap"); zoomAt(1.7, ...mid()); };
+  bo.onclick = e => { e.stopPropagation(); sfx("tap"); zoomAt(1 / 1.7, ...mid()); };
+  br.onclick = e => { e.stopPropagation(); sfx("tap"); vb = { ...base }; apply(); };
+}
 function countryPos(svg, cid) {
   const c = BY_ID.get(cid);
-  if (c && c.mp && c.m === svg.dataset.map) return c.mp;
   const mk = svg.querySelector(`.mk[data-id="${cid}"]`); if (mk) return [+mk.getAttribute("cx"), +mk.getAttribute("cy")];
+  if (c && c.mp && c.m === svg.dataset.map) return c.mp;
   const el = svg.querySelector(`[data-id="${cid}"]`); if (!el) return null;
   const b = el.getBBox(); return [b.x + b.width / 2, b.y + b.height / 2];
 }
 function markCountry(svg, cid, cls) { svg.querySelectorAll(`[data-id="${cid}"]`).forEach(el => el.classList.add(cls)); }
 function clearMarks(svg) { svg.querySelectorAll(".sel,.ok,.no").forEach(el => el.classList.remove("sel", "ok", "no")); svg.querySelector(".fx").innerHTML = ""; }
-function labelCountry(svg, cid, ring) {
+function labelCountry(svg, cid, ring, below) {
   const pos = countryPos(svg, cid); if (!pos) return;
   const k = 1 / svgScale(svg), fs = 16 * k;
   const fx = svg.querySelector(".fx");
   if (ring) fx.insertAdjacentHTML("beforeend", `<circle class="ring" cx="${pos[0]}" cy="${pos[1]}" r="${26 * k}"/>`);
-  fx.insertAdjacentHTML("beforeend", `<text class="lbl" x="${pos[0]}" y="${pos[1] - 12 * k}" style="font-size:${fs}px;stroke-width:${4 * k}px">${esc(BY_ID.get(cid).n)}</text>`);
+  const y = below ? pos[1] + 26 * k : pos[1] - 14 * k;
+  fx.insertAdjacentHTML("beforeend", `<text class="lbl" x="${pos[0]}" y="${y}" style="font-size:${fs}px;stroke-width:${4 * k}px">${esc(BY_ID.get(cid).n)}</text>`);
+}
+/* Two labels close together: put one above and one below so they don't collide. */
+function labelsClose(svg, a, b) {
+  const p = countryPos(svg, a), q = countryPos(svg, b); if (!p || !q) return false;
+  const k = 1 / svgScale(svg);
+  return Math.abs(p[1] - q[1]) < 30 * k && Math.abs(p[0] - q[0]) < 140 * k;
 }
 
 /* ================= game state ================= */
@@ -1734,11 +1827,14 @@ function renderQ() {
     const c = BY_ID.get(q.target);
     stage.innerHTML = `<div class="card mapcard"><div class="prompt mprompt" id="mprompt">${flagImg(c)}<span>Tap <u>${esc(c.n)}</u> on the map of ${CONT[q.map].n}</span></div><div class="vis mapvis">${mapSVG(q.map, "game")}</div></div>`;
     const msvg = stage.querySelector("svg"); msvg.addEventListener("click", onMapTap); scaleMarkers(msvg);
+    enableZoom(msvg, stage.querySelector(".mapvis"));
+    msvg.addEventListener("zoomed", () => { if (msvg._relabel) msvg._relabel(); });
   } else if (q.kind === "pin") {
     const c = BY_ID.get(q.target);
     stage.innerHTML = `<div class="card mapcard"><div class="prompt mprompt">${flagImg(c)}<span>Where is <u>${esc(c.cap)}</u>, the capital of ${esc(c.n)}? Tap the map.</span></div>
       <div class="vis"><div class="shapebox pinbox"><svg viewBox="-6 -6 212 212" class="pinsvg"><path class="pland" d="${c.s}"/><g class="fx"></g></svg></div></div></div>`;
     stage.querySelector(".pinsvg").addEventListener("click", onPinTap);
+    enableZoom(stage.querySelector(".pinsvg"), stage.querySelector(".pinsvg").closest(".vis"));
   } else {
     const opts = `<div class="options${q.clues ? " clueopts" : ""}">${q.options.map((o, k) =>
       `<button class="opt ${o.flag ? "" : "noflag"}" data-i="${k}"><span class="key">${"ABCD"[k]}</span>${o.flag ? flagImg(o.flag) : ""}<span class="t">${esc(o.text)}</span></button>`).join("")}</div>`;
@@ -1774,7 +1870,8 @@ function onTimeUp() {
   G.locked = true;
   const q = G.qs[G.i];
   if (q.kind === "map") {
-    const svg = $("#g-stage svg"); markCountry(svg, q.target, "ok"); labelCountry(svg, q.target, true);
+    const svg = $("#g-stage svg"); markCountry(svg, q.target, "ok");
+    svg._relabel = () => { svg.querySelector(".fx").innerHTML = ""; labelCountry(svg, q.target, true); }; svg._relabel();
   } else if (q.kind === "pin") {
     showCapital($("#g-stage .pinsvg"), BY_ID.get(q.target)); q.fact = pinFact(BY_ID.get(q.target), null);
   } else {
@@ -1807,8 +1904,16 @@ function onMapTap(e) {
   if (!id) { const p = $("#mprompt"); p.classList.remove("nudge"); void p.offsetWidth; p.classList.add("nudge"); sfx("tap"); return; }
   G.locked = true; stopTimer();
   const ok = id === q.target;
-  markCountry(svg, q.target, "ok"); labelCountry(svg, q.target, true);
-  if (!ok) { markCountry(svg, id, "no"); labelCountry(svg, id, false); }
+  markCountry(svg, q.target, "ok");
+  if (!ok) markCountry(svg, id, "no");
+  svg._relabel = () => {
+    svg.querySelector(".fx").innerHTML = "";
+    if (ok) { labelCountry(svg, q.target, true); return; }
+    const close = labelsClose(svg, q.target, id), pT = countryPos(svg, q.target), pI = countryPos(svg, id);
+    const tapBelow = !!(close && pI && pT && pI[1] >= pT[1]), targetBelow = !!(close && pI && pT && pI[1] < pT[1]);
+    labelCountry(svg, q.target, true, targetBelow); labelCountry(svg, id, false, tapBelow);
+  };
+  svg._relabel();
   if (ok) { G.streak++; G.bestStreak = Math.max(G.bestStreak, G.streak); finishQ(true, 100 + speedPts() + streakPts()); }
   else { q.fact = q.fact.replace(/<\/div>$/, ` You tapped ${esc(BY_ID.get(id).n)}.</div>`); finishQ(false, 0, `That's ${BY_ID.get(id).n}!`); }
 }
@@ -2062,7 +2167,7 @@ function renderExplorer() {
   const box = $("#mx-map");
   box.innerHTML = EX.map === "WORLD" ? worldSVG() : mapSVG(EX.map, "explore");
   const svg = box.querySelector("svg");
-  if (EX.map !== "WORLD") { scaleMarkers(svg); P.cont[EX.map] = 1; saveP(); if (CONT_KEYS.every(k => P.cont[k])) award("carto"); }
+  if (EX.map !== "WORLD") { scaleMarkers(svg); enableZoom(svg, box); svg.addEventListener("zoomed", () => { if (EX.sel) highlightSel(); }); P.cont[EX.map] = 1; saveP(); if (CONT_KEYS.every(k => P.cont[k])) award("carto"); }
   if (EX.map === "WORLD") {
     svg.addEventListener("click", e => { const el = e.target.closest("[data-cont]"); if (el) { EX.map = el.dataset.cont; EX.sel = null; renderExplorer(); sfx("tap"); } });
   } else {
