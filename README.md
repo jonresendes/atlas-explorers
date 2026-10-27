@@ -41,6 +41,8 @@ All 8 files must sit together at the top level of the repository, not inside a f
 1. In the repository, click **Add file → Upload files**.
 2. Drag in the new files with exactly the same names. They replace the old ones.
 3. Click **Commit changes**. The site updates in about a minute.
-4. On each device, open the game while online, close it, and open it again.
+4. On each device, open the game while online and go to **Settings → Check for updates**. The game downloads the new version and restarts. It also shows a "New version ready" message by itself when it notices an update.
+
+Always upload `index.html` and `sw.js` together. The version number inside `sw.js` is how phones know something new is available.
 
 Scores, stamps and trophies are saved on each device and are kept when the game updates.

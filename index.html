@@ -522,6 +522,11 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
 .hrow small { display: block; font-family: var(--body); font-size: .74rem; color: var(--ink-soft); font-weight: 800; }
 .hrow b { font-family: var(--display); font-weight: 400; font-size: clamp(1.3rem, 3.6vh, 1.8rem); }
 
+.updbtns { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.updbtns .btn { min-height: 40px; font-size: .95rem; padding: 6px 12px; text-decoration: none; }
+.setpanel { flex: 0 1 auto; min-height: 0; overflow-y: auto; }
+#upd-status.ok { color: #12955F; }
+
 /* ---------- Toasts ---------- */
 #toasts { position: fixed; left: 0; right: 0; top: calc(10px + env(safe-area-inset-top, 0px)); z-index: 60; display: grid; justify-items: center; gap: 8px; pointer-events: none; padding-inline: 16px; }
 .toast { display: flex; align-items: center; gap: 10px; background: var(--navy); color: var(--gold); border: var(--ol); border-radius: 16px; padding: 8px 16px 8px 10px; box-shadow: 0 4px 0 var(--shadow); max-width: 440px; animation: toastin .35s cubic-bezier(.2,1.4,.5,1), toastout .35s ease 2.65s forwards; }
@@ -836,6 +841,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
       <div class="row"><span class="lbl">Timer<span class="sub">Faster answers earn more points</span></span><div class="seg" id="set-timer"></div></div>
       <div class="row"><span class="lbl">Questions<span class="sub">Per round</span></span><div class="seg" id="set-qcount"></div></div>
       <div class="row"><span class="lbl">Difficulty</span><div class="seg" id="set-level"></div></div>
+      <div class="row" id="upd-row" hidden><span class="lbl">Version <span class="num" id="upd-ver"></span><span class="sub" id="upd-status">Get the newest games and fixes</span></span><span class="updbtns"><a class="btn alt" id="upd-gh" target="_blank" rel="noopener" hidden>GitHub</a><button class="btn" id="set-update">Check for updates</button></span></div>
       <div class="row"><span class="lbl">How to play<span class="sub">Rules for every game</span></span><button class="btn alt" id="set-howto" style="min-height:40px;font-size:1rem;padding:6px 14px">Open</button></div>
       <div class="row"><span class="lbl">Reset progress<span class="sub">Clears scores, stamps and trophies</span></span><button class="btn danger" id="set-reset" style="min-height:40px;font-size:1rem;padding:6px 14px">Reset</button></div>
     </div>
@@ -2581,6 +2587,55 @@ document.addEventListener("keydown", e => {
   if (k >= 0 && !G.locked) { const b = document.querySelectorAll(".opt")[k]; if (b && !b.disabled) choose(k); }
 });
 
+/* ================= check for updates ================= */
+const APP_VERSION = "atlas-v10";
+const verNum = v => +((String(v).match(/(\d+)\s*$/) || [0, 0])[1]);
+async function remoteVersion() {
+  const res = await fetch("sw.js?check=" + Date.now(), { cache: "no-store" });
+  if (!res.ok) throw new Error("bad response");
+  const m = (await res.text()).match(/VERSION\s*=\s*"([^"]+)"/);
+  if (!m) throw new Error("no version");
+  return verNum(m[1]);
+}
+async function applyUpdate() {
+  let done = false;
+  const go = () => { if (!done) { done = true; location.reload(); } };
+  const reg = "serviceWorker" in navigator ? await navigator.serviceWorker.getRegistration() : null;
+  if (!reg) return go();
+  navigator.serviceWorker.addEventListener("controllerchange", go);
+  try { await reg.update(); } catch (e) {}
+  setTimeout(go, 12000);
+}
+async function checkUpdates() {
+  const st = $("#upd-status"), btn = $("#set-update");
+  st.classList.remove("ok");
+  if (!navigator.onLine) { st.textContent = "You're offline. Connect to the internet, then try again."; return; }
+  st.textContent = "Checking the game's website…"; btn.disabled = true;
+  try {
+    const remote = await remoteVersion();
+    if (remote <= verNum(APP_VERSION)) { st.textContent = "You have the newest version."; st.classList.add("ok"); btn.disabled = false; sfx("right"); return; }
+    st.textContent = `Version ${remote} found! Updating… the game will restart.`; sfx("unlock");
+    await applyUpdate();
+  } catch (e) { st.textContent = "Couldn't reach the game's website. Try again in a moment."; btn.disabled = false; }
+}
+function setupUpdates() {
+  if (!HAS_MANIFEST) return;
+  $("#upd-row").hidden = false;
+  $("#upd-ver").textContent = verNum(APP_VERSION);
+  $("#set-update").onclick = () => { sfx("tap"); checkUpdates(); };
+  // GitHub Pages address (name.github.io/repo/) -> the repository page
+  const m = location.hostname.match(/^([^.]+)\.github\.io$/i);
+  if (m) {
+    const repo = location.pathname.split("/").filter(Boolean)[0];
+    const gh = $("#upd-gh"); gh.hidden = false;
+    gh.href = `https://github.com/${m[1]}/${repo && !/\.html$/.test(repo) ? repo : m[1] + ".github.io"}`;
+  }
+  // Quiet check when the game opens
+  if (navigator.onLine && location.protocol === "https:") setTimeout(() => remoteVersion().then(v => {
+    if (v > verNum(APP_VERSION)) toast("🆕", "A new version is ready!", "Open Settings and tap Check for updates.");
+  }).catch(() => {}), 2500);
+}
+
 /* ================= install as an app ================= */
 const HAS_MANIFEST = !!document.querySelector('link[rel="manifest"]');
 const IS_STANDALONE = (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true;
@@ -2623,6 +2678,7 @@ if (HAS_MANIFEST && "serviceWorker" in navigator && (location.protocol === "http
   window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
 }
 updateInstall();
+setupUpdates();
 
 renderMenu();
 show("s-menu");

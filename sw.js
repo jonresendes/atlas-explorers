@@ -1,6 +1,6 @@
 // Atlas Explorers offline support.
 // Change VERSION whenever you upload a new index.html so phones pick up the update.
-const VERSION = "atlas-v9";
+const VERSION = "atlas-v10";
 const CORE = [
   "./",
   "index.html",
@@ -12,8 +12,13 @@ const CORE = [
   "icon.svg"
 ];
 
+// Download fresh copies (skipping the browser's own short-term cache) so an update is really new.
 self.addEventListener("install", event => {
-  event.waitUntil(caches.open(VERSION).then(cache => cache.addAll(CORE)).then(() => self.skipWaiting()));
+  event.waitUntil(
+    caches.open(VERSION)
+      .then(cache => cache.addAll(CORE.map(u => new Request(u, { cache: "reload" }))))
+      .then(() => self.skipWaiting())
+  );
 });
 
 self.addEventListener("activate", event => {
@@ -30,6 +35,8 @@ self.addEventListener("fetch", event => {
   const req = event.request;
   if (req.method !== "GET") return;
   const url = new URL(req.url);
+  // The "Check for updates" button always asks the website directly.
+  if (url.pathname.endsWith("/sw.js")) return;
   const isFont = url.hostname === "fonts.googleapis.com" || url.hostname === "fonts.gstatic.com";
   if (url.origin !== self.location.origin && !isFont) return;
 
