@@ -466,6 +466,62 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
 .lmname { font-family: var(--display); font-size: clamp(1.1rem, 12cqh, 2rem); line-height: 1.1; }
 .lmfact { font-size: clamp(.78rem, 7cqh, 1rem); color: var(--ink-soft); line-height: 1.3; }
 
+/* ---------- Head-to-Head ---------- */
+.teams { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; flex: none; }
+.tchip { display: inline-flex; align-items: center; gap: 6px; background: var(--paper); border: 2px solid var(--ink); border-radius: 99px; padding: 1px 10px 1px 4px; font-weight: 900; font-size: clamp(.7rem, 1.8vh, 1rem); box-shadow: 0 2px 0 var(--shadow); transition: transform .2s, background .2s; }
+.tchip i { width: 14px; height: 14px; border-radius: 50%; background: var(--tc); border: 2px solid var(--ink); }
+.tchip b { font-family: var(--display); font-weight: 400; font-size: 1.1em; }
+.tchip.on { background: var(--tc); transform: scale(1.08); }
+.app.h2h .scorebox { visibility: hidden; }
+.hostbar { display: flex; gap: 10px; flex: none; }
+.hostbar .btn, .cluebar #reveal { flex: 1; min-height: clamp(40px, 6vh, 50px); }
+.app.h2h-show .opt { pointer-events: none; }
+.teampick { display: grid; gap: 6px; }
+.teampick p { margin: 0; font-weight: 900; font-size: .9rem; }
+.tpick { display: flex; flex-wrap: wrap; gap: 6px; }
+.tpick button { display: inline-flex; align-items: center; gap: 6px; border: 2px solid var(--ink); border-radius: 99px; padding: 6px 12px 6px 6px; font-weight: 900; background: #F2F6FB; font-size: .88rem; }
+.tpick button::before { content: ""; width: 16px; height: 16px; border-radius: 50%; background: var(--tc); border: 2px solid var(--ink); }
+.tpick button[aria-pressed="true"] { background: var(--tc); box-shadow: 0 2px 0 var(--shadow); }
+.tpick button[aria-pressed="true"]::after { content: "✓"; }
+.turncard { display: grid; justify-items: center; gap: 8px; padding: clamp(18px, 4vh, 34px) clamp(22px, 5vw, 44px); border-radius: 28px; border: var(--ol); background: var(--tc); box-shadow: 0 6px 0 var(--shadow); color: var(--ink); text-align: center; animation: pop .3s ease; max-width: min(92vw, 560px); }
+.turncard .tflag { font-size: clamp(34px, 8vh, 60px); line-height: 1; }
+.turncard b { font-family: var(--display); font-weight: 400; font-size: clamp(1.8rem, 7vh, 3.2rem); line-height: 1; text-wrap: balance; }
+.turncard > span:not(.tflag) { font-family: var(--display); font-size: clamp(1.2rem, 4vh, 1.8rem); }
+.turncard small { font-weight: 900; font-size: .88rem; background: var(--paper); border: 2px solid var(--ink); border-radius: 99px; padding: 4px 12px; }
+.h2hpanel { flex: 0 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; display: grid; gap: clamp(8px, 1.6vh, 14px); }
+.h2hsec h3 { font-size: 1.05rem; margin-bottom: 6px; }
+.h2hsec .rowx { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.h2hsec .rowx h3 { margin: 0; }
+.h2hsec .rowx + .rowx { margin-top: 8px; }
+.h2hsec .rowx + .teamrows { margin-top: 6px; }
+.stylepick { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.stylepick button { border: 2px solid var(--ink); border-radius: 16px; padding: 8px 10px; text-align: left; background: #F2F6FB; display: grid; gap: 2px; align-content: start; }
+.stylepick .em { font-size: 1.5rem; line-height: 1; }
+.stylepick b { font-family: var(--display); font-weight: 400; font-size: 1.05rem; }
+.stylepick small { font-size: .74rem; color: var(--ink-soft); font-weight: 800; line-height: 1.25; }
+.stylepick button[aria-pressed="true"] { background: var(--gold-soft); box-shadow: 0 3px 0 var(--shadow); }
+.teamrows { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.teamrow { display: flex; align-items: center; gap: 6px; border: 2px solid var(--ink); border-radius: 12px; padding: 2px 8px; background: var(--paper); }
+.teamrow i { width: 18px; height: 18px; border-radius: 50%; background: var(--tc); border: 2px solid var(--ink); flex: none; }
+.teamrow input { flex: 1; min-width: 0; width: 100%; border: 0; font: inherit; font-weight: 900; font-size: .9rem; color: var(--ink); background: transparent; padding: 6px 0; }
+.stepper { display: inline-flex; align-items: center; gap: 8px; }
+.stepper button { width: 34px; height: 34px; border-radius: 10px; border: 2px solid var(--ink); background: var(--paper); font-family: var(--display); font-size: 1.25rem; line-height: 1; }
+.stepper b { font-family: var(--display); font-weight: 400; font-size: 1.3rem; min-width: 18px; text-align: center; }
+.gamechips { display: flex; flex-wrap: wrap; gap: 5px; }
+.gamechips button { padding: 5px 11px; border-radius: 99px; background: var(--paper); border: 2px solid var(--ink); font-size: .8rem; font-weight: 900; }
+.gamechips button[aria-pressed="true"] { background: var(--gold); }
+#s-h2h .btn#h2h-start { flex: none; }
+#s-h2hres { justify-content: center; }
+.hrhead { display: grid; justify-items: center; text-align: center; gap: 2px; flex: none; }
+.hrhead .cup { font-size: clamp(44px, 10vh, 84px); line-height: 1; }
+.hrhead h2 { font-size: clamp(1.7rem, 5vh, 2.6rem); }
+.hrlist { display: grid; gap: clamp(6px, 1.2vh, 10px); flex: 0 1 auto; min-height: 0; overflow-y: auto; padding: 2px; }
+.hrow { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: 10px; align-items: center; background: var(--paper); border: var(--ol); border-left: 14px solid var(--tc); border-radius: 16px; padding: clamp(4px, 1vh, 10px) 14px; box-shadow: 0 3px 0 var(--shadow); }
+.hrow .rk { font-family: var(--display); font-size: 1.5rem; text-align: center; }
+.hrow .tn { font-family: var(--display); font-size: clamp(1.05rem, 2.8vh, 1.4rem); line-height: 1.1; overflow-wrap: anywhere; }
+.hrow small { display: block; font-family: var(--body); font-size: .74rem; color: var(--ink-soft); font-weight: 800; }
+.hrow b { font-family: var(--display); font-weight: 400; font-size: clamp(1.3rem, 3.6vh, 1.8rem); }
+
 /* ---------- Toasts ---------- */
 #toasts { position: fixed; left: 0; right: 0; top: calc(10px + env(safe-area-inset-top, 0px)); z-index: 60; display: grid; justify-items: center; gap: 8px; pointer-events: none; padding-inline: 16px; }
 .toast { display: flex; align-items: center; gap: 10px; background: var(--navy); color: var(--gold); border: var(--ol); border-radius: 16px; padding: 8px 16px 8px 10px; box-shadow: 0 4px 0 var(--shadow); max-width: 440px; animation: toastin .35s cubic-bezier(.2,1.4,.5,1), toastout .35s ease 2.65s forwards; }
@@ -587,6 +643,9 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
 @media (max-height: 460px) {
   :root { --gap: 6px; --pad-y: 8px; }
   .opt, .options .opt { min-height: 40px; }
+  .app.h2h .opt, .app.h2h .options .opt { min-height: 36px; padding-block: 3px; }
+  .app.h2h .cluebar .btn, .app.h2h .hostbar .btn { min-height: 36px; font-size: .95rem; }
+  .app.h2h #g-teams .tchip { font-size: .68rem; }
   .btn { min-height: 40px; }
   .hud .qn { display: none; }
   .scorebox { padding: 2px 10px; }
@@ -617,14 +676,21 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
   #s-menu .stamp-stars { position: absolute; right: -12px; top: -16px; width: 60px; background: var(--paper); z-index: 1; }
   #s-menu .ticketwrap { grid-column: 1; grid-row: 3; }
   #s-menu .menubar { grid-column: 1; grid-row: 4; grid-auto-flow: row; grid-template-columns: 1fr 1fr; }
-  #s-menu .menubar #m-map, #s-menu .menubar #m-install { grid-column: 1 / -1; grid-auto-flow: column; justify-content: center; gap: 8px; }
+  #s-menu .menubar #m-map, #s-menu .menubar #m-h2h { grid-auto-flow: row; }
+  #s-menu .menubar:has(#m-install[hidden]) #m-settings { grid-column: 1 / -1; grid-auto-flow: column; justify-content: center; gap: 8px; }
   #s-menu .cases { grid-column: 2; grid-row: 1 / -1; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: repeat(3, minmax(0, 1fr)); }
 
   #s-game .stage { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; column-gap: clamp(14px, 2.4vw, 28px); row-gap: var(--gap); }
   #s-game .stage.full { grid-template-columns: minmax(0, 1fr); }
   .stage .card { grid-column: 1; grid-row: 1 / -1; }
   .stage .options, .stage .options.clueopts { grid-column: 2; grid-row: 1; align-content: center; grid-template-columns: 1fr; }
-  .stage .cluebar { grid-column: 2; grid-row: 2; }
+  .stage .cluebar, .stage .hostbar { grid-column: 2; grid-row: 2; }
+  .stage.full .card { grid-row: 1; }
+  .stage.full .hostbar { grid-column: 1; }
+  #s-h2hres { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); grid-template-rows: minmax(0, 1fr) auto; column-gap: clamp(18px, 4vw, 48px); row-gap: var(--gap); align-content: center; }
+  #s-h2hres .hrhead { grid-column: 1; grid-row: 1 / span 2; align-self: center; }
+  #s-h2hres .hrlist { grid-column: 2; grid-row: 1; align-self: end; }
+  #s-h2hres .res-actions { grid-column: 2; grid-row: 2; align-self: start; }
   .stage .options .opt { grid-template-columns: 34px auto minmax(0, 1fr); gap: 10px; padding: 5px 12px; font-size: clamp(.92rem, 2.1vh, 1.1rem); }
   .stage .options .opt.noflag { grid-template-columns: 34px minmax(0, 1fr); }
   .stage .options .opt .key, .stage .options .opt:not(.noflag) .key { display: grid; width: 32px; height: 32px; }
@@ -706,9 +772,9 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
 
     <div class="menubar">
       <button class="chipbtn hi" id="m-map"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18"/></svg>World Map</button>
+      <button class="chipbtn hi" id="m-h2h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="8" r="3"/><circle cx="17" cy="8" r="3"/><path d="M2 20c0-3 2.2-5 5-5s5 2 5 5M12 20c0-3 2.2-5 5-5s5 2 5 5"/></svg>Head-to-Head</button>
       <button class="chipbtn" id="m-awards"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4zM7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4"/></svg>Trophies</button>
       <button class="chipbtn" id="m-board"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V13h5v8M9 21V8h6v13M15 21v-6h5v6M3 21h18"/><path d="M12 2.5l.9 1.8 2 .3-1.4 1.4.3 2-1.8-.9-1.8.9.3-2-1.4-1.4 2-.3z" fill="currentColor" stroke="none"/></svg>Leaders</button>
-      <button class="chipbtn" id="m-howto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.6v.6M12 17.2v.1"/></svg>How to</button>
       <button class="chipbtn" id="m-settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Settings</button>
       <button class="chipbtn" id="m-install" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M12 7v7M9 11.5l3 3 3-3"/></svg>Get app</button>
     </div>
@@ -721,6 +787,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
       <div class="mid"><div class="mode" id="g-mode">Flag Finder</div><div class="qn num" id="g-qn">Question 1 of 10</div></div>
       <div class="scorebox"><small>Score</small><b class="num" id="g-score">0</b></div>
     </div>
+    <div class="teams" id="g-teams" hidden></div>
     <div class="progress" id="g-progress"></div>
     <div class="timerwrap" id="g-timerwrap">
       <div class="timerbar" id="g-timerbar"><i id="g-timerfill"></i></div>
@@ -769,6 +836,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
       <div class="row"><span class="lbl">Timer<span class="sub">Faster answers earn more points</span></span><div class="seg" id="set-timer"></div></div>
       <div class="row"><span class="lbl">Questions<span class="sub">Per round</span></span><div class="seg" id="set-qcount"></div></div>
       <div class="row"><span class="lbl">Difficulty</span><div class="seg" id="set-level"></div></div>
+      <div class="row"><span class="lbl">How to play<span class="sub">Rules for every game</span></span><button class="btn alt" id="set-howto" style="min-height:40px;font-size:1rem;padding:6px 14px">Open</button></div>
       <div class="row"><span class="lbl">Reset progress<span class="sub">Clears scores, stamps and trophies</span></span><button class="btn danger" id="set-reset" style="min-height:40px;font-size:1rem;padding:6px 14px">Reset</button></div>
     </div>
   </section>
@@ -781,6 +849,20 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
       <h3>Points and stars</h3>
       <p>100 points for each right answer, up to 100 more for speed, and a bonus for 3 in a row. Mystery Country pays 400 on the first clue, down to 100. A Capital Pin bullseye earns 50 extra. Get 3, 6 or 9 right out of 10 for 1, 2 or 3 stars. Answer every kind of question about a country to earn its passport stamp.</p>
     </div>
+  </section>
+
+  <!-- HEAD-TO-HEAD SETUP -->
+  <section class="screen page" id="s-h2h" hidden>
+    <div class="topbar"><button class="iconbtn back" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><h2>Head-to-Head</h2></div>
+    <div class="panel h2hpanel" id="h2h-body"></div>
+    <button class="btn" id="h2h-start">Start the match!</button>
+  </section>
+
+  <!-- HEAD-TO-HEAD RESULTS -->
+  <section class="screen" id="s-h2hres" hidden>
+    <div class="hrhead"><div class="cup">🏆</div><h2 id="hr-title">Winners!</h2><div class="ressub" id="hr-sub"></div></div>
+    <div class="hrlist" id="hr-list"></div>
+    <div class="res-actions"><button class="btn" id="hr-again">Rematch</button><button class="btn ghost" id="hr-menu">Main menu</button></div>
   </section>
 
   <!-- TROPHY ROOM -->
@@ -813,6 +895,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
   <div class="sheet-in">
     <div class="verdict"><h3 id="sh-title">Correct!</h3><span class="pts num" id="sh-pts">+150</span></div>
     <div class="fact" id="sh-fact"></div>
+    <div class="teampick" id="sh-teams" hidden></div>
     <button class="btn" id="sh-next">Next question</button>
   </div>
 </div>
@@ -872,6 +955,9 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
     <div class="cc-actions"><button class="btn alt" id="ini-skip">Skip</button><button class="btn" id="ini-save">Save</button></div>
   </div>
 </div>
+
+<!-- Head-to-Head: whose turn -->
+<div class="overlay" id="turn" hidden style="background:rgba(14,32,70,.9);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)"><button class="turncard" id="turn-card" type="button"><span class="tflag">✈️</span><b id="turn-name">Team</b><span>it's your turn!</span><small>Pass the device, then tap here to start</small></button></div>
 
 <div id="toasts" aria-live="polite"></div>
 
@@ -1046,6 +1132,7 @@ const ICON = {
   maphunt: `<svg viewBox="0 0 48 48" class="ico"><path d="M4 13l12-5 15 5 13-5v28l-13 5-15-5-12 5z" fill="#BDF0A0"/><path d="M16 8v28M31 13v28" stroke-width="2"/><path d="M33 4a7 7 0 0 1 7 7c0 6-7 13-7 13s-7-7-7-13a7 7 0 0 1 7-7z" fill="#FF6B57"/><circle cx="33" cy="11" r="2.4" fill="#fff"/></svg>`,
   cappin: `<svg viewBox="0 0 48 48" class="ico"><circle cx="22" cy="27" r="17" fill="#fff"/><circle cx="22" cy="27" r="11" fill="#FF6FA8"/><circle cx="22" cy="27" r="4.5" fill="#fff"/><path d="M22 27L41 8" stroke-width="3"/><path d="M38 5l6 1-3 3-1 5-3-3z" fill="#FFC93C"/></svg>`,
   mix: `<svg viewBox="0 0 48 48" class="ico"><circle cx="24" cy="24" r="14" fill="#3FB6EC"/><path d="M14 17c4-2 6 1 7 4s-2 5 1 7 5 1 5 4M29 12c2 2 5 1 6 3s-2 4 0 6 4 0 5 2" stroke="#74CC45" stroke-width="4.5"/><circle cx="24" cy="24" r="14"/><ellipse cx="24" cy="24" rx="22" ry="8" transform="rotate(-20 24 24)" stroke-dasharray="3 4" stroke-width="2"/><path transform="translate(40 14) rotate(70) scale(.5) translate(-12 -12)" d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z" fill="#fff" stroke-width="2"/></svg>`,
+  cities: `<svg viewBox="0 0 48 48" class="ico"><path d="M5 42V20h9v22M14 42V9h10v33M24 42V24h7v18M31 42V15h11v27" fill="#E9A6E3"/><path d="M17 14h4M17 20h4M17 26h4M17 32h4M34 20h5M34 26h5M34 32h5M8 26h3M8 32h3" stroke-width="2"/><path d="M3 42h42"/><circle cx="38" cy="7" r="3.5" fill="#FFC93C"/></svg>`,
   landmarks: `<svg viewBox="0 0 48 48" class="ico"><circle cx="37" cy="11" r="5.5" fill="#FF6B57"/><path d="M5 41L21 13l16 28z" fill="#FFC93C"/><path d="M21 13l-5 28M21 13l7 28" stroke-width="2"/><path d="M2 41h44"/></svg>`,
   neighbours: `<svg viewBox="0 0 48 48" class="ico"><path d="M5 8h15l2 12-7 6H5z" fill="#FF8FB1"/><path d="M20 8h23v15l-11 5-10-8z" fill="#7FD0F5"/><path d="M5 26h10l7-6 10 8 11-5v17H5z" fill="#9EDB7E"/><circle cx="22" cy="24" r="4" fill="#FFC93C"/></svg>`,
   map: `<svg viewBox="0 0 48 48" class="ico"><circle cx="24" cy="24" r="17" fill="#3FB6EC"/><path d="M12 17c5-3 8 1 9 5s-3 6 1 9 6 1 6 5M29 10c2 3 6 2 7 5s-3 5 0 7 5 0 6 3" stroke="#74CC45" stroke-width="5"/><circle cx="24" cy="24" r="17"/></svg>`
@@ -1063,9 +1150,10 @@ const MODES = {
   cappin:    { name: "Capital Pin",     c: "#FF8FB1", blurb: "Tap where the capital is on the country map." },
   landmarks: { name: "Landmarks",       c: "#D8B57A", blurb: "Find where famous places are in the world." },
   neighbours:{ name: "Neighbours",      c: "#93B4FF", blurb: "Guess the country from its neighbours." },
-  mix:       { name: "World Tour",      c: "#5B79D6", blurb: "A surprise mix of all ten games." }
+  cities:    { name: "Big Cities",      c: "#E9A6E3", blurb: "Find the country each famous city is in." },
+  mix:       { name: "World Tour",      c: "#5B79D6", blurb: "A surprise mix of all eleven games." }
 };
-const MODE_KEYS = ["flags", "capitals", "shapes", "clues", "languages", "animals", "maphunt", "cappin", "landmarks", "neighbours"];
+const MODE_KEYS = ["flags", "capitals", "shapes", "clues", "languages", "animals", "maphunt", "cappin", "landmarks", "neighbours", "cities"];
 const ALL_TILES = [...MODE_KEYS, "mix"];
 const MAX_STARS = ALL_TILES.length * 3 * 2;
 const bestKey = (m, lv = S.level) => m + "_" + lv;
@@ -1076,7 +1164,7 @@ function renderMenu() {
   $("#lv-hard").setAttribute("aria-pressed", S.level === "hard");
   $("#cases").innerHTML = ALL_TILES.map(k => {
     const m = MODES[k], b = BEST[bestKey(k)];
-    return `<button class="case${k === "mix" ? " wide" : ""}" data-mode="${k}" style="--c:${m.c}" aria-label="${m.name}">
+    return `<button class="case" data-mode="${k}" style="--c:${m.c}" aria-label="${m.name}">
       <span class="handle"></span>
       <span class="body"><span class="sticker">${ICON[k]}</span><span class="tag">${m.name}</span></span>
       ${b ? `<span class="stars">${starStr(b.stars)}</span>` : ""}
@@ -1214,6 +1302,11 @@ function buildRound(mode, n) {
       let a, tries = 0; do { a = pick(ANIMALS); } while (used.has(a[1]) && tries++ < 50);
       used.add(a[1]); qs.push(qAnimal(a)); continue;
     }
+    if (m === "cities") {
+      const todo = CITIES.filter(x => !P.city[x[1]]);
+      let C, tries = 0; do { C = todo.length && Math.random() < .5 ? pick(todo) : pick(CITIES); } while (used.has("C" + C[1]) && tries++ < 50);
+      used.add("C" + C[1]); qs.push(qCity(C)); continue;
+    }
     if (m === "landmarks") {
       const pool = lmPool(), todo = pool.filter(L => !L[4] && !done(BY_ID.get(L[2]), "landmarks"));
       let L, tries = 0; do { L = todo.length && Math.random() < .5 ? pick(todo) : pick(pool); } while (used.has("L" + L[1]) && tries++ < 50);
@@ -1225,6 +1318,94 @@ function buildRound(mode, n) {
   }
   return qs;
 }
+
+/* ================= big cities (not capitals) ================= */
+// [emoji, city, country id, fun fact shown after answering]
+const CITIES = [
+  // North America
+  ["🗽", "New York City", "US", "The biggest city in its country, with more than 400 subway stations."],
+  ["🎬", "Los Angeles", "US", "Home of Hollywood, the centre of the American movie business."],
+  ["🏙️", "Chicago", "US", "The world's first skyscraper was built here in 1885."],
+  ["🌉", "San Francisco", "US", "Famous for the Golden Gate Bridge and cable cars that climb steep hills."],
+  ["🗼", "Toronto", "CA", "Its CN Tower was the tallest free-standing structure in the world for more than 30 years."],
+  ["🌲", "Vancouver", "CA", "A port city between mountains and ocean, with a giant forest park called Stanley Park."],
+  ["🥐", "Montreal", "CA", "One of the biggest French-speaking cities in the world."],
+  ["🎺", "Guadalajara", "MX", "Known as the home of mariachi music."],
+  ["🏖️", "Cancún", "MX", "A beach city on the Caribbean Sea, close to ancient Mayan ruins."],
+  // South America
+  ["🎉", "Rio de Janeiro", "BR", "Famous for its giant Carnival party and the Christ the Redeemer statue."],
+  ["🏙️", "São Paulo", "BR", "The biggest city in the Southern Hemisphere."],
+  ["🌳", "Manaus", "BR", "A big city in the middle of the Amazon rainforest, with a famous old opera house."],
+  ["🎓", "Córdoba", "AR", "Home to one of the oldest universities in the Americas, founded in 1613."],
+  ["🌸", "Medellín", "CO", "Called the 'City of Eternal Spring' because it's warm all year round."],
+  ["🏰", "Cartagena", "CO", "A colorful old city inside stone walls built to keep out pirates."],
+  ["⛰️", "Cusco", "PE", "Once the capital of the Inca Empire, and the gateway to Machu Picchu."],
+  ["🎨", "Valparaíso", "CL", "A hilly port city full of colorful houses and old cliff elevators."],
+  ["⚓", "Guayaquil", "EC", "The biggest city in its country, a busy port near the Pacific Ocean."],
+  ["🦙", "La Paz", "BO", "The highest seat of government in the world, about 3,600 metres up in the Andes."],
+  // Europe
+  ["⛪", "Barcelona", "ES", "Full of buildings by the architect Antoni Gaudí, including the Sagrada Família."],
+  ["💃", "Seville", "ES", "Famous for flamenco dancing and orange trees lining its streets."],
+  ["🛶", "Venice", "IT", "Built on more than 100 small islands, where people travel by boat along canals."],
+  ["👗", "Milan", "IT", "A world fashion capital, home to Leonardo da Vinci's painting The Last Supper."],
+  ["🎨", "Florence", "IT", "The birthplace of the Renaissance, home to Michelangelo's statue David."],
+  ["🍕", "Naples", "IT", "The birthplace of pizza, right next to the Mount Vesuvius volcano."],
+  ["🥨", "Munich", "DE", "It hosts Oktoberfest, the world's largest folk festival."],
+  ["⚓", "Hamburg", "DE", "It has more bridges than Venice and Amsterdam put together."],
+  ["🎸", "Liverpool", "GB", "The hometown of the Beatles."],
+  ["🚂", "Manchester", "GB", "One of the world's first passenger railway stations opened here in 1830."],
+  ["🏰", "Edinburgh", "GB", "A city with a castle on top of an old volcano."],
+  ["⛵", "Marseille", "FR", "Founded by Greek sailors about 2,600 years ago, it's the oldest city in its country."],
+  ["🎞️", "Lyon", "FR", "Famous for its food, and the Lumière brothers made some of the first movies here."],
+  ["🎭", "Saint Petersburg", "RU", "Built by Tsar Peter the Great, it's home to the Hermitage, one of the world's largest art museums."],
+  ["🌉", "Istanbul", "TR", "A giant city that sits on two continents, Europe and Asia, split by the Bosphorus strait."],
+  ["🌉", "Porto", "PT", "A hillside city on the Douro River, famous for blue painted tiles."],
+  ["🐉", "Kraków", "PL", "Legend says a dragon once lived in a cave under its Wawel Castle."],
+  ["🚢", "Rotterdam", "NL", "Home to the biggest port in Europe."],
+  ["🏔️", "Zürich", "CH", "The biggest city in its country, on a lake with views of the Alps."],
+  ["🕊️", "Geneva", "CH", "Home of the Red Cross and many United Nations offices."],
+  ["🎼", "Salzburg", "AT", "The birthplace of the composer Wolfgang Amadeus Mozart."],
+  ["💎", "Antwerp", "BE", "Most of the world's rough diamonds are traded here."],
+  ["🌧️", "Bergen", "NO", "A rainy harbour city with colorful wooden houses, called the gateway to the fjords."],
+  ["🏰", "Dubrovnik", "HR", "A walled old city by the Adriatic Sea, nicknamed the 'Pearl of the Adriatic'."],
+  // Asia
+  ["🏙️", "Shanghai", "CN", "Its port is one of the busiest in the world."],
+  ["🗿", "Xi'an", "CN", "An ancient capital where farmers discovered the Terracotta Army in 1974."],
+  ["🎬", "Mumbai", "IN", "Home of Bollywood, a huge movie industry that makes hundreds of films a year."],
+  ["💻", "Bengaluru", "IN", "Nicknamed the 'Silicon Valley' of its country because of its tech companies."],
+  ["🍢", "Osaka", "JP", "Nicknamed 'the nation's kitchen' because of its amazing street food."],
+  ["⛩️", "Kyoto", "JP", "Its country's capital for over 1,000 years, with more than 1,600 temples."],
+  ["🏖️", "Busan", "KR", "Its country's biggest port, famous for beaches and seafood markets."],
+  ["🛵", "Ho Chi Minh City", "VN", "The biggest city in its country, where millions of motorbikes fill the streets."],
+  ["🏙️", "Dubai", "AE", "Home to the Burj Khalifa, the tallest building in the world."],
+  ["🕋", "Mecca", "SA", "The holiest city in Islam, visited by millions of pilgrims every year."],
+  ["⚓", "Karachi", "PK", "The biggest city and busiest port in its country, on the Arabian Sea."],
+  ["🍎", "Almaty", "KZ", "Its name comes from the word for apple, and wild apples first grew in the mountains nearby."],
+  ["🕌", "Samarkand", "UZ", "An ancient stop on the Silk Road, famous for its blue-tiled mosques."],
+  ["🐘", "Chiang Mai", "TH", "A city in the northern mountains with about 300 Buddhist temples."],
+  ["🛕", "Siem Reap", "KH", "The town right next to the temples of Angkor Wat."],
+  ["🏖️", "Tel Aviv", "IL", "A beach city with thousands of white buildings, nicknamed 'the White City'."],
+  ["🕌", "Isfahan", "IR", "Once called 'half of the world' because of its beautiful squares and mosques."],
+  // Africa
+  ["⛰️", "Cape Town", "ZA", "It sits below Table Mountain, and penguins live on a beach nearby."],
+  ["💛", "Johannesburg", "ZA", "The city was built after gold was discovered here in 1886."],
+  ["🎬", "Lagos", "NG", "One of the biggest cities in Africa and the home of the 'Nollywood' film industry."],
+  ["📚", "Alexandria", "EG", "Founded by Alexander the Great; its ancient lighthouse was one of the Seven Wonders of the World."],
+  ["🐍", "Marrakesh", "MA", "Its busy main square fills with storytellers, musicians and snake charmers."],
+  ["🕌", "Casablanca", "MA", "The biggest city in its country, home to a mosque with one of the tallest minarets in the world."],
+  ["🏰", "Mombasa", "KE", "An old port on the Indian Ocean with a fort built more than 400 years ago."],
+  ["🌶️", "Zanzibar City", "TZ", "On the 'Spice Island', famous for cloves and its old Stone Town."],
+  ["🦒", "Arusha", "TZ", "The starting point for safaris to the Serengeti and Mount Kilimanjaro."],
+  ["📜", "Timbuktu", "ML", "A desert city once famous for libraries of ancient handwritten books."],
+  ["🌴", "Abidjan", "CI", "The biggest city in its country, built around lagoons."],
+  // Oceania
+  ["🎭", "Sydney", "AU", "Home of the Opera House with its sail-shaped roof and the Harbour Bridge."],
+  ["🚋", "Melbourne", "AU", "It has the largest tram network in the world."],
+  ["🐹", "Perth", "AU", "One of the most remote big cities on Earth; quokkas live on an island just offshore."],
+  ["⛵", "Auckland", "NZ", "Called the 'City of Sails' because so many people own boats."],
+  ["🪂", "Queenstown", "NZ", "The adventure capital of the world, where bungee jumping first became a business."]
+];
+const CITY_C = new Set(CITIES.map(x => x[2]));
 
 /* ================= landmarks ================= */
 const OCEANS = ["Pacific Ocean", "Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Southern Ocean"];
@@ -1373,7 +1554,7 @@ const GEMS = [
 ];
 
 /* ================= progress, stamps and accolades ================= */
-const freshP = () => ({ st: {}, cc: {}, cat: {}, seen: {}, cont: {}, aw: {}, tr: {}, bd: {}, gm: {}, stamp: {}, total: 0, rounds: 0, ini: "" });
+const freshP = () => ({ st: {}, cc: {}, cat: {}, seen: {}, cont: {}, aw: {}, tr: {}, bd: {}, gm: {}, stamp: {}, city: {}, total: 0, rounds: 0, ini: "" });
 let P = Object.assign(freshP(), LS.get("progress", {}));
 const saveP = () => LS.set("progress", P);
 let LB = LS.get("board", {});
@@ -1389,7 +1570,7 @@ const GEN_LM = GEO.flatMap(c => c.lm
 const LM_C = new Set([...LANDMARKS.filter(x => !x[4]).map(x => x[2]), ...GEN_LM.map(x => x[2])]);
 const nbEligible = c => c.a >= 2000 && (c.b.length > 0 || !!ISLANDS[c.id]);
 
-const CAT_LABEL = { flags: "Flag", capitals: "Capital city", shapes: "Country shape", clues: "Mystery clues", languages: "Language", animals: "Animal", maphunt: "Find it on the map", cappin: "Capital on the map", landmarks: "Landmark", neighbours: "Neighbours" };
+const CAT_LABEL = { cities: "Big city", flags: "Flag", capitals: "Capital city", shapes: "Country shape", clues: "Mystery clues", languages: "Language", animals: "Animal", maphunt: "Find it on the map", cappin: "Capital on the map", landmarks: "Landmark", neighbours: "Neighbours" };
 const catCache = {};
 function catsFor(c) {
   if (catCache[c.id]) return catCache[c.id];
@@ -1399,6 +1580,7 @@ function catsFor(c) {
   if (ANIMAL_C.has(c.n)) k.push("animals");
   if (LM_C.has(c.id)) k.push("landmarks");
   if (nbEligible(c)) k.push("neighbours");
+  if (CITY_C.has(c.id)) k.push("cities");
   return catCache[c.id] = k;
 }
 const done = (c, m) => !!(c && P.st[c.id] && P.st[c.id][m]);
@@ -1406,7 +1588,7 @@ const stampCount = k => GEO.filter(c => P.stamp[c.id] && (!k || c.m === k)).leng
 const contCount = k => GEO.filter(c => c.m === k).length;
 const totalStars = () => Object.entries(BEST).filter(([k]) => ALL_TILES.includes(k.split("_")[0])).reduce((s, [, b]) => s + (b.stars || 0), 0);
 
-const BADGE_NAMES = { flags: "Flag Spotter", capitals: "City Hopper", shapes: "Shape Sleuth", clues: "Detective", languages: "Word Traveller", animals: "Safari Guide", maphunt: "Map Reader", cappin: "Sharpshooter", landmarks: "Sightseer", neighbours: "Good Neighbour" };
+const BADGE_NAMES = { flags: "Flag Spotter", capitals: "City Hopper", shapes: "Shape Sleuth", clues: "Detective", languages: "Word Traveller", animals: "Safari Guide", maphunt: "Map Reader", cappin: "Sharpshooter", landmarks: "Sightseer", neighbours: "Good Neighbour", cities: "City Slicker" };
 const TIERS = [["bronze", 10, "#CD7F32"], ["silver", 50, "#C9D2DC"], ["gold", 150, "#FFC93C"]];
 const MEDAL = { bronze: "🥉", silver: "🥈", gold: "🥇" };
 const AWARDS = [
@@ -1418,10 +1600,12 @@ const AWARDS = [
   ["bull", "🎯", "Bullseye", "Hit a bullseye in Capital Pin."],
   ["sleuth", "🕵️", "Super Sleuth", "Solve Mystery Country on the very first clue."],
   ["expert", "🌟", "World Expert", "Earn 3 stars on World Expert level."],
-  ["allgames", "🧳", "Globetrotter", "Play every one of the 10 games."],
+  ["allgames", "🧳", "Globetrotter", "Play every one of the 11 games."],
   ["carto", "🗺️", "Cartographer", "Explore all 6 continents on the World Map."],
   ["big", "💰", "Big Score", "Score 2,000 points or more in one round."],
-  ["board", "🏅", "Hall of Fame", "Put your initials on a leaderboard."]
+  ["board", "🏅", "Hall of Fame", "Put your initials on a leaderboard."],
+  ["metro", "🏙️", "Metropolis", "Get 25 different big cities right."],
+  ["host", "🎮", "Party Host", "Finish a Head-to-Head match."]
 ];
 const TIER_COL = { bronze: "#CD7F32", silver: "#C9D2DC", gold: "#FFC93C", platinum: "#9FE3F0" };
 const TROPHIES = [
@@ -1433,7 +1617,8 @@ const TROPHIES = [
   ["starhalf", "silver", "Star Collector", "Collect half of all the stars.", totalStars, Math.ceil(MAX_STARS / 2)],
   ["starall", "platinum", "Superstar", "Collect every star in every game.", totalStars, MAX_STARS],
   ["pts10k", "bronze", "Point Pilot", "Score 10,000 points in total.", () => P.total, 10000],
-  ["pts100k", "gold", "Point Captain", "Score 100,000 points in total.", () => P.total, 100000]
+  ["pts100k", "gold", "Point Captain", "Score 100,000 points in total.", () => P.total, 100000],
+  ["cityall", "gold", "City Collector", "Get every big city right at least once.", () => cnt(P.city), CITIES.length]
 ];
 
 /* toasts */
@@ -1472,6 +1657,7 @@ function onAnswer(q, ok) {
     if (G.streak >= 10) award("streak10");
     if (G.timeTotal && G.timeLeft / G.timeTotal >= .9) award("fast");
     if (q.bull) award("bull");
+    if (q.city) { P.city[q.city] = 1; if (cnt(P.city) >= 25) award("metro"); }
     if (q.clues && G.clueIdx === 0) award("sleuth");
   }
   checkAll();
@@ -1503,6 +1689,13 @@ function qLandmark(L) {
     visual: `<div class="lmwrap"><div class="lmemoji">${emoji}</div><div class="lmname">${esc(name)}</div><div class="lmfact">${esc(fact)}</div></div>`,
     options, answer, thumb: `<span class="em">${emoji}</span>`,
     fact: `<span class="em">${emoji}</span><div><b>${esc(name)}</b> is in <b>${esc(answer)}</b>.${gen ? "" : " " + esc(fact)}</div>` };
+}
+function qCity(C) {
+  const [emoji, name, id, fact] = C, c = BY_ID.get(id);
+  return { mode: "cities", cid: c.id, city: name, prompt: "Which country is this city in?",
+    visual: `<div class="lmwrap"><div class="lmemoji">${emoji}</div><div class="lmname">${esc(name)}</div><div class="lmfact">A big city (not the capital)</div></div>`,
+    options: countryOpts(c, distractors(c, 3)), answer: c.n, thumb: `<span class="em">${emoji}</span>`,
+    fact: `${flagImg(c)}<div><b>${esc(name)}</b> is in <b>${esc(c.n)}</b>. ${esc(fact)}</div>` };
 }
 function qNeighbours(c) {
   const isl = ISLANDS[c.id];
@@ -1633,6 +1826,107 @@ function gemInfo(id) {
     <dt>How valuable</dt><dd><span class="gstars">${"◆".repeat(g.stars)}<span class="off">${"◆".repeat(5 - g.stars)}</span></span> ${esc(g.value)}</dd>
     <dt>History</dt><dd>${esc(g.history)}</dd><dt>Famous jewelry</dt><dd>${esc(g.jewel)}</dd></dl>
     <button class="btn" id="info-close">Close</button>`);
+}
+
+/* ================= Head-to-Head ================= */
+const TEAM_PRESETS = [["Red Rockets", "#FF6B57"], ["Blue Whales", "#3FB6EC"], ["Green Geckos", "#22C384"], ["Gold Eagles", "#FFC93C"], ["Purple Pandas", "#B9A2FF"], ["Orange Otters", "#FF9A2E"]];
+const H = Object.assign({ on: false, style: "turns", n: 2, names: TEAM_PRESETS.map(t => t[0]), mode: "mix", per: 5, total: 10, teams: [], cur: 0, count: 10 },
+  LS.get("h2h", {}), { on: false, teams: [], cur: 0 });
+const saveH = () => LS.set("h2h", { style: H.style, n: H.n, names: H.names, mode: H.mode, per: H.per, total: H.total });
+
+function renderH2HSetup() {
+  const lens = H.style === "turns" ? [3, 5, 8] : [10, 15, 20];
+  const cur = H.style === "turns" ? H.per : H.total;
+  $("#h2h-body").innerHTML = `
+    <div class="h2hsec"><h3>How will you play?</h3>
+      <div class="stylepick">
+        <button data-s="turns" aria-pressed="${H.style === "turns"}"><span class="em">📱</span><b>Take turns</b><small>Pass one phone or tablet around. Each team answers its own questions.</small></button>
+        <button data-s="show" aria-pressed="${H.style === "show"}"><span class="em">📺</span><b>Quiz show</b><small>Everyone watches one big screen and calls out answers. The host reveals and gives points.</small></button>
+      </div></div>
+    <div class="h2hsec"><div class="rowx"><h3>Teams</h3><span class="stepper"><button id="h2h-minus" aria-label="Fewer teams">−</button><b class="num">${H.n}</b><button id="h2h-plus" aria-label="More teams">+</button></span></div>
+      <div class="teamrows">${Array.from({ length: H.n }, (_, i) => `<label class="teamrow" style="--tc:${TEAM_PRESETS[i][1]}"><i></i><input id="h2h-name-${i}" maxlength="16" value="${esc(H.names[i] || TEAM_PRESETS[i][0])}" aria-label="Team ${i + 1} name"></label>`).join("")}</div></div>
+    <div class="h2hsec"><h3>Which game?</h3>
+      <div class="gamechips">${ALL_TILES.map(k => `<button data-k="${k}" aria-pressed="${k === H.mode}">${MODES[k].name}</button>`).join("")}</div></div>
+    <div class="h2hsec"><div class="rowx"><h3>${H.style === "turns" ? "Questions per team" : "Questions"}</h3><div class="seg" id="h2h-len"></div></div>
+      <div class="rowx"><h3>Level</h3><div class="seg" id="h2h-level"></div></div></div>`;
+  const keepNames = () => { for (let i = 0; i < H.n; i++) { const el = $("#h2h-name-" + i); if (el) H.names[i] = el.value.trim() || TEAM_PRESETS[i][0]; } };
+  $("#h2h-body").querySelectorAll(".stylepick button").forEach(b => b.onclick = () => { keepNames(); H.style = b.dataset.s; sfx("tap"); renderH2HSetup(); });
+  $("#h2h-minus").onclick = () => { keepNames(); H.n = Math.max(2, H.n - 1); sfx("tap"); renderH2HSetup(); };
+  $("#h2h-plus").onclick = () => { keepNames(); H.n = Math.min(6, H.n + 1); sfx("tap"); renderH2HSetup(); };
+  $("#h2h-body").querySelectorAll(".gamechips button").forEach(b => b.onclick = () => { keepNames(); H.mode = b.dataset.k; sfx("tap"); renderH2HSetup(); });
+  seg($("#h2h-len"), lens, lens.map(String), cur, v => { keepNames(); if (H.style === "turns") H.per = +v; else H.total = +v; renderH2HSetup(); });
+  seg($("#h2h-level"), ["easy", "hard"], ["Explorer", "Expert"], S.level, v => { keepNames(); S.level = v; saveS(); renderH2HSetup(); });
+  H._keep = keepNames;
+}
+function startH2H() {
+  if (H._keep) H._keep();
+  H.on = true;
+  H.teams = Array.from({ length: H.n }, (_, i) => ({ name: H.names[i] || TEAM_PRESETS[i][0], c: TEAM_PRESETS[i][1], score: 0, right: 0 }));
+  H.count = H.style === "turns" ? H.n * H.per : H.total;
+  saveH();
+  startGame(H.mode, H.count);
+}
+function renderTeambar() {
+  const el = $("#g-teams");
+  if (!H.on) { el.hidden = true; el.innerHTML = ""; return; }
+  el.hidden = false;
+  el.innerHTML = H.teams.map((t, i) => `<span class="tchip${H.style === "turns" && i === H.cur ? " on" : ""}" style="--tc:${t.c}"><i></i>${esc(t.name)}<b class="num">${t.score}</b></span>`).join("");
+}
+function showTurn(go) {
+  const t = H.teams[H.cur];
+  $("#turn-card").style.setProperty("--tc", t.c);
+  $("#turn-name").textContent = t.name;
+  $("#turn").hidden = false;
+  $("#turn-card").onclick = () => { $("#turn").hidden = true; sfx("go"); G.last = performance.now(); go(); };
+  setTimeout(() => { try { $("#turn-card").focus({ preventScroll: true }); } catch (e) {} }, 50);
+}
+/* Quiz show: the host reveals the answer, then marks which teams got it right. */
+let showPts = 0;
+function reveal() {
+  if (G.locked) return;
+  G.locked = true; stopTimer();
+  const q = G.qs[G.i];
+  if (q.kind === "map") {
+    const svg = $("#g-stage svg"); markCountry(svg, q.target, "ok");
+    svg._relabel = () => { svg.querySelector(".fx").innerHTML = ""; labelCountry(svg, q.target, true); }; svg._relabel();
+  } else if (q.kind === "pin") {
+    const c = BY_ID.get(q.target); showCapital($("#g-stage .pinsvg"), c); q.fact = pinFact(c, null);
+  } else {
+    document.querySelectorAll(".opt").forEach((b, k) => { b.disabled = true; b.classList.add(q.options[k].correct ? "right" : "dim"); });
+  }
+  const rb = $("#reveal"); if (rb) rb.disabled = true;
+  sfx("right");
+  showPts = q.clues ? CLUE_PTS[G.clueIdx] : 100;
+  const sh = $("#sheet");
+  sh.classList.add("good"); sh.classList.remove("bad");
+  $("#sh-title").textContent = "The answer is…";
+  $("#sh-pts").textContent = q.answer; $("#sh-pts").style.fontSize = ".95rem";
+  $("#sh-fact").innerHTML = q.fact;
+  $("#sh-teams").hidden = false;
+  $("#sh-teams").innerHTML = `<p>Which teams got it right? <b>+${showPts} each</b></p><div class="tpick">${H.teams.map((t, i) => `<button type="button" data-i="${i}" style="--tc:${t.c}" aria-pressed="false">${esc(t.name)}</button>`).join("")}</div>`;
+  $("#sh-teams").querySelectorAll("button").forEach(b => b.onclick = () => { b.setAttribute("aria-pressed", b.getAttribute("aria-pressed") !== "true"); sfx("tap"); });
+  $("#sh-next").textContent = G.i + 1 >= G.qs.length ? "Give points & see winners" : "Give points & next question";
+  setTimeout(() => sh.classList.add("show"), q.kind ? 600 : 300);
+}
+function applyPicks() {
+  const picks = [...$("#sh-teams").querySelectorAll('button[aria-pressed="true"]')].map(b => +b.dataset.i);
+  picks.forEach(i => { H.teams[i].score += showPts; H.teams[i].right++; });
+  G.results.push({ ok: picks.length > 0, q: G.qs[G.i] });
+  if (picks.length) sfx("fanfare");
+  $("#sh-teams").hidden = true;
+  renderTeambar();
+}
+function h2hResults() {
+  G.active = false; stopTimer();
+  const ranked = H.teams.slice().sort((a, b) => b.score - a.score);
+  const top = ranked[0].score, winners = ranked.filter(t => t.score === top);
+  $("#hr-title").textContent = winners.length > 1 ? "It's a tie!" : `${winners[0].name} win!`;
+  $("#hr-sub").textContent = winners.length > 1 ? winners.map(t => t.name).join(" and ") + " share first place." : `${MODES[H.mode].name} · ${G.qs.length} questions`;
+  let rank = 0, last = null;
+  $("#hr-list").innerHTML = ranked.map((t, k) => { if (t.score !== last) { rank = k + 1; last = t.score; }
+    return `<div class="hrow" style="--tc:${t.c}"><span class="rk">${["🥇", "🥈", "🥉"][rank - 1] || rank}</span><span class="tn">${esc(t.name)}<small>${t.right} right</small></span><b class="num">${t.score}</b></div>`; }).join("");
+  show("s-h2hres"); sfx("fanfare"); confetti();
+  award("host");
 }
 
 /* ================= maps ================= */
@@ -1791,13 +2085,16 @@ function show(id) {
   document.querySelectorAll(".screen").forEach(s => s.hidden = s.id !== id);
   const s = document.getElementById(id); if (s) s.scrollTop = 0;
 }
-function startGame(mode) {
+function startGame(mode, count) {
   sfx("tap");
-  G.mode = mode; G.qs = buildRound(mode, S.qcount); G.i = 0; G.score = 0; G.right = 0; G.streak = 0; G.bestStreak = 0; G.results = []; G.paused = false;
+  if (H.on) { H.teams.forEach(t => { t.score = 0; t.right = 0; }); H.cur = 0; }
+  $("#app").classList.toggle("h2h", H.on); $("#app").classList.toggle("h2h-show", H.on && H.style === "show");
+  $("#sh-teams").hidden = true; $("#ini").hidden = true;
+  G.mode = mode; G.qs = buildRound(mode, count || S.qcount); G.i = 0; G.score = 0; G.right = 0; G.streak = 0; G.bestStreak = 0; G.results = []; G.paused = false;
   $("#app").classList.remove("paused");
   $("#g-mode").textContent = MODES[mode].name;
   $("#g-score").textContent = "0";
-  show("s-game"); hideSheet();
+  show("s-game"); hideSheet(); renderTeambar();
   countdown(() => { G.active = true; renderQ(); });
 }
 function countdown(done) {
@@ -1848,7 +2145,18 @@ function renderQ() {
     }
     document.querySelectorAll(".opt").forEach(b => b.onclick = () => choose(+b.dataset.i));
   }
-  startTimer(qTime(q), q.clues ? onClueTimeUp : onTimeUp);
+  renderTeambar();
+  if (H.on && H.style === "show") {
+    document.querySelectorAll(".opt").forEach(b => { b.onclick = null; b.tabIndex = -1; });
+    const rb = `<button class="btn" id="reveal" type="button">Reveal answer</button>`;
+    if (q.clues) $("#nextclue").insertAdjacentHTML("afterend", rb); else stage.insertAdjacentHTML("beforeend", `<div class="hostbar">${rb}</div>`);
+    $("#reveal").onclick = reveal;
+  }
+  const go = () => startTimer(qTime(q), q.clues ? onClueTimeUp : onTimeUp);
+  if (H.on && H.style === "turns") {
+    stopTimer(); $("#g-timerfill").style.transform = "scaleX(1)"; $("#g-timenum").textContent = qTime(q) || "";
+    showTurn(go);
+  } else go();
 }
 const CLUE_PTS = [400, 300, 200, 100];
 function renderClues(animateLast) {
@@ -1866,6 +2174,7 @@ function revealClue() {
 }
 function onClueTimeUp() { if (G.clueIdx < 3) revealClue(); else onTimeUp(); }
 function onTimeUp() {
+  if (H.on && H.style === "show") return reveal();
   if (G.locked) return;
   G.locked = true;
   const q = G.qs[G.i];
@@ -1880,7 +2189,7 @@ function onTimeUp() {
   finishQ(false, 0, "Time's up!");
 }
 function speedPts() { return G.timeTotal ? Math.round(Math.max(0, G.timeLeft / G.timeTotal) * 100) : 0; }
-function streakPts() { return G.streak >= 3 ? Math.min(G.streak - 2, 5) * 20 : 0; }
+function streakPts() { return H.on ? 0 : G.streak >= 3 ? Math.min(G.streak - 2, 5) * 20 : 0; }
 function choose(k) {
   if (G.locked || G.paused || !G.active) return;
   const q = G.qs[G.i], o = q.options[k], btns = document.querySelectorAll(".opt");
@@ -1899,7 +2208,7 @@ function choose(k) {
   } else finishQ(false, 0);
 }
 function onMapTap(e) {
-  if (G.locked || G.paused || !G.active) return;
+  if (G.locked || G.paused || !G.active || (H.on && H.style === "show")) return;
   const svg = e.currentTarget, id = hitCountry(svg, e), q = G.qs[G.i];
   if (!id) { const p = $("#mprompt"); p.classList.remove("nudge"); void p.offsetWidth; p.classList.add("nudge"); sfx("tap"); return; }
   G.locked = true; stopTimer();
@@ -1928,7 +2237,7 @@ function pinFact(c, km) {
   return `${flagImg(c)}<div><b>${esc(c.cap)}</b> is the capital of <b>${esc(c.n)}</b>.${km == null ? "" : ` Your pin landed <b>${km.toLocaleString()} km</b> away.`}</div>`;
 }
 function onPinTap(e) {
-  if (G.locked || G.paused || !G.active) return;
+  if (G.locked || G.paused || !G.active || (H.on && H.style === "show")) return;
   const svg = e.currentTarget, p = svgPoint(svg, e), q = G.qs[G.i], c = BY_ID.get(q.target);
   G.locked = true; stopTimer(); sfx("pin");
   const d = Math.hypot(p.x - c.cp[0], p.y - c.cp[1]), km = Math.round(d * c.kmu);
@@ -1946,12 +2255,14 @@ function finishQ(ok, pts, title) {
   const q = G.qs[G.i];
   if (ok) { G.right++; G.score += pts; sfx("right"); } else { G.streak = 0; sfx("wrong"); buzz([80, 60, 80]); }
   G.results.push({ ok, q });
-  onAnswer(q, ok);
+  if (H.on) { const tm = H.teams[H.cur]; if (ok) { tm.score += pts; tm.right++; } }
+  else onAnswer(q, ok);
+  $("#sh-teams").hidden = true;
   $("#g-score").textContent = G.score;
   renderProgress(); updateStreak();
   const sh = $("#sheet");
   sh.classList.toggle("good", ok); sh.classList.toggle("bad", !ok);
-  $("#sh-title").textContent = title || (ok ? pick(["Correct!", "Brilliant!", "Super!", "You got it!", "Amazing!"]) : "Not quite!");
+  $("#sh-title").textContent = (H.on ? H.teams[H.cur].name + ": " : "") + (title || (ok ? pick(["Correct!", "Brilliant!", "Super!", "You got it!", "Amazing!"]) : "Not quite!"));
   $("#sh-pts").textContent = ok ? `+${pts}` : `Answer: ${q.answer}`;
   $("#sh-pts").style.fontSize = ok ? "" : ".95rem";
   $("#sh-fact").innerHTML = q.fact;
@@ -1964,7 +2275,9 @@ function updateStreak() {
   if (G.streak >= 2) { el.hidden = false; el.textContent = `${G.streak} in a row!`; } else el.hidden = true;
 }
 function nextQ() {
+  if (H.on && H.style === "show" && !$("#sh-teams").hidden) applyPicks();
   hideSheet(); sfx("tap");
+  if (H.on && H.style === "turns") H.cur = (H.cur + 1) % H.teams.length;
   G.i++;
   if (G.i >= G.qs.length) return endGame();
   renderQ();
@@ -2025,12 +2338,14 @@ function confirmBox(title, text, yes, onYes) {
 }
 function quitToMenu() {
   stopTimer(); G.active = false; G.paused = false;
+  H.on = false; $("#app").classList.remove("h2h", "h2h-show"); $("#turn").hidden = true; renderTeambar();
   $("#pause").hidden = true; $("#app").classList.remove("paused"); hideSheet();
   renderMenu(); show("s-menu");
 }
 
 /* ================= results ================= */
 function endGame() {
+  if (H.on) return h2hResults();
   G.active = false; stopTimer();
   const n = G.qs.length, pct = G.right / n;
   const stars = pct >= .9 ? 3 : pct >= .6 ? 2 : pct >= .3 ? 1 : 0;
@@ -2061,6 +2376,7 @@ function shortPrompt(q) {
   if (q.mode === "maphunt") return "find it on the map";
   if (q.mode === "cappin") return `capital of ${BY_ID.get(q.target).n}`;
   if (q.mode === "landmarks") return "famous landmark";
+  if (q.mode === "cities") return `big city: ${q.city}`;
   if (q.mode === "neighbours") return "guess from the neighbours";
   return q.prompt.replace(/\?$/, "");
 }
@@ -2096,6 +2412,7 @@ function openPage(id, from) {
   returnTo = from || "s-menu";
   if (id === "s-settings") renderSettings();
   if (id === "s-awards") renderAwards();
+  if (id === "s-h2h") renderH2HSetup();
   if (id === "s-board") renderBoard();
   if (id === "s-howto") renderHowto();
   if (id === "s-atlas") renderAtlas();
@@ -2105,12 +2422,14 @@ function goBack() {
   sfx("tap");
   if (returnTo === "s-game") { show("s-game"); $("#pause").hidden = false; syncToggles(); return; }
   if (returnTo === "s-map") { show("s-map"); returnTo = "s-menu"; return; }
+  if (returnTo === "s-settings") { openPage("s-settings"); return; }
   renderMenu(); show("s-menu");
 }
 function renderHowto() {
   const items = ALL_TILES.map(k => [MODES[k].c, ICON[k], MODES[k].name, MODES[k].blurb]);
   items.push(["#7FD0F5", ICON.map, "World Map", "Explore every country: flags, capitals and places to see."]);
   items.push(["#FFC93C", ICON.flags, "Trophy Room", "Your passport stamps, trophies, badges, awards and gems."]);
+  items.push(["#FF8A6B", ICON.mix, "Head-to-Head", "Play against friends: take turns on one device, or run a quiz show on a big screen."]);
   $("#howto").innerHTML = items.map(([c, ic, n, t]) =>
     `<div class="item"><span class="dot" style="--c:${c}">${ic}</span><h3>${n}</h3><p>${t}</p></div>`).join("");
 }
@@ -2126,7 +2445,7 @@ function countryCard(c, actions) {
     <div class="cc-head">${flagImg(c)}<div><h2>${esc(c.n)}</h2><small>${esc(c.r === "Oceania" ? "Oceania" : c.sr)}</small></div></div>
     <div class="cc-mid"><div class="shapebox"><svg viewBox="0 0 200 200"><path d="${c.s}"/><circle class="capdot" cx="${c.cp[0]}" cy="${c.cp[1]}" r="8"/></svg></div>
       <dl><dt>Capital</dt><dd>★ ${esc(c.cap)}</dd><dt>Languages</dt><dd>${esc(c.lang.slice(0, 4).join(", "))}</dd><dt>Money</dt><dd>${esc(c.cur)}</dd>
-      <dt>Size</dt><dd class="num">${Math.round(c.a).toLocaleString()} km² (${ordinal(rank)} biggest)</dd><dt>Neighbours</dt><dd>${esc(nb)}</dd></dl></div>
+      <dt>Size</dt><dd class="num">${Math.round(c.a).toLocaleString()} km² (${ordinal(rank)} biggest)</dd><dt>Neighbours</dt><dd>${esc(nb)}</dd>${CITIES.some(x => x[2] === c.id) ? `<dt>Big cities</dt><dd>${esc(CITIES.filter(x => x[2] === c.id).map(x => x[1]).join(", "))}</dd>` : ""}</dl></div>
     <div class="cc-sec"><h3>Places to see</h3><ul>${c.lm.map(l => `<li>${esc(l)}</li>`).join("")}</ul></div>
     ${hello || an.length ? `<div class="cc-fun">${hello ? `<span>Say hello: ${esc(GREET[hello])} (${esc(hello)})</span>` : ""}${an.slice(0, 2).map(a => `<span>${a[0]} ${esc(a[1])}</span>`).join("")}</div>` : ""}
     ${actions || ""}
@@ -2207,10 +2526,14 @@ function selectCountry(id) {
 
 /* ================= wiring ================= */
 document.querySelectorAll(".ticket button").forEach(b => b.onclick = () => { S.level = b.dataset.level; saveS(); sfx("tap"); renderMenu(); });
-$("#cases").addEventListener("click", e => { const b = e.target.closest(".case"); if (b) startGame(b.dataset.mode); });
+$("#cases").addEventListener("click", e => { const b = e.target.closest(".case"); if (b) { H.on = false; startGame(b.dataset.mode); } });
+$("#m-h2h").onclick = () => openPage("s-h2h");
+$("#h2h-start").onclick = startH2H;
+$("#hr-again").onclick = () => { H.on = true; startGame(H.mode, H.count); };
+$("#hr-menu").onclick = () => { sfx("tap"); H.on = false; $("#app").classList.remove("h2h", "h2h-show"); renderMenu(); show("s-menu"); };
+$("#set-howto").onclick = () => openPage("s-howto", "s-settings");
 $("#m-map").onclick = () => openExplorer("WORLD");
 $("#m-settings").onclick = () => openPage("s-settings");
-$("#m-howto").onclick = () => openPage("s-howto");
 $("#m-awards").onclick = () => openAwards();
 $("#m-board").onclick = () => { lbMode = "flags"; lbLv = null; openPage("s-board"); };
 $("#passport").onclick = () => openAwards("passport");
@@ -2231,7 +2554,7 @@ $("#set-reset").onclick = () => confirmBox("Reset everything?", "Your scores, st
 
 $("#pausebtn").onclick = pause;
 $("#p-resume").onclick = resume;
-$("#p-restart").onclick = () => confirmBox("Restart this round?", "You'll start again from question 1 with a score of 0.", "Restart", () => { $("#pause").hidden = true; stopTimer(); startGame(G.mode); });
+$("#p-restart").onclick = () => confirmBox("Restart this round?", "You'll start again from question 1 with a score of 0.", "Restart", () => { $("#pause").hidden = true; stopTimer(); startGame(G.mode, H.on ? H.count : undefined); });
 $("#p-quit").onclick = () => confirmBox("Quit to the main menu?", "Your score for this round won't be saved.", "Quit", quitToMenu);
 $("#p-settings").onclick = () => { $("#pause").hidden = true; openPage("s-settings", "s-game"); };
 $("#p-howto").onclick = () => { $("#pause").hidden = true; openPage("s-howto", "s-game"); };
@@ -2253,7 +2576,7 @@ document.addEventListener("keydown", e => {
     if (G.active && !$("#s-game").hidden) { G.paused ? resume() : pause(); }
     return;
   }
-  if (!G.active || G.paused || $("#s-game").hidden) return;
+  if (!G.active || G.paused || $("#s-game").hidden || (H.on && H.style === "show") || !$("#turn").hidden) return;
   const k = "1234".indexOf(e.key) >= 0 ? "1234".indexOf(e.key) : "abcd".indexOf(e.key.toLowerCase());
   if (k >= 0 && !G.locked) { const b = document.querySelectorAll(".opt")[k]; if (b && !b.disabled) choose(k); }
 });
