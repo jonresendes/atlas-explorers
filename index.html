@@ -811,6 +811,28 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
   .setpanel .seg button { padding: 7px 8px; }
 }
 @media (min-width: 700px) and (min-height: 500px) and (max-height: 860px) { .infomodal:has(.checks) { width: min(100%, 640px); } .infomodal .checks { grid-template-columns: 1fr 1fr; } }
+
+/* ---- players / sign in ---- */
+.plpanel { flex: 0 1 auto; min-height: 0; overflow-y: auto; display: grid; gap: 12px; align-content: start; }
+.plpanel h3 { font-size: 1.15rem; }
+.plpanel .note { margin: 0; color: var(--ink-soft); font-weight: 700; font-size: .85rem; line-height: 1.35; }
+.pllist { display: grid; gap: 8px; }
+.plcard { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 8px 10px; border: var(--ol); border-radius: 14px; background: #F2F8FF; text-align: left; color: var(--ink); width: 100%; }
+.plcard.on { background: #DDF7EA; }
+.plcard .av { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-family: var(--display); font-size: 1.35rem; color: #fff; background: var(--c, #3FB6EC); border: 2px solid var(--ink); }
+.plcard b { display: block; font-size: 1.05rem; overflow-wrap: anywhere; }
+.plcard small { color: var(--ink-soft); font-weight: 800; font-size: .76rem; }
+.plcard .tag { font-weight: 900; font-size: .78rem; color: #12955F; }
+.plcard .x { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--line); background: var(--paper); font-weight: 900; color: var(--ink-soft); }
+.pltabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.pltabs button { padding: 9px; border-radius: 12px; background: #E8F2FC; font-weight: 900; color: var(--ink); }
+.pltabs button[aria-pressed="true"] { background: var(--navy); color: var(--paper); }
+.plform { display: grid; gap: 8px; }
+.plform label { display: grid; gap: 3px; font-weight: 900; font-size: .9rem; }
+.plform input { font: inherit; font-weight: 800; font-size: 1.1rem; padding: 10px 12px; border: var(--ol); border-radius: 12px; background: #F2F8FF; color: var(--ink); width: 100%; }
+.plmsg { min-height: 1.2em; font-weight: 900; font-size: .88rem; color: #D2453A; margin: 0; }
+.plmsg.ok { color: #12955F; }
+.plsync { font-weight: 800; font-size: .8rem; color: var(--ink-soft); margin: 0; }
 </style>
 
 </head>
@@ -913,6 +935,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
       <div class="row"><span class="lbl">Timer<span class="sub">Faster answers earn more points</span></span><div class="seg" id="set-timer"></div></div>
       <div class="row"><span class="lbl">Questions<span class="sub">Per round</span></span><div class="seg" id="set-qcount"></div></div>
       <div class="row"><span class="lbl">Difficulty</span><div class="seg" id="set-level"></div></div>
+      <div class="row" id="pl-row"><span class="lbl">Player<span class="sub" id="pl-sub">Save progress online and play on any device</span></span><button class="btn alt" id="set-player" style="min-height:40px;font-size:1rem;padding:6px 14px;white-space:nowrap">Sign in</button></div>
       <div class="row" id="upd-row" hidden><span class="lbl">Version <span class="num" id="upd-ver"></span><span class="sub" id="upd-status">Get the newest games and fixes</span></span><span class="updbtns"><a class="btn alt" id="upd-gh" target="_blank" rel="noopener" hidden>GitHub</a><button class="btn" id="set-update">Check for updates</button></span></div>
       <div class="row"><span class="lbl">How to play<span class="sub">Rules for every game</span></span><button class="btn alt" id="set-howto" style="min-height:40px;font-size:1rem;padding:6px 14px">Open</button></div>
       <div class="row"><span class="lbl">Reset progress<span class="sub">Clears scores, stamps and trophies</span></span><button class="btn danger" id="set-reset" style="min-height:40px;font-size:1rem;padding:6px 14px">Reset</button></div>
@@ -939,6 +962,12 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
     <div class="acbar"><input id="ac-input" class="acinput" type="text" autocomplete="off" autocorrect="off" autocapitalize="words" spellcheck="false" enterkeyhint="done" placeholder="Type a country…" aria-label="Type a country name"><button class="btn alt" id="ac-giveup" type="button">Give up</button></div>
     <div class="acfeed" id="ac-feed" aria-live="polite"></div>
     <div class="acmain"><div class="mapbox" id="ac-map"></div><div class="panel acside" id="ac-side"></div></div>
+  </section>
+
+  <!-- PLAYERS -->
+  <section class="screen page" id="s-players" hidden>
+    <div class="topbar"><button class="iconbtn back" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><h2>Players</h2></div>
+    <div class="panel plpanel" id="pl-body"></div>
   </section>
 
   <!-- HEAD-TO-HEAD SETUP -->
@@ -1267,6 +1296,8 @@ function renderMenu() {
   $("#totalstars").innerHTML = `<div><b class="num">★${total}</b><small>of ${MAX_STARS}</small></div>`;
   $("#totalstars").setAttribute("aria-label", `${total} of ${MAX_STARS} stars collected`);
   $("#tagline").textContent = S.level === "easy" ? `${EASY.size} famous countries to visit` : `All ${GEO.length} countries to visit`;
+  const who = (() => { try { const m = plMe(); return m && m.name; } catch (e) { return null; } })();
+  if (who) $("#tagline").textContent = `${who}'s passport · ` + $("#tagline").textContent;
 }
 
 /* ================= question builders ================= */
@@ -2952,7 +2983,7 @@ if (FS_OK && !((window.matchMedia && matchMedia("(display-mode: standalone), (di
   addEventListener("pointerup", () => { if (S.full) goFull(); }, true);
   addEventListener("keydown", e => { if (S.full && e.key !== "Escape") goFull(); }, true);
 }
-$("#set-reset").onclick = () => confirmBox("Reset everything?", "Your scores, stars, leaderboards, passport stamps, trophies, badges, awards and gems will all be cleared. This can't be undone.", "Reset everything", () => { BEST = {}; LS.set("best", BEST); P = freshP(); saveP(); LB = {}; LS.set("board", LB); renderSettings(); });
+$("#set-reset").onclick = () => confirmBox("Reset everything?", "Your scores, stars, leaderboards, passport stamps, trophies, badges, awards and gems will all be cleared. This can't be undone.", "Reset everything", () => { BEST = {}; LS.set("best", BEST); P = freshP(); saveP(); LB = {}; LS.set("board", LB); renderSettings(); if (CL.active) { clearTimeout(CL.timer); cloudSync(true); } });
 
 $("#pausebtn").onclick = pause;
 $("#p-resume").onclick = resume;
@@ -2987,6 +3018,249 @@ document.addEventListener("keydown", e => {
   const k = "1234".indexOf(e.key) >= 0 ? "1234".indexOf(e.key) : "abcd".indexOf(e.key.toLowerCase());
   if (k >= 0 && !G.locked) { const b = document.querySelectorAll(".opt")[k]; if (b && !b.disabled) choose(k); }
 });
+
+/* ================= players: sign in and cloud saves =================
+   Each person has their own player name and password. Their progress (stars, stamps,
+   trophies, awards, gems) is saved online in the game's own free Firebase project and
+   loads on any device they sign in on. The game keeps working offline and catches up
+   when the device is back online. A shared device can remember several players.
+   The Firebase project is named in cloud.json, next to index.html:
+     { "apiKey": "…", "projectId": "…" }                                          */
+const CL = {
+  cfg: LS.get("cloudcfg", null),          // { apiKey, projectId }
+  players: LS.get("players", []),         // [{ uid, name, refresh }] remembered on this device
+  active: LS.get("player", null),         // uid of the player using the device, or null for guest
+  token: null, tokenExp: 0,
+  state: "idle", lastSync: LS.get("lastsync", 0), timer: 0, busy: false
+};
+const PL_COLORS = ["#FF6B57", "#3FB6EC", "#22C384", "#FFB000", "#9A7BFF", "#FF8A3D", "#E85FA8", "#2BB3A3"];
+const plColor = name => PL_COLORS[[...name].reduce((a, ch) => a + ch.charCodeAt(0), 0) % PL_COLORS.length];
+const plMe = () => CL.players.find(p => p.uid === CL.active) || null;
+const plSave = () => { LS.set("players", CL.players); LS.set("player", CL.active); };
+const plEmail = name => name.toLowerCase() + "@players.atlas-explorers.app";   // never emailed; Firebase just needs this shape
+const plValidName = name => /^[A-Za-z0-9_]{3,16}$/.test(name);
+
+async function cloudConfig() {
+  try {
+    const r = await fetch("cloud.json?t=" + Date.now(), { cache: "no-store" });
+    if (r.ok) { const c = await r.json(); if (c && c.apiKey && c.projectId) { CL.cfg = { apiKey: String(c.apiKey).trim(), projectId: String(c.projectId).trim() }; LS.set("cloudcfg", CL.cfg); } }
+  } catch (e) {}
+  return CL.cfg;
+}
+
+/* ---- Firebase sign-in (REST, no extra scripts to download) ---- */
+const AUTH_MSG = {
+  EMAIL_EXISTS: "That player name is taken. Try another one.",
+  EMAIL_NOT_FOUND: "That player name and password don't match.",
+  INVALID_PASSWORD: "That player name and password don't match.",
+  INVALID_LOGIN_CREDENTIALS: "That player name and password don't match.",
+  USER_DISABLED: "This player has been switched off.",
+  TOO_MANY_ATTEMPTS_TRY_LATER: "Too many tries. Wait a few minutes, then try again.",
+  OPERATION_NOT_ALLOWED: "Sign-in isn't switched on yet. In Firebase, turn on Email/Password sign-in.",
+  CONFIGURATION_NOT_FOUND: "Sign-in isn't switched on yet. In Firebase, turn on Email/Password sign-in."
+};
+async function authCall(path, body) {
+  let r;
+  try {
+    r = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:${path}?key=${encodeURIComponent(CL.cfg.apiKey)}`,
+      { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  } catch (e) { throw new Error("Can't reach the internet. Check the connection and try again."); }
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) {
+    const code = String((j.error && j.error.message) || "").split(" ")[0].split(":")[0];
+    if (code === "WEAK_PASSWORD") throw new Error("The password needs at least 6 characters.");
+    if (/API_KEY|API key/i.test(code + (j.error && j.error.message))) throw new Error("The game's cloud settings (cloud.json) have a wrong apiKey.");
+    throw new Error(AUTH_MSG[code] || "Something went wrong. Try again.");
+  }
+  return j;
+}
+async function idToken(p = plMe()) {
+  if (!p) throw new Error("not signed in");
+  if (CL.token && CL.tokenFor === p.uid && Date.now() < CL.tokenExp - 60000) return CL.token;
+  const r = await fetch(`https://securetoken.googleapis.com/v1/token?key=${encodeURIComponent(CL.cfg.apiKey)}`,
+    { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: "grant_type=refresh_token&refresh_token=" + encodeURIComponent(p.refresh) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) { const e = new Error("signed-out"); e.signedOut = /TOKEN_EXPIRED|USER_NOT_FOUND|INVALID_REFRESH_TOKEN|USER_DISABLED/.test(JSON.stringify(j)); throw e; }
+  p.refresh = j.refresh_token || p.refresh; plSave();
+  CL.token = j.id_token; CL.tokenFor = p.uid; CL.tokenExp = Date.now() + (+j.expires_in || 3600) * 1000;
+  return CL.token;
+}
+
+/* ---- the player's saved progress in Firestore: users/{uid} ---- */
+const docUrl = uid => `https://firestore.googleapis.com/v1/projects/${encodeURIComponent(CL.cfg.projectId)}/databases/(default)/documents/users/${uid}`;
+async function cloudGet(p) {
+  const r = await fetch(docUrl(p.uid), { headers: { Authorization: "Bearer " + await idToken(p) } });
+  if (r.status === 404) return null;
+  if (!r.ok) throw new Error(r.status === 403 ? "rules" : "net");
+  const j = await r.json();
+  try { return JSON.parse(j.fields.data.stringValue); } catch (e) { return null; }
+}
+async function cloudPut(p, data) {
+  const body = { fields: { name: { stringValue: p.name }, data: { stringValue: JSON.stringify(data) }, updated: { integerValue: String(Date.now()) } } };
+  const r = await fetch(docUrl(p.uid), { method: "PATCH", headers: { Authorization: "Bearer " + await idToken(p), "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  if (!r.ok) throw new Error(r.status === 403 ? "rules" : "net");
+}
+
+/* Progress from two devices is combined, keeping the best of both:
+   higher numbers and scores, every stamp, trophy and award earned on either. */
+function mergeData(a, b) {
+  if (a == null) return b; if (b == null) return a;
+  if (typeof a === "number" && typeof b === "number") return Math.max(a, b);
+  if (typeof a === "boolean" && typeof b === "boolean") return a || b;
+  if (typeof a === "string" && typeof b === "string") return a || b;
+  if (Array.isArray(a) && Array.isArray(b)) { const seen = new Set(), out = []; [...a, ...b].forEach(x => { const k = JSON.stringify(x); if (!seen.has(k)) { seen.add(k); out.push(x); } }); return out; }
+  if (typeof a === "object" && typeof b === "object" && !Array.isArray(a) && !Array.isArray(b)) {
+    const out = {}; new Set([...Object.keys(a), ...Object.keys(b)]).forEach(k => out[k] = mergeData(a[k], b[k])); return out;
+  }
+  return a;
+}
+const localData = () => ({ P, BEST });
+function useData(d) {
+  P = Object.assign(freshP(), d.P || {}); BEST = d.BEST || {};
+  CL.quiet = true; saveP(); LS.set("best", BEST); CL.quiet = false;
+}
+
+/* ---- syncing ---- */
+function cloudDirty() { if (CL.quiet || !CL.active) return; clearTimeout(CL.timer); CL.timer = setTimeout(cloudSync, 4000); }
+async function cloudSync(force) {
+  const me = plMe();
+  if (!me || !CL.cfg || CL.busy) return;
+  if (!navigator.onLine) { CL.state = "offline"; plStatus(); return; }
+  CL.busy = true; CL.state = "saving"; plStatus();
+  try {
+    let data = localData();
+    if (!force) {
+      const remote = await cloudGet(me);
+      if (remote) {
+        const before = JSON.stringify(data);
+        data = mergeData(data, remote);
+        if (JSON.stringify(data) !== before) { useData(data); if (!$("#s-menu").hidden) renderMenu(); }
+      }
+    }
+    await cloudPut(me, data);
+    CL.lastSync = Date.now(); LS.set("lastsync", CL.lastSync); CL.state = "ok";
+  } catch (e) {
+    CL.state = e.signedOut ? "signedout" : e.message === "rules" ? "rules" : "error";
+  }
+  CL.busy = false; plStatus();
+}
+function plStatus() {
+  const me = plMe();
+  const sub = $("#pl-sub"), btn = $("#set-player");
+  if (sub) sub.textContent = me ? `Playing as ${me.name} · ${plStateText()}` : "Save progress online and play on any device";
+  if (btn) btn.textContent = me ? "Players" : "Sign in";
+  const st = $("#pl-state"); if (st) st.textContent = plStateText();
+}
+function plStateText() {
+  if (!plMe()) return "";
+  return { saving: "Saving…", offline: "Offline: progress saves when you're back online", signedout: "Signed out on another device. Sign in again to keep saving.",
+    rules: "The cloud said no. Check the Firestore rules in Firebase.", error: "Couldn't save just now. It'll try again." }[CL.state]
+    || (CL.lastSync ? "Saved online " + agoText(CL.lastSync) : "Saved on this device");
+}
+const agoText = t => { const m = Math.round((Date.now() - t) / 60000); return m < 1 ? "just now" : m < 60 ? `${m} min ago` : m < 1440 ? `${Math.round(m / 60)} h ago` : `${Math.round(m / 1440)} days ago`; };
+
+/* ---- switching who is playing on this device ---- */
+function stashCurrent() { LS.set("prof_" + (CL.active || "guest"), localData()); }
+function switchPlayer(uid, data, clearGuest) {
+  stashCurrent();
+  if (clearGuest) LS.set("prof_guest", { P: freshP(), BEST: {} });
+  CL.active = uid; plSave();
+  const d = data || LS.get("prof_" + (uid || "guest"), null) || { P: freshP(), BEST: {} };
+  useData(d);
+  location.reload();
+}
+const hasProgress = () => (P.rounds || 0) > 0 || Object.keys(BEST).length > 0;
+
+/* ---- Players page ---- */
+let plTab = "in";
+async function renderPlayers() {
+  const body = $("#pl-body");
+  if (!CL.cfg) await cloudConfig();
+  if (!CL.cfg) {
+    body.innerHTML = `<h3>Online saving isn't switched on yet</h3>
+      <p class="note">This game needs its free Firebase project before players can sign in. Add a file called <b>cloud.json</b> next to index.html on the game's website, then come back here.</p>
+      <p class="note">Until then, progress is saved on this device only.</p>`;
+    return;
+  }
+  const me = plMe();
+  const card = p => `<div class="plcard${p.uid === CL.active ? " on" : ""}" data-uid="${p.uid}" role="button" tabindex="0" style="--c:${plColor(p.name)}">
+      <span class="av">${esc(p.name[0].toUpperCase())}</span>
+      <span><b>${esc(p.name)}</b><small>${p.uid === CL.active ? `<span class="tag">Playing now</span> · <span id="pl-state">${esc(plStateText())}</span>` : "Tap to play as " + esc(p.name)}</small></span>
+      <button class="x" data-forget="${p.uid}" aria-label="Remove ${esc(p.name)} from this device">✕</button></div>`;
+  body.innerHTML = `
+    ${CL.players.length ? `<h3>Players on this device</h3><div class="pllist">${CL.players.map(card).join("")}
+      <div class="plcard${!CL.active ? " on" : ""}" data-uid="" role="button" tabindex="0" style="--c:#8AA0BF"><span class="av">?</span><span><b>Guest</b><small>${!CL.active ? '<span class="tag">Playing now</span> · ' : ""}Saved on this device only</small></span><span></span></div></div>` : ""}
+    <h3>${me ? "Add another player" : "Sign in to save your progress online"}</h3>
+    <div class="pltabs"><button data-t="in" aria-pressed="${plTab === "in"}">I have a player</button><button data-t="new" aria-pressed="${plTab === "new"}">New player</button></div>
+    <form class="plform" id="pl-form" autocomplete="off">
+      <label>Player name<input id="pl-name" maxlength="16" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="e.g. Ava or Max_7"></label>
+      <label>Password<input id="pl-pass" type="password" maxlength="40" placeholder="At least 6 characters"></label>
+      ${plTab === "new" ? `<label>Password again<input id="pl-pass2" type="password" maxlength="40"></label>` : ""}
+      <p class="plmsg" id="pl-msg"></p>
+      <button class="btn" type="submit" id="pl-go">${plTab === "new" ? "Create player" : "Sign in"}</button>
+    </form>
+    <p class="note">${plTab === "new" ? "Pick a name others won't guess, and a password you'll remember. Write them down: there's no way to reset a forgotten password." : "Sign in with the same player name and password on any phone, tablet or computer to carry on where you left off."}</p>`;
+  body.querySelectorAll(".pltabs button").forEach(b => b.onclick = () => { plTab = b.dataset.t; sfx("tap"); renderPlayers(); });
+  body.querySelectorAll(".plcard").forEach(c => {
+    const go = () => { const uid = c.dataset.uid || null; if (uid === CL.active) return; sfx("tap"); switchPlayer(uid); };
+    c.onclick = e => { if (!e.target.closest("[data-forget]")) go(); };
+    c.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } };
+  });
+  body.querySelectorAll("[data-forget]").forEach(b => b.onclick = () => {
+    const p = CL.players.find(x => x.uid === b.dataset.forget);
+    confirmBox(`Remove ${p.name}?`, `${p.name} is taken off this device only. Their progress stays saved online, and they can sign in again any time.`, "Remove", () => {
+      CL.players = CL.players.filter(x => x.uid !== p.uid);
+      try { localStorage.removeItem("atlasx_prof_" + p.uid); } catch (e) {}
+      if (CL.active === p.uid) { CL.active = null; plSave(); LS.set("prof_" + p.uid, null); useData(LS.get("prof_guest", null) || { P: freshP(), BEST: {} }); location.reload(); return; }
+      plSave(); renderPlayers();
+    });
+    $("#c-no").textContent = "Cancel";
+  });
+  $("#pl-form").onsubmit = async e => {
+    e.preventDefault();
+    const name = $("#pl-name").value.trim(), pass = $("#pl-pass").value, msg = $("#pl-msg");
+    msg.classList.remove("ok");
+    if (!plValidName(name)) { msg.textContent = "Use 3 to 16 letters or numbers (no spaces)."; return; }
+    if (pass.length < 6) { msg.textContent = "The password needs at least 6 characters."; return; }
+    if (plTab === "new" && pass !== $("#pl-pass2").value) { msg.textContent = "The two passwords don't match."; return; }
+    if (!navigator.onLine) { msg.textContent = "Connect to the internet to sign in."; return; }
+    $("#pl-go").disabled = true; msg.classList.add("ok"); msg.textContent = plTab === "new" ? "Creating your player…" : "Signing in…";
+    try {
+      const j = await authCall(plTab === "new" ? "signUp" : "signInWithPassword", { email: plEmail(name), password: pass, returnSecureToken: true });
+      const p = { uid: j.localId, name, refresh: j.refreshToken };
+      CL.token = j.idToken; CL.tokenFor = p.uid; CL.tokenExp = Date.now() + (+j.expiresIn || 3600) * 1000;
+      CL.players = CL.players.filter(x => x.uid !== p.uid).concat(p); plSave();
+      msg.textContent = "Loading your progress…";
+      let remote = null;
+      try { remote = await cloudGet(p); } catch (err) { if (err.message === "rules") throw new Error("Signed in, but the cloud said no. Check the Firestore rules in Firebase."); }
+      const cached = LS.get("prof_" + p.uid, null);
+      let data = mergeData(cached, remote);
+      const finish = (d, clearGuest) => { sfx("unlock"); cloudPut(p, d).catch(() => {}).finally(() => switchPlayer(p.uid, d, clearGuest)); };
+      if (!CL.active && hasProgress()) {
+        // First sign-in on a device that already has guest progress: offer to keep it.
+        confirmBox(`Keep this device's progress?`, `Add the stars, stamps and trophies already on this device to ${name}'s player?`, `Yes, add it to ${name}`, () => {
+          finish(mergeData(localData(), data), true);
+        });
+        $("#c-no").textContent = "No, start fresh";
+        $("#c-no").onclick = () => { $("#confirm").hidden = true; finish(data || { P: freshP(), BEST: {} }); };
+      } else finish(data || { P: freshP(), BEST: {} });
+    } catch (err) { msg.classList.remove("ok"); msg.textContent = err.message; $("#pl-go").disabled = false; }
+  };
+}
+
+/* ---- start up ---- */
+(function cloudStart() {
+  const orig = LS.set;
+  LS.set = (k, v) => { orig(k, v); if (k === "progress" || k === "best") cloudDirty(); };
+  $("#set-player").onclick = () => { sfx("tap"); openPage("s-players", "s-settings"); renderPlayers(); };
+  $("#pl-row").hidden = !CL.cfg; plStatus();
+  const later = () => { if (CL.active) cloudSync(); };
+  cloudConfig().then(() => { $("#pl-row").hidden = !CL.cfg; if (CL.active && plMe()) setTimeout(later, 1500); });
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) later(); else if (CL.active) { clearTimeout(CL.timer); cloudSync(); } });
+  addEventListener("online", later);
+  setInterval(later, 5 * 60 * 1000);
+  if (CL.active && plMe()) setTimeout(() => toast("👤", `Playing as ${plMe().name}`, "Change player in Settings"), 900);
+})();
 
 /* ================= phone back button =================
    One press steps back inside the game. Two quick presses ask whether to close the app.
@@ -3047,7 +3321,7 @@ if (window.history && history.pushState) {
 }
 
 /* ================= check for updates ================= */
-const APP_VERSION = "atlas-v20";
+const APP_VERSION = "atlas-v21";
 const verNum = v => +((String(v).match(/(\d+)\s*$/) || [0, 0])[1]);
 async function remoteVersion() {
   const res = await fetch("sw.js?check=" + Date.now(), { cache: "no-store" });

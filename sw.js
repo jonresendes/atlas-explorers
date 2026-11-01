@@ -1,6 +1,6 @@
 // Atlas Explorers offline support.
 // Change VERSION whenever you upload a new index.html so phones pick up the update.
-const VERSION = "atlas-v20";
+const VERSION = "atlas-v21";
 const CORE = [
   "./",
   "index.html",
@@ -40,7 +40,7 @@ self.addEventListener("fetch", event => {
   if (req.method !== "GET") return;
   const url = new URL(req.url);
   // The "Check for updates" button always asks the website directly.
-  if (url.pathname.endsWith("/sw.js")) return;
+  if (url.pathname.endsWith("/sw.js") || url.pathname.endsWith("/cloud.json")) return;
   const isFont = url.hostname === "fonts.googleapis.com" || url.hostname === "fonts.gstatic.com";
   if (url.origin !== self.location.origin && !isFont) return;
 
