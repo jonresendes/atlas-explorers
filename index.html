@@ -833,14 +833,54 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
 .plmsg { min-height: 1.2em; font-weight: 900; font-size: .88rem; color: #D2453A; margin: 0; }
 .plmsg.ok { color: #12955F; }
 .plsync { font-weight: 800; font-size: .8rem; color: var(--ink-soft); margin: 0; }
+
+/* ---- who's playing: passports ---- */
+#s-who { justify-content: center; gap: clamp(10px, 2vh, 18px); }
+.whohead { text-align: center; color: var(--ink); flex: none; }
+.whokick { font-family: var(--display); letter-spacing: .18em; text-transform: uppercase; font-size: .78rem; opacity: .7; }
+.whohead h2 { font-size: clamp(1.7rem, 4.6vh, 2.5rem); line-height: 1.05; margin-top: 2px; }
+.whohead p { margin: 4px 0 0; font-weight: 800; color: var(--ink-soft); }
+.passgrid { flex: 0 1 auto; min-height: 0; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(clamp(96px, 27vw, 160px), 1fr)); justify-items: center; gap: clamp(12px, 2vh, 20px); padding: 4px 4px 10px; align-content: start; width: 100%; max-width: 980px; margin-inline: auto; }
+.pp { --cov: #1D2B64; position: relative; aspect-ratio: 7 / 9.6; border-radius: 6px 16px 16px 6px; border: var(--ol); background:
+    radial-gradient(120% 80% at 70% 10%, rgba(255,255,255,.14), transparent 60%),
+    repeating-linear-gradient(45deg, rgba(255,255,255,.035) 0 2px, transparent 2px 5px), var(--cov);
+  box-shadow: inset 10px 0 0 rgba(0,0,0,.28), 0 5px 0 var(--shadow); color: var(--gold); display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+  padding: 10% 9% 8% 14%; text-align: center; cursor: pointer; transition: transform .15s; font: inherit; width: 100%; container-type: inline-size; }
+.pp:hover { transform: translateY(-3px) rotate(-1deg); }
+.pp:active { transform: translateY(2px); box-shadow: inset 10px 0 0 rgba(0,0,0,.28), 0 2px 0 var(--shadow); }
+.pp::after { content: ""; position: absolute; inset: 6px 7px 6px 16px; border: 1.5px solid rgba(242,193,78,.5); border-radius: 3px 11px 11px 3px; pointer-events: none; }
+.pp .pk { font-size: clamp(.45rem, 6.5cqi, .64rem); letter-spacing: .2em; text-transform: uppercase; font-weight: 900; color: var(--gold-soft); line-height: 1.3; }
+.pp .pk b { display: block; font-family: var(--display); font-weight: 400; letter-spacing: .1em; font-size: clamp(.55rem, 8.5cqi, .82rem); color: var(--gold); }
+.pp .pe { width: 46%; max-width: 92px; aspect-ratio: 1; display: grid; place-items: center; position: relative; }
+.pp .pe svg { width: 100%; height: 100%; }
+.pp .pe img { position: absolute; width: 44%; aspect-ratio: 3/2; object-fit: cover; border-radius: 3px; border: 1.5px solid var(--gold); bottom: -6%; right: -14%; box-shadow: 0 2px 0 rgba(0,0,0,.3); }
+.pp .pn { display: block; font-family: var(--display); font-size: clamp(.85rem, 17cqi, 1.7rem); line-height: 1.05; color: var(--gold); overflow-wrap: anywhere; text-transform: uppercase; letter-spacing: .03em; }
+.pp .ps { display: block; font-size: clamp(.5rem, 7.5cqi, .74rem); line-height: 1.2; font-weight: 900; color: var(--gold-soft); opacity: .9; margin-top: 3px; }
+.pp .chip { width: 22%; max-width: 34px; opacity: .85; }
+.pp.on { outline: 4px solid var(--gold); outline-offset: 3px; }
+.pp.new .pe svg { opacity: .95; }
+.pp.new .pn { font-size: clamp(.75rem, 13cqi, 1.3rem); }
+.whomanage { flex: none; align-self: center; font-weight: 900; color: var(--ink); text-decoration: underline; padding: 6px 10px; background: none; }
+@media (max-height: 520px) { .whohead p { display: none; } .whohead h2 { font-size: 1.4rem; }  }
 </style>
 
 </head>
 <body>
 <div class="app" id="app">
 
+  <!-- WHO'S PLAYING -->
+  <section class="screen" id="s-who" hidden>
+    <div class="whohead">
+      <div class="whokick">Atlas Explorers · Departures</div>
+      <h2>Who's travelling today?</h2>
+      <p>Tap your passport to start.</p>
+    </div>
+    <div class="passgrid" id="who-grid"></div>
+    <button class="whomanage" id="who-manage" type="button">Manage passports</button>
+  </section>
+
   <!-- MENU -->
-  <section class="screen" id="s-menu">
+  <section class="screen" id="s-menu" hidden>
     <div class="passport" id="passport" role="button" tabindex="0" aria-label="Open your passport stamps">
       <svg class="emblem" viewBox="0 0 64 64" aria-hidden="true">
         <circle cx="32" cy="32" r="18" fill="none" stroke="#F2C14E" stroke-width="2.5"/>
@@ -2824,6 +2864,7 @@ function goBack() {
   if (returnTo === "s-game") { show("s-game"); $("#pause").hidden = false; syncToggles(); return; }
   if (returnTo === "s-map") { show("s-map"); returnTo = "s-menu"; return; }
   if (returnTo === "s-settings") { openPage("s-settings"); return; }
+  if (returnTo === "s-who") { returnTo = "s-menu"; openWho(whoCanLeave); return; }
   renderMenu(); show("s-menu");
 }
 function renderHowto() {
@@ -3148,7 +3189,7 @@ function plStatus() {
   const me = plMe();
   const sub = $("#pl-sub"), btn = $("#set-player");
   if (sub) sub.textContent = me ? `Playing as ${me.name} · ${plStateText()}` : "Save progress online and play on any device";
-  if (btn) btn.textContent = me ? "Players" : "Sign in";
+  if (btn) btn.textContent = me ? "Change" : "Sign in";
   const st = $("#pl-state"); if (st) st.textContent = plStateText();
 }
 function plStateText() {
@@ -3167,6 +3208,7 @@ function switchPlayer(uid, data, clearGuest) {
   CL.active = uid; plSave();
   const d = data || LS.get("prof_" + (uid || "guest"), null) || { P: freshP(), BEST: {} };
   useData(d);
+  try { sessionStorage.setItem("atlasx_go", "menu"); } catch (e) {}
   location.reload();
 }
 const hasProgress = () => (P.rounds || 0) > 0 || Object.keys(BEST).length > 0;
@@ -3252,15 +3294,88 @@ async function renderPlayers() {
 (function cloudStart() {
   const orig = LS.set;
   LS.set = (k, v) => { orig(k, v); if (k === "progress" || k === "best") cloudDirty(); };
-  $("#set-player").onclick = () => { sfx("tap"); openPage("s-players", "s-settings"); renderPlayers(); };
+  $("#set-player").onclick = () => { sfx("tap"); openWho(true); };
   $("#pl-row").hidden = !CL.cfg; plStatus();
   const later = () => { if (CL.active) cloudSync(); };
   cloudConfig().then(() => { $("#pl-row").hidden = !CL.cfg; if (CL.active && plMe()) setTimeout(later, 1500); });
   document.addEventListener("visibilitychange", () => { if (!document.hidden) later(); else if (CL.active) { clearTimeout(CL.timer); cloudSync(); } });
   addEventListener("online", later);
   setInterval(later, 5 * 60 * 1000);
-  if (CL.active && plMe()) setTimeout(() => toast("👤", `Playing as ${plMe().name}`, "Change player in Settings"), 900);
+  if (CL.active && plMe()) setTimeout(() => { if (!$("#s-menu").hidden) toast("👤", `Playing as ${plMe().name}`, "Change player in Settings"); }, 900);
 })();
+
+/* ================= who's playing: passport picker =================
+   Shown when the game opens. Each player remembered on this device is a passport
+   from a different country, plus a Visitor passport for guests and a blank New Passport. */
+const PASSPORTS = [
+  { cc: "CA", n: "Canada", cov: "#1F2F5C" }, { cc: "GB", n: "United Kingdom", cov: "#5E1A2A" },
+  { cc: "MX", n: "Mexico", cov: "#1E4D36" }, { cc: "JP", n: "Japan", cov: "#7A1D2B" },
+  { cc: "BR", n: "Brazil", cov: "#1C3A72" }, { cc: "IN", n: "India", cov: "#1B2E5E" },
+  { cc: "DE", n: "Germany", cov: "#5A1A28" }, { cc: "AU", n: "Australia", cov: "#1D3B6E" },
+  { cc: "NG", n: "Nigeria", cov: "#1A4A33" }, { cc: "IE", n: "Ireland", cov: "#621C2B" },
+  { cc: "CN", n: "China", cov: "#7C1C1C" }, { cc: "US", n: "United States", cov: "#1B2A55" },
+  { cc: "PK", n: "Pakistan", cov: "#1C4A2E" }, { cc: "FR", n: "France", cov: "#5C1B2B" }
+];
+const PASS_GUEST = { cc: "CH", n: "Switzerland", cov: "#B3202E" };
+const PASS_NEW = { cc: "NZ", n: "New Zealand", cov: "#1A1B1F" };
+const passFor = p => {
+  if (!p.cc) {   // give each player their own country, in the order they joined this device
+    const used = new Set(CL.players.map(x => x.cc).filter(Boolean));
+    p.cc = (PASSPORTS.find(x => !used.has(x.cc)) || PASSPORTS[CL.players.indexOf(p) % PASSPORTS.length]).cc; plSave();
+  }
+  return PASSPORTS.find(x => x.cc === p.cc) || PASSPORTS[0];
+};
+const PP_EMBLEM = `<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="21" fill="none" stroke="#F2C14E" stroke-width="2.6"/><ellipse cx="32" cy="32" rx="9" ry="21" fill="none" stroke="#F2C14E" stroke-width="2"/><path d="M11 32h42M14 22h36M14 42h36" stroke="#F2C14E" stroke-width="2" fill="none"/><circle cx="32" cy="32" r="28.5" fill="none" stroke="#F2C14E" stroke-width="1.2" stroke-dasharray="2 4" opacity=".75"/></svg>`;
+const PP_PLUS = `<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="24" fill="none" stroke="#F2C14E" stroke-width="2.6" stroke-dasharray="5 5"/><path d="M32 20v24M20 32h24" stroke="#F2C14E" stroke-width="4" stroke-linecap="round"/></svg>`;
+const PP_CHIP = `<svg class="chip" viewBox="0 0 40 26" aria-hidden="true"><rect x="2" y="2" width="36" height="22" rx="3" fill="none" stroke="#F2C14E" stroke-width="2"/><circle cx="20" cy="13" r="5.5" fill="none" stroke="#F2C14E" stroke-width="2"/><path d="M2 13h12.5M25.5 13H38" stroke="#F2C14E" stroke-width="2"/></svg>`;
+function passStats(uid) {
+  const d = uid === CL.active || (!uid && !CL.active) ? localData() : LS.get("prof_" + (uid || "guest"), null);
+  if (!d) return "";
+  const stars = Object.values(d.BEST || {}).reduce((a, b) => a + (b.stars || 0), 0), stamps = Object.keys((d.P && d.P.stamp) || {}).length;
+  return stars || stamps ? `★ ${stars} · ${stamps} stamp${stamps === 1 ? "" : "s"}` : "Ready for a first trip";
+}
+let whoCanLeave = false;
+function renderWho() {
+  const card = (cls, pass, kick, name, sub, inner, attrs) => {
+    const c = BY_ID.get(pass.cc);
+    return `<button type="button" class="pp ${cls}" style="--cov:${pass.cov}" ${attrs}>
+      <span class="pk">Passport<b>${esc(kick)}</b></span>
+      <span class="pe">${inner}${c && cls !== "new" ? flagImg(c) : ""}</span>
+      <span><span class="pn">${esc(name)}</span><span class="ps">${esc(sub)}</span></span>
+      ${PP_CHIP}</button>`;
+  };
+  $("#who-grid").innerHTML =
+    CL.players.map(p => { const pass = passFor(p); return card(p.uid === CL.active ? "on" : "", pass, pass.n, p.name, passStats(p.uid), PP_EMBLEM, `data-uid="${p.uid}" aria-label="Play as ${esc(p.name)}"`); }).join("") +
+    card(!CL.active && CL.players.length ? "on" : "", PASS_GUEST, "Visitor", "Guest", passStats(null) || "Saved on this device", PP_EMBLEM, `data-uid="" aria-label="Play as a guest"`) +
+    card("new", PASS_NEW, "Apply here", "New Passport", "Sign in or make a player", PP_PLUS, `data-new="1" aria-label="New passport: sign in or create a player"`);
+  $("#who-grid").querySelectorAll(".pp").forEach(b => b.onclick = () => {
+    sfx("tap");
+    if (b.dataset.new) { plTab = CL.players.length ? "in" : "new"; openPage("s-players", "s-who"); renderPlayers(); return; }
+    const uid = b.dataset.uid || null;
+    if (uid === CL.active) { renderMenu(); show("s-menu"); sfx("go"); return; }
+    switchPlayer(uid);
+  });
+  $("#who-manage").hidden = !CL.players.length;
+  sizeWho();
+}
+// Make the passports as big as the screen allows, with every one visible without scrolling.
+function sizeWho() {
+  const g = $("#who-grid"); if (!g || $("#s-who").hidden) return;
+  const n = g.children.length, gap = parseFloat(getComputedStyle(g).rowGap) || 14;
+  const scr = $("#s-who"), rest = [...scr.children].filter(el => el !== g && !el.hidden).reduce((a, el) => a + el.offsetHeight, 0);
+  const W = g.clientWidth - 8, H = scr.clientHeight - rest - 2 * (parseFloat(getComputedStyle(scr).rowGap) || 12) - parseFloat(getComputedStyle(scr).paddingTop) - parseFloat(getComputedStyle(scr).paddingBottom) - 20;
+  let best = { w: 0, c: 1 };
+  for (let c = 1; c <= n; c++) {
+    const r = Math.ceil(n / c), w = Math.min((W - (c - 1) * gap) / c, ((H - (r - 1) * gap) / r) / 1.37, 230);
+    if (w > best.w + .5) best = { w, c };
+  }
+  const w = Math.max(80, Math.floor(best.w));
+  g.style.gridTemplateColumns = `repeat(${best.c}, ${w}px)`;
+  g.style.justifyContent = "center";
+}
+addEventListener("resize", () => { if (!$("#s-who").hidden) sizeWho(); });
+function openWho(canLeave) { whoCanLeave = !!canLeave; show("s-who"); renderWho(); try { document.fonts.ready.then(sizeWho); } catch (e) {} }
+$("#who-manage").onclick = () => { sfx("tap"); openPage("s-players", "s-who"); renderPlayers(); };
 
 /* ================= phone back button =================
    One press steps back inside the game. Two quick presses ask whether to close the app.
@@ -3279,6 +3394,7 @@ function appBack() {
   if (vis("#s-map")) { if (EX.map !== "WORLD") { EX.map = "WORLD"; EX.sel = null; renderExplorer(); sfx("tap"); } else { sfx("tap"); renderMenu(); show("s-menu"); } return; }
   if (vis("#s-h2hres")) { $("#hr-menu").click(); return; }
   if (vis("#s-results")) { $("#r-menu").click(); return; }
+  if (vis("#s-who") && whoCanLeave) { renderMenu(); show("s-menu"); return; }
   const page = document.querySelector(".screen.page:not([hidden])");
   if (page) { goBack(); return; }
   toast("👋", "Press back twice quickly", "to close the app");
@@ -3321,7 +3437,7 @@ if (window.history && history.pushState) {
 }
 
 /* ================= check for updates ================= */
-const APP_VERSION = "atlas-v21";
+const APP_VERSION = "atlas-v22";
 const verNum = v => +((String(v).match(/(\d+)\s*$/) || [0, 0])[1]);
 async function remoteVersion() {
   const res = await fetch("sw.js?check=" + Date.now(), { cache: "no-store" });
@@ -3445,7 +3561,12 @@ updateInstall();
 setupUpdates();
 
 renderMenu();
-show("s-menu");
+// Open on the passport picker, unless we've just switched player (then go straight to the menu)
+// or this device has never had online saving set up.
+(() => {
+  let go = null; try { go = sessionStorage.getItem("atlasx_go"); sessionStorage.removeItem("atlasx_go"); } catch (e) {}
+  if (go !== "menu" && (CL.cfg || CL.players.length)) openWho(false); else show("s-menu");
+})();
 </script>
 
 </body>
