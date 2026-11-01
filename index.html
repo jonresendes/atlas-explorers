@@ -909,6 +909,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
     <div class="panel setpanel">
       <div class="row"><span class="lbl">Sound effects<span class="sub">Dings, buzzes and fanfares</span></span><button class="switch" role="switch" id="set-sound" aria-label="Sound effects"></button></div>
       <div class="row"><span class="lbl">Vibration<span class="sub">Buzz on wrong answers</span></span><button class="switch" role="switch" id="set-vibe" aria-label="Vibration"></button></div>
+      <div class="row" id="full-row" hidden><span class="lbl">Full screen<span class="sub">Hide the browser's buttons and address bar</span></span><button class="switch" role="switch" id="set-full" aria-label="Full screen"></button></div>
       <div class="row"><span class="lbl">Timer<span class="sub">Faster answers earn more points</span></span><div class="seg" id="set-timer"></div></div>
       <div class="row"><span class="lbl">Questions<span class="sub">Per round</span></span><div class="seg" id="set-qcount"></div></div>
       <div class="row"><span class="lbl">Difficulty</span><div class="seg" id="set-level"></div></div>
@@ -2772,6 +2773,7 @@ function seg(el, values, labels, cur, onPick) {
 function renderSettings() {
   $("#set-sound").setAttribute("aria-checked", S.sound);
   $("#set-vibe").setAttribute("aria-checked", S.vibe);
+  $("#set-full").setAttribute("aria-checked", !!S.full);
   seg($("#set-timer"), ["off", "relaxed", "normal", "speedy"], ["Off", "20s", "12s", "7s"], S.timer, v => { S.timer = v; saveS(); renderSettings(); });
   seg($("#set-qcount"), [5, 10, 15, 20], ["5", "10", "15", "20"], S.qcount, v => { S.qcount = +v; saveS(); renderSettings(); });
   seg($("#set-level"), ["easy", "hard"], ["Explorer", "Expert"], S.level, v => { S.level = v; saveS(); renderSettings(); });
@@ -2929,6 +2931,27 @@ window.addEventListener("resize", () => { clearTimeout(rsz); rsz = setTimeout(()
 
 $("#set-sound").onclick = () => { S.sound = !S.sound; saveS(); renderSettings(); sfx("tap"); };
 $("#set-vibe").onclick = () => { S.vibe = !S.vibe; saveS(); renderSettings(); buzz(60); };
+/* Full screen (for when the game is opened in a browser rather than as an installed app).
+   Browsers only allow full screen right after a tap, so when the setting is on the game
+   goes full screen on the first tap after it opens, or after the browser leaves full screen. */
+const FS_OK = !!(document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen);
+const isFull = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
+function goFull() {
+  if (isFull()) return;
+  const el = document.documentElement, f = el.requestFullscreen || el.webkitRequestFullscreen;
+  try { const r = f.call(el, { navigationUI: "hide" }); if (r && r.catch) r.catch(() => {}); } catch (e) {}
+}
+function leaveFull() {
+  if (!isFull()) return;
+  const f = document.exitFullscreen || document.webkitExitFullscreen;
+  try { const r = f.call(document); if (r && r.catch) r.catch(() => {}); } catch (e) {}
+}
+if (FS_OK && !((window.matchMedia && matchMedia("(display-mode: standalone), (display-mode: fullscreen)").matches) || navigator.standalone === true)) {
+  $("#full-row").hidden = false;
+  $("#set-full").onclick = () => { S.full = !S.full; saveS(); renderSettings(); sfx("tap"); S.full ? goFull() : leaveFull(); };
+  addEventListener("pointerup", () => { if (S.full) goFull(); }, true);
+  addEventListener("keydown", e => { if (S.full && e.key !== "Escape") goFull(); }, true);
+}
 $("#set-reset").onclick = () => confirmBox("Reset everything?", "Your scores, stars, leaderboards, passport stamps, trophies, badges, awards and gems will all be cleared. This can't be undone.", "Reset everything", () => { BEST = {}; LS.set("best", BEST); P = freshP(); saveP(); LB = {}; LS.set("board", LB); renderSettings(); });
 
 $("#pausebtn").onclick = pause;
@@ -3024,7 +3047,7 @@ if (window.history && history.pushState) {
 }
 
 /* ================= check for updates ================= */
-const APP_VERSION = "atlas-v19";
+const APP_VERSION = "atlas-v20";
 const verNum = v => +((String(v).match(/(\d+)\s*$/) || [0, 0])[1]);
 async function remoteVersion() {
   const res = await fetch("sw.js?check=" + Date.now(), { cache: "no-store" });
