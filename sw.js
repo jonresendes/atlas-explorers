@@ -1,6 +1,6 @@
 // Atlas Explorers offline support.
 // Change VERSION whenever you upload a new index.html so phones pick up the update.
-const VERSION = "atlas-v16";
+const VERSION = "atlas-v19";
 const CORE = [
   "./",
   "index.html",
@@ -16,7 +16,11 @@ const CORE = [
 self.addEventListener("install", event => {
   event.waitUntil(
     caches.open(VERSION)
-      .then(cache => cache.addAll(CORE.map(u => new Request(u, { cache: "reload" }))))
+      // Save each file on its own, so one missing icon can't stop the game installing or working offline.
+      .then(cache => Promise.all(CORE.map(u =>
+        fetch(new Request(u, { cache: "reload" }))
+          .then(res => { if (res.ok) return cache.put(u, res); })
+          .catch(() => {}))))
       .then(() => self.skipWaiting())
   );
 });
