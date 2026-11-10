@@ -931,7 +931,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
 .gobj .ostars { position: absolute; right: 4%; top: 42%; width: 19%; text-align: center; font-size: max(.6rem, 4.6cqw); }
 .gobj .ostars .off { opacity: .3; }
 .obj-ticket .otext { right: 28%; }
-.obj-sign .okick { left: 9%; top: 4.5%; color: var(--ink); opacity: 1; font-family: var(--display); font-weight: 400; letter-spacing: .06em; font-size: max(.55rem, 4.2cqw); }
+.obj-sign .okick { left: 9%; top: 3%; color: var(--ink); opacity: 1; font-family: var(--display); font-weight: 400; letter-spacing: .06em; font-size: max(.55rem, 4.2cqw); }
 .obj-sign .oico { top: 26%; left: 8%; width: 20cqw; }
 .obj-sign .otext { color: #fff; top: 17%; bottom: 25%; left: 33%; right: 7%; }
 .obj-sign .ostars { top: auto; bottom: 25%; right: 7%; width: auto; color: #FFE27A; }
@@ -1016,6 +1016,61 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
 .pzbar .btn { min-height: 42px; padding: 6px 14px; font-size: .95rem; }
 .lbscope { justify-content: center; flex: none; }
 .lbscope button { flex: 1; max-width: 200px; }
+.gcard.metal.off { background: #F7FAFE; }
+.gcard.metal.off svg { opacity: .6; }
+.gcard.metal:not(.off) { background: color-mix(in srgb, #FFF7DA 70%, white); box-shadow: inset 0 0 0 2px #F2C14E; }
+
+/* game objects: heading, preview picture and description */
+.gobj .oin { position: absolute; left: 9%; right: 27%; top: 17%; bottom: 7%; display: grid; grid-template-columns: 31cqw minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); gap: 2cqw 3cqw; align-items: center; text-align: left; }
+.gobj .ohead { grid-column: 1 / -1; display: flex; align-items: center; gap: 2.6cqw; min-width: 0; }
+.gobj .oin .oico { position: static; width: 12cqw; flex: none; border-width: 2px; }
+.gobj .oin .oname { font-size: max(.8rem, 7.4cqw); }
+.gobj .oprev { width: 31cqw; aspect-ratio: 1.55; align-self: start; background: #fff; border: 2px solid var(--ink); border-radius: 2.4cqw; overflow: hidden; display: grid; place-items: center; padding: 1cqw; box-shadow: 0 1.2cqw 0 rgba(20,48,94,.25); }
+.gobj .oprev svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.gobj .oprev .ico { width: 100%; height: 100%; }
+.gobj .oin .oblurb { align-self: start; font-size: max(.55rem, 3.5cqw); }
+.pv-flags { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 1.2cqw; width: 100%; height: 100%; min-height: 0; }
+.pv-flags img { min-height: 0; }
+.pv-flags img { width: 100%; height: 100%; object-fit: cover; border-radius: .8cqw; border: 1.5px solid var(--ink); }
+.pv-emoji { display: flex; align-items: center; justify-content: center; gap: 1cqw; font-size: 9cqw; line-height: 1; }
+.pv-emoji small { font-size: 5.6cqw; display: flex; gap: 1cqw; }
+.pv-emoji .pv-q img { width: 6.5cqw; height: 4.4cqw; object-fit: cover; border: 1px solid var(--ink); border-radius: 2px; }
+.pv-mix { display: grid; grid-template-columns: 1fr 1fr; gap: .8cqw; width: 100%; height: 100%; }
+.pv-mix span { display: grid; place-items: center; background: #F2F8FF; border-radius: 1cqw; }
+.pv-mix svg { width: 80%; height: 80%; }
+.obj-ticket .oin { left: 10%; right: 27%; }
+.obj-sign .oin { left: 7%; right: 6%; top: 19%; bottom: 23%; color: #fff; }
+.obj-sign .oin .oblurb { color: #fff; }
+.obj-pass .oin { left: 5%; right: 25%; top: 31%; bottom: 6%; }
+.obj-postcard .oin { left: 5%; right: 25%; top: 18%; bottom: 7%; }
+@container ob (max-width: 240px) { .gobj .oin { grid-template-columns: 1fr; } .gobj .oprev { width: 42cqw; justify-self: start; } }
+/* road signs stand side by side in pairs */
+.catgames.obj-sign { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.catgames.obj-sign .gobj:nth-child(odd):last-child { grid-column: 1 / -1; }
+.catgames.obj-sign .gobj:nth-child(even) { transform: translateY(5%); }
+.catgames.obj-sign { padding-bottom: 2%; }
+.catgames.obj-sign .gobj:nth-child(even):hover { transform: translateY(4%) rotate(-.6deg); }
+@media (min-width: 720px) and (min-aspect-ratio: 5/4) { .catgames.obj-sign { grid-template-columns: repeat(3, minmax(0, 1fr)); } .catgames.obj-sign .gobj:nth-child(odd):last-child { grid-column: auto; } .catgames.obj-sign .gobj:nth-child(even) { transform: none; } .catgames.obj-sign .gobj:nth-child(3n+2) { transform: translateY(-3%); } }
+
+.gobj .oin .oname { min-width: 0; overflow-wrap: anywhere; }
+.pv-mix { grid-template-rows: 1fr 1fr; min-height: 0; }
+.pv-mix span { min-height: 0; overflow: hidden; }
+.pv-mix svg { width: auto; height: 86%; max-width: 86%; }
+/* signs in pairs: taller boards so the picture is big enough to see */
+.catgames.obj-sign .gobj .ob { width: min(100cqw, 100cqh * 1.12, 420px); aspect-ratio: 1.12; }
+.catgames.obj-sign .oin { top: 19%; bottom: 23%; grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); }
+.catgames.obj-sign .oprev { width: auto; height: 100%; max-width: 100%; justify-self: start; }
+.catgames.obj-sign .oin .oblurb { display: none; }
+.catgames.obj-sign .okick { top: 2%; }
+.catgames.obj-sign .gobj:nth-child(odd):last-child .ob { width: min(50cqw, 100cqh * 1.12, 420px); }
+@media (min-width: 720px) and (min-aspect-ratio: 5/4) { .catgames.obj-sign .gobj:nth-child(odd):last-child .ob { width: min(100cqw, 100cqh * 1.12, 420px); } }
+/* every preview drawing scales to fit inside its frame */
+.gobj .oprev { position: relative; display: block; }
+.gobj .oprev > * { position: absolute; inset: 1.2cqw; width: auto !important; height: auto !important; max-width: none; }
+.pv-row { display: flex; align-items: center; justify-content: center; gap: 1cqw; }
+.pv-row svg { height: 100%; width: auto; flex: 0 1 auto; min-width: 0; }
+.pv-row b { font-family: var(--display); font-weight: 400; font-size: 11cqw; line-height: 1; color: var(--ink); }
+.catgames.obj-sign .oprev { width: auto; height: 100%; aspect-ratio: 1.55; }
 </style>
 
 </head>
@@ -1496,7 +1551,7 @@ const ICON = {
   animals: `<svg viewBox="0 0 48 48" class="ico"><path d="M24 23c6 0 11 6 11 11 0 4-3 6-6 5-2-.6-3.2-1.2-5-1.2s-3 .6-5 1.2c-3 1-6-1-6-5 0-5 5-11 11-11z" fill="#FF9A2E"/><ellipse cx="11" cy="20" rx="4" ry="5" fill="#FF9A2E"/><ellipse cx="18.5" cy="11" rx="4" ry="5.2" fill="#FF9A2E"/><ellipse cx="29.5" cy="11" rx="4" ry="5.2" fill="#FF9A2E"/><ellipse cx="37" cy="20" rx="4" ry="5" fill="#FF9A2E"/></svg>`,
   maphunt: `<svg viewBox="0 0 48 48" class="ico"><path d="M4 13l12-5 15 5 13-5v28l-13 5-15-5-12 5z" fill="#BDF0A0"/><path d="M16 8v28M31 13v28" stroke-width="2"/><path d="M33 4a7 7 0 0 1 7 7c0 6-7 13-7 13s-7-7-7-13a7 7 0 0 1 7-7z" fill="#FF6B57"/><circle cx="33" cy="11" r="2.4" fill="#fff"/></svg>`,
   cappin: `<svg viewBox="0 0 48 48" class="ico"><circle cx="22" cy="27" r="17" fill="#fff"/><circle cx="22" cy="27" r="11" fill="#FF6FA8"/><circle cx="22" cy="27" r="4.5" fill="#fff"/><path d="M22 27L41 8" stroke-width="3"/><path d="M38 5l6 1-3 3-1 5-3-3z" fill="#FFC93C"/></svg>`,
-  mix: `<svg viewBox="0 0 48 48" class="ico"><circle cx="24" cy="24" r="14" fill="#3FB6EC"/><path d="M14 17c4-2 6 1 7 4s-2 5 1 7 5 1 5 4M29 12c2 2 5 1 6 3s-2 4 0 6 4 0 5 2" stroke="#74CC45" stroke-width="4.5"/><circle cx="24" cy="24" r="14"/><ellipse cx="24" cy="24" rx="22" ry="8" transform="rotate(-20 24 24)" stroke-dasharray="3 4" stroke-width="2"/><path transform="translate(40 14) rotate(70) scale(.5) translate(-12 -12)" d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z" fill="#fff" stroke-width="2"/></svg>`,
+  mix: `<svg viewBox="0 0 48 48" class="ico"><defs><clipPath id="mixglobe"><circle cx="24" cy="24" r="14"/></clipPath></defs><g transform="rotate(-20 24 24)"><path d="M3 24A21 7 0 0 1 45 24" stroke-dasharray="3 4" stroke-width="2"/></g><circle cx="24" cy="24" r="14" fill="#3FB6EC"/><path clip-path="url(#mixglobe)" d="M14 17c4-2 6 1 7 4s-2 5 1 7 5 1 5 4M29 12c2 2 5 1 6 3s-2 4 0 6 4 0 5 2" stroke="#74CC45" stroke-width="4.5"/><circle cx="24" cy="24" r="14"/><g transform="rotate(-20 24 24)"><path d="M45 24A21 7 0 0 1 3 24" stroke-dasharray="3 4" stroke-width="2"/></g><path transform="translate(35.9 26.1) rotate(-121) scale(.55) translate(-12 -12)" d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z" fill="#fff" stroke-width="2"/></svg>`,
   allc: `<svg viewBox="0 0 48 48" class="ico"><circle cx="21" cy="23" r="15" fill="#3FB6EC"/><path d="M10 17c4-2 7 1 8 4s-2 5 1 7 5 1 5 4M24 10c2 2 5 1 6 3s-2 4 0 6 4 0 5 2" stroke="#74CC45" stroke-width="4.5"/><circle cx="21" cy="23" r="15"/><path d="M29 41l12-12 4 4-12 12-6 2z" fill="#FFC93C"/><path d="M39 31l4 4" stroke-width="2"/></svg>`,
   cities: `<svg viewBox="0 0 48 48" class="ico"><path d="M5 42V20h9v22M14 42V9h10v33M24 42V24h7v18M31 42V15h11v27" fill="#E9A6E3"/><path d="M17 14h4M17 20h4M17 26h4M17 32h4M34 20h5M34 26h5M34 32h5M8 26h3M8 32h3" stroke-width="2"/><path d="M3 42h42"/><circle cx="38" cy="7" r="3.5" fill="#FFC93C"/></svg>`,
   landmarks: `<svg viewBox="0 0 48 48" class="ico"><circle cx="37" cy="11" r="5.5" fill="#FF6B57"/><path d="M5 41L21 13l16 28z" fill="#FFC93C"/><path d="M21 13l-5 28M21 13l7 28" stroke-width="2"/><path d="M2 41h44"/></svg>`,
@@ -1638,10 +1693,10 @@ const OBJ_SVG = {
     <path d="M10 4h180a6 6 0 0 1 6 6v38a12 12 0 0 0 0 24v38a6 6 0 0 1-6 6H10a6 6 0 0 1-6-6V72a12 12 0 0 0 0-24V10a6 6 0 0 1 6-6z" fill="${c}" stroke="${INK}" stroke-width="3.5" vector-effect="non-scaling-stroke"/>
     <path d="M150 10v100" stroke="${INK}" stroke-width="2.5" stroke-dasharray="5 5" vector-effect="non-scaling-stroke"/></svg>`,
   sign: c => `<svg viewBox="0 0 200 130" preserveAspectRatio="none" class="objbg" aria-hidden="true">
-    <rect x="58" y="96" width="10" height="32" fill="#8A97AA" stroke="${INK}" stroke-width="3" vector-effect="non-scaling-stroke"/><rect x="132" y="96" width="10" height="32" fill="#8A97AA" stroke="${INK}" stroke-width="3" vector-effect="non-scaling-stroke"/>
-    <rect x="4" y="18" width="192" height="84" rx="12" fill="#1E8F4E" stroke="${INK}" stroke-width="3.5" vector-effect="non-scaling-stroke"/>
-    <rect x="10" y="24" width="180" height="72" rx="8" fill="none" stroke="#fff" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
-    <rect x="14" y="4" width="56" height="20" rx="5" fill="${c}" stroke="${INK}" stroke-width="3" vector-effect="non-scaling-stroke"/></svg>`,
+    <rect x="56" y="104" width="10" height="26" fill="#8A97AA" stroke="${INK}" stroke-width="3" vector-effect="non-scaling-stroke"/><rect x="134" y="104" width="10" height="26" fill="#8A97AA" stroke="${INK}" stroke-width="3" vector-effect="non-scaling-stroke"/>
+    <rect x="4" y="14" width="192" height="94" rx="12" fill="#1E8F4E" stroke="${INK}" stroke-width="3.5" vector-effect="non-scaling-stroke"/>
+    <rect x="10" y="20" width="180" height="82" rx="8" fill="none" stroke="#fff" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
+    <rect x="14" y="2" width="56" height="18" rx="5" fill="${c}" stroke="${INK}" stroke-width="3" vector-effect="non-scaling-stroke"/></svg>`,
   pass: c => `<svg viewBox="0 0 200 120" preserveAspectRatio="none" class="objbg" aria-hidden="true">
     <rect x="4" y="4" width="192" height="112" rx="10" fill="#fff" stroke="${INK}" stroke-width="3.5" vector-effect="non-scaling-stroke"/>
     <path d="M4 32V14a10 10 0 0 1 10-10h172a10 10 0 0 1 10 10v18z" fill="${c}" stroke="${INK}" stroke-width="3.5" vector-effect="non-scaling-stroke"/>
@@ -1650,8 +1705,8 @@ const OBJ_SVG = {
   postcard: c => `<svg viewBox="0 0 200 120" preserveAspectRatio="none" class="objbg" aria-hidden="true">
     <rect x="4" y="4" width="192" height="112" rx="6" fill="#FFF7E6" stroke="${INK}" stroke-width="3.5" vector-effect="non-scaling-stroke"/>
     <path d="M150 12h36v40h-36z" fill="${c}" stroke="${INK}" stroke-width="2.5" stroke-dasharray="3 2" vector-effect="non-scaling-stroke"/>
-    <path d="M126 22q8-6 16 0t16 0M126 32q8-6 16 0t16 0M126 42q8-6 16 0t16 0" fill="none" stroke="#8A97AA" stroke-width="2" vector-effect="non-scaling-stroke"/>
-    <path d="M14 96h90M14 106h70" stroke="#C9B48A" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>`
+    <path d="M154 62q8-6 16 0t16 0M154 72q8-6 16 0t16 0M154 82q8-6 16 0t16 0" fill="none" stroke="#8A97AA" stroke-width="2" vector-effect="non-scaling-stroke"/>
+</svg>`
 };
 const OBJ_KICK = { ticket: i => `Platform ${i + 1} · Admit one`, sign: i => `Exit ${i + 1}`, pass: i => `Gate A${i + 1} · Boarding pass`, postcard: () => "Post card" };
 const catStars = cat => cat.games.filter(g => MODES[g]).reduce((s, g) => s + ((BEST[bestKey(g)] || {}).stars || 0), 0);
@@ -1678,11 +1733,53 @@ function openCat(k) {
     return `<button class="gobj" data-mode="${g}" style="--c:${m.c}" aria-label="${m.name}">
       <span class="ob">${OBJ_SVG[cat.obj](m.c)}
         <span class="okick">${OBJ_KICK[cat.obj](i)}</span>
-        <span class="oico">${ICON[g] || ICON.h2h}</span>
-        <span class="otext"><span class="oname">${m.name}</span><span class="oblurb">${m.blurb}</span></span>
+        <span class="oin"><span class="ohead"><span class="oico">${ICON[g] || ICON.h2h}</span><span class="oname">${m.name}</span></span>
+          <span class="oprev" aria-hidden="true">${gamePreview(g)}</span><span class="oblurb">${m.blurb}</span></span>
         ${b ? `<span class="ostars">${starStr(b.stars)}</span>` : ""}</span></button>`;
   }).join("");
   show("s-cat");
+}
+
+/* A small picture of what each game looks like, shown on its ticket, sign, pass or postcard */
+/* Frame the picture around just the countries it's about, in the frame's own shape */
+function fitBox(ids, mapId, pad = .15, ar = 1.55) {
+  const M = MAPS[mapId], sh = ids.map(id => mainShape(M.c.find(x => x[0] === id)[1]));
+  let x0 = Math.min(...sh.map(b => b.x0)), y0 = Math.min(...sh.map(b => b.y0)), x1 = Math.max(...sh.map(b => b.x1)), y1 = Math.max(...sh.map(b => b.y1));
+  let w = (x1 - x0) * (1 + pad * 2), h = (y1 - y0) * (1 + pad * 2);
+  if (w / h < ar) w = h * ar; else h = w / ar;
+  return `${((x0 + x1) / 2 - w / 2).toFixed(1)} ${((y0 + y1) / 2 - h / 2).toFixed(1)} ${w.toFixed(1)} ${h.toFixed(1)}`;
+}
+function miniMap(mapId, fills, extra = "", focus) {
+  const M = MAPS[mapId], vb = focus ? fitBox(focus, mapId) : `0 0 ${M.w} ${M.h}`;
+  return `<svg viewBox="${vb}" preserveAspectRatio="xMidYMid meet"><path d="${M.land}" fill="#E4EAF1"/>${M.c.map(([id, d]) => `<path d="${d}" fill="${fills[id] || "#E4EAF1"}" stroke="#14305E" stroke-width="${M.w / 160}" stroke-linejoin="round"/>`).join("")}${extra}</svg>`;
+}
+const mcenter = (mapId, id) => { const e = MAPS[mapId].c.find(x => x[0] === id); const sh = mainShape(e[1]); return [sh.cx, sh.cy]; };
+function gamePreview(k) {
+  const C = id => BY_ID.get(id), shape = (id, extra = "", fill = "#8FDB6E", grow = 0) => {
+    const b = mainShape(C(id).s), pad = Math.max(b.w, b.h) * .08 + grow;
+    return `<svg viewBox="${b.x0 - pad} ${b.y0 - pad} ${b.w + pad * 2} ${b.h + pad * 2}" preserveAspectRatio="xMidYMid meet"><path d="${C(id).s}" fill="${fill}" stroke="#14305E" stroke-width="5" stroke-linejoin="round"/>${extra}</svg>`; };
+  const route = (mapId, ids) => { const pts = ids.map(id => mcenter(mapId, id)); return `<polyline points="${pts.map(p => p.join(",")).join(" ")}" fill="none" stroke="#14305E" stroke-width="${MAPS[mapId].w / 45}" stroke-dasharray="${MAPS[mapId].w / 30} ${MAPS[mapId].w / 45}" stroke-linecap="round"/>${pts.map(p => `<circle cx="${p[0]}" cy="${p[1]}" r="${MAPS[mapId].w / 40}" fill="#14305E"/>`).join("")}`; };
+  switch (k) {
+    case "flags": return `<span class="pv-flags">${["BR", "JP", "CA", "KE"].map(id => flagImg(C(id))).join("")}</span>`;
+    case "capitals": { const c = C("FR"); return shape("FR", `<path d="M${c.cp[0]} ${c.cp[1] - 22}l6.5 13.5 15 1.8-11 10.2 3 14.7-13.5-7.4-13.5 7.4 3-14.7-11-10.2 15-1.8z" fill="#FFC93C" stroke="#14305E" stroke-width="4" stroke-linejoin="round"/>`, "#7FD0F5"); }
+    case "shapes": return `<span class="pv-row">${shape("IT", "", "#C9D3DF")}<b>?</b></span>`;
+    case "clues": return `<svg viewBox="0 0 160 100"><rect x="6" y="6" width="148" height="88" rx="10" fill="#fff" stroke="#14305E" stroke-width="4"/>${[0, 1, 2].map(i => `<circle cx="24" cy="${28 + i * 24}" r="8" fill="${["#FF6B57", "#FFC93C", "#7FD0F5"][i]}" stroke="#14305E" stroke-width="3"/><path d="M40 ${28 + i * 24}h${[80, 60, 70][i]}" stroke="#8E9CB3" stroke-width="7" stroke-linecap="round"/>`).join("")}<text x="128" y="88" font-size="44" font-family="Lilita One" fill="#B9A2FF" stroke="#14305E" stroke-width="2.5">?</text></svg>`;
+    case "languages": return `<svg viewBox="0 0 160 100"><path d="M8 14h78q8 0 8 8v24q0 8-8 8H40l-14 12v-12H16q-8 0-8-8V22q0-8 8-8z" fill="#7FD0F5" stroke="#14305E" stroke-width="4" stroke-linejoin="round"/><text x="50" y="42" text-anchor="middle" font-size="22" font-family="Lilita One" fill="#14305E">Hola!</text><path d="M66 50h78q8 0 8 8v22q0 8-8 8h-10v12l-14-12H74q-8 0-8-8V58q0-8 8-8z" fill="#FFC93C" stroke="#14305E" stroke-width="4" stroke-linejoin="round"/><text x="110" y="77" text-anchor="middle" font-size="22" font-family="Lilita One" fill="#14305E">Ciao!</text></svg>`;
+    case "animals": return `<span class="pv-emoji">🐼<small>🦘</small><small>🦁</small></span>`;
+    case "landmarks": return `<span class="pv-emoji">🗼<small>🗽</small><small>🏯</small></span>`;
+    case "cities": return `<span class="pv-emoji">🏙️<small class="pv-q">${flagImg(C("IT"))}${flagImg(C("JP"))}</small></span>`;
+    case "maphunt": return miniMap("SA", { BR: "#FF6B57" }, "", ["BR", "PE", "CO", "BO", "PY"]);
+    case "cappin": { const c = C("MX"); return shape("MX", `<circle cx="${c.cp[0]}" cy="${c.cp[1]}" r="26" fill="none" stroke="#FF6B57" stroke-width="6"/><circle cx="${c.cp[0]}" cy="${c.cp[1]}" r="12" fill="none" stroke="#FF6B57" stroke-width="6"/><circle cx="${c.cp[0]}" cy="${c.cp[1]}" r="4" fill="#14305E"/>`, "#FFE6A8"); }
+    case "neighbours": return miniMap("SA", { BO: "#FF6B57", BR: "#8FDB6E", PE: "#8FDB6E", CL: "#8FDB6E", AR: "#8FDB6E", PY: "#8FDB6E" }, "", ["BO", "PE", "PY"]);
+    case "hop": return miniMap("SA", { CO: "#22C384", PE: "#FFC93C", BO: "#FFC93C", PY: "#FF6B57" }, route("SA", ["CO", "PE", "BO", "PY"]), ["CO", "PE", "BO", "PY"]);
+    case "puzzle": { const e = MAPS.SA.c.find(x => x[0] === "BR"), sh = mainShape(e[1]);
+      return miniMap("SA", { BR: "#FFFFFF", AR: "#C9D3DF", BO: "#C9D3DF", CO: "#C9D3DF", PE: "#C9D3DF", VE: "#C9D3DF", PY: "#C9D3DF", UY: "#C9D3DF", CL: "#C9D3DF", EC: "#C9D3DF", GY: "#C9D3DF", SR: "#C9D3DF" },
+        `<path d="${sh.d}" transform="translate(${sh.w * .18} ${-sh.h * .04}) rotate(-8 ${sh.cx} ${sh.cy}) scale(.86)" transform-origin="${sh.cx} ${sh.cy}" fill="#FFC93C" stroke="#14305E" stroke-width="${MAPS.SA.w / 120}" stroke-linejoin="round"/>`, ["PE", "BO", "BR", "PY", "CO"]); }
+    case "allc": return `<svg viewBox="0 0 160 100"><rect x="8" y="10" width="144" height="26" rx="8" fill="#fff" stroke="#14305E" stroke-width="3.5"/><text x="18" y="29" font-size="16" font-family="Lilita One" fill="#14305E">Fra|</text>${[["Peru", "#8FDB6E"], ["Chad", "#FFC93C"], ["Japan", "#7FD0F5"], ["Fiji", "#FF8FB1"]].map(([t, c], i) => `<rect x="${8 + (i % 2) * 74}" y="${46 + Math.floor(i / 2) * 26}" width="68" height="20" rx="10" fill="${c}" stroke="#14305E" stroke-width="2.5"/><text x="${42 + (i % 2) * 74}" y="${61 + Math.floor(i / 2) * 26}" text-anchor="middle" font-size="13" font-family="Lilita One" fill="#14305E">${t} ✓</text>`).join("")}</svg>`;
+    case "mix": return `<span class="pv-mix">${["flags", "shapes", "maphunt", "languages"].map(m => `<span>${ICON[m]}</span>`).join("")}</span>`;
+    case "h2h": return `<svg viewBox="0 0 160 100">${[["Red", "#FF6B57", 320], ["Blue", "#3FB6EC", 250]].map(([n, c, sc], i) => `<rect x="10" y="${12 + i * 42}" width="140" height="34" rx="12" fill="${c}" stroke="#14305E" stroke-width="3.5"/><text x="24" y="${35 + i * 42}" font-size="17" font-family="Lilita One" fill="#14305E">${n}</text><text x="138" y="${35 + i * 42}" text-anchor="end" font-size="17" font-family="Lilita One" fill="#14305E">${sc}</text>`).join("")}</svg>`;
+  }
+  return "";
 }
 function goHome() {
   if (curCat) openCat(curCat); else { renderMenu(); show("s-menu"); }
@@ -1995,7 +2092,7 @@ function hopFinish() {
   const max = HOP.list.length * 300, sc = HOP.score;
   const stars = sc >= max * .8 ? 3 : sc >= max * .55 ? 2 : sc >= max * .3 ? 1 : 0;
   const key = bestKey("hop"), prev = BEST[key], isBest = !prev || sc > prev.score;
-  BEST[key] = { score: Math.max(sc, prev ? prev.score : 0), stars: Math.max(stars, prev ? prev.stars : 0) }; LS.set("best", BEST);
+  BEST[key] = { score: Math.max(sc, prev ? prev.score : 0), stars: Math.max(stars, prev ? prev.stars : 0) }; noteStars(key, stars); LS.set("best", BEST);
   P.rounds++; P.total += sc; award("first"); if (S.level === "hard" && stars === 3) award("expert"); checkAll();
   sfx("fanfare"); if (stars === 3) confetti();
   showInfo(`<div class="acres"><h2>Trip complete!</h2><div class="bigstars">${[0, 1, 2].map(i => `<span class="stars">${i < stars ? "★" : '<span class="off">★</span>'}</span>`).join("")}</div>
@@ -2174,7 +2271,7 @@ function pzFinish() {
   PZ.on = false;
   const max = PZ.list.length * 400, sc = PZ.score, stars = sc >= max * .75 ? 3 : sc >= max * .5 ? 2 : sc >= max * .25 ? 1 : 0;
   const key = bestKey("puzzle"), prev = BEST[key], isBest = !prev || sc > prev.score;
-  BEST[key] = { score: Math.max(sc, prev ? prev.score : 0), stars: Math.max(stars, prev ? prev.stars : 0) }; LS.set("best", BEST);
+  BEST[key] = { score: Math.max(sc, prev ? prev.score : 0), stars: Math.max(stars, prev ? prev.stars : 0) }; noteStars(key, stars); LS.set("best", BEST);
   P.rounds++; P.total += sc; award("first"); if (S.level === "hard" && stars === 3) award("expert"); checkAll();
   sfx("fanfare"); if (stars === 3) confetti();
   showInfo(`<div class="acres"><h2>Puzzles complete!</h2><div class="bigstars">${[0, 1, 2].map(i => `<span class="stars">${i < stars ? "★" : '<span class="off">★</span>'}</span>`).join("")}</div>
@@ -2570,7 +2667,8 @@ const GEMS = [
 ];
 
 /* ================= progress, stamps and accolades ================= */
-const freshP = () => ({ st: {}, cc: {}, cat: {}, seen: {}, cont: {}, aw: {}, tr: {}, bd: {}, gm: {}, mt: {}, ca: {}, stamp: {}, city: {}, total: 0, rounds: 0, ini: "" });
+const freshP = () => ({ st: {}, cc: {}, cat: {}, seen: {}, cont: {}, aw: {}, tr: {}, bd: {}, gm: {}, mt: {}, ca: {}, stamp: {}, city: {}, total: 0, rounds: 0, ini: "",
+  n: { cc: {}, st: {}, cap: {}, city: {}, stars: {} } });   // n = progress since the November 2026 update (the newest awards count only this)
 let P = Object.assign(freshP(), LS.get("progress", {}));
 const saveP = () => LS.set("progress", P);
 let LB = LS.get("board", {});
@@ -2652,15 +2750,20 @@ AWARDS.push(
   ["pzfast", "⏱️", "Speedy Snapper", "Finish a Map Puzzle in under 20 seconds."],
   ["rollcall", "📣", "Roll Call", "Name every country on a continent in Name Them All."]
 );
-/* Special badges: fun combinations across games */
-const s3 = m => ["easy", "hard"].some(lv => ((BEST[m + "_" + lv] || {}).stars || 0) >= 3);
+/* The newest awards (special badges, continent goals, precious metals) count only play from this
+   update onward, so nobody earns them from older results. Older stamps, badges and awards stay as they are. */
+const NEW_ERA = Date.UTC(2026, 10, 10, 6, 0, 0);
+function newEra() { P.n = P.n || {}; ["cc", "st", "cap", "city", "stars"].forEach(k => { P.n[k] = P.n[k] || {}; }); return P.n; }
+function noteStars(key, stars) { const N = newEra(), m = key.split("_")[0]; N.stars[m] = Math.max(N.stars[m] || 0, stars); }
+const s3 = m => ((newEra().stars[m]) || 0) >= 3;
+const chef = (cid, city) => { const N = newEra(), c = BY_ID.get(cid); return !!(N.city[city] && N.st[cid] && catsFor(c).every(m => N.st[cid][m])); };
 const SPECIAL = [
   ["truscott", "🚂", "Travelling Truscott", "Name all 197 countries in under 9 minutes in Name Them All.", () => (P.acFast || 1e9) < 540],
-  ["italianchef", "🍕", "Italian Chef", "Earn Italy's passport stamp and find Naples in Big Cities.", () => !!(P.stamp.IT && P.city.Naples)],
-  ["sushichef", "🍣", "Sushi Chef", "Earn Japan's passport stamp and find Osaka in Big Cities.", () => !!(P.stamp.JP && P.city.Osaka)],
-  ["tacochef", "🌮", "Taco Chef", "Earn Mexico's passport stamp and find Guadalajara in Big Cities.", () => !!(P.stamp.MX && P.city.Guadalajara)],
-  ["frenchbaker", "🥐", "French Baker", "Earn France's passport stamp and find Lyon in Big Cities.", () => !!(P.stamp.FR && P.city.Lyon)],
-  ["currychef", "🍛", "Curry Chef", "Earn India's passport stamp and find Mumbai in Big Cities.", () => !!(P.stamp.IN && P.city.Mumbai)],
+  ["italianchef", "🍕", "Italian Chef", "Answer every kind of question about Italy, and find Naples in Big Cities.", () => chef("IT", "Naples")],
+  ["sushichef", "🍣", "Sushi Chef", "Answer every kind of question about Japan, and find Osaka in Big Cities.", () => chef("JP", "Osaka")],
+  ["tacochef", "🌮", "Taco Chef", "Answer every kind of question about Mexico, and find Guadalajara in Big Cities.", () => chef("MX", "Guadalajara")],
+  ["frenchbaker", "🥐", "French Baker", "Answer every kind of question about France, and find Lyon in Big Cities.", () => chef("FR", "Lyon")],
+  ["currychef", "🍛", "Curry Chef", "Answer every kind of question about India, and find Mumbai in Big Cities.", () => chef("IN", "Mumbai")],
   ["metromaestro", "🚇", "Metro Maestro", "Earn 3 stars in both Capital Quest and Big Cities.", () => s3("capitals") && s3("cities")],
   ["ambassador", "🤝", "Ambassador", "Earn 3 stars in both Flag Finder and Say Hello.", () => s3("flags") && s3("languages")],
   ["mastercarto", "📐", "Master Cartographer", "Earn 3 stars in both Map Hunt and Map Puzzle.", () => s3("maphunt") && s3("puzzle")],
@@ -2679,8 +2782,8 @@ const CONT_GOALS = [];
 CONT_KEYS.forEach(k => ["easy", "hard"].forEach(lv => {
   const tag = lv === "easy" ? "Explorer" : "World Expert";
   CONT_GOALS.push([`cs_${k}_${lv}`, k, lv, "📚", CONT_SCHOLAR[k], `${SCHOLAR_GOAL[lv]} right answers about countries in ${CONT[k].n} (${tag})`, () => (P.ca && P.ca[k + "_" + lv]) || 0, () => SCHOLAR_GOAL[lv]]);
-  CONT_GOALS.push([`cap_${k}_${lv}`, k, lv, "🏛️", "Capital Captain", `Get every ${lv === "easy" ? "famous " : ""}capital in ${CONT[k].n} right in Capital Quest (${tag})`, () => contCaps(k, lv).filter(c => done(c, "capitals")).length, () => contCaps(k, lv).length]);
-  CONT_GOALS.push([`city_${k}_${lv}`, k, lv, "🏙️", "City Champion", `Get every ${lv === "easy" ? "famous-country " : ""}big city in ${CONT[k].n} right (${tag})`, () => contCities(k, lv).filter(x => P.city[x[1]]).length, () => contCities(k, lv).length]);
+  CONT_GOALS.push([`cap_${k}_${lv}`, k, lv, "🏛️", "Capital Captain", `Get every ${lv === "easy" ? "famous " : ""}capital in ${CONT[k].n} right in Capital Quest (${tag})`, () => contCaps(k, lv).filter(c => newEra().cap[c.id]).length, () => contCaps(k, lv).length]);
+  CONT_GOALS.push([`city_${k}_${lv}`, k, lv, "🏙️", "City Champion", `Get every ${lv === "easy" ? "famous-country " : ""}big city in ${CONT[k].n} right (${tag})`, () => contCities(k, lv).filter(x => newEra().city[x[1]]).length, () => contCities(k, lv).length]);
 }));
 CONT_KEYS.forEach(k => CONT_GOALS.push([`roll_${k}`, k, "any", "📣", "Roll Call", `Name every country in ${CONT[k].n} in Name Them All`, () => (P.acCont && P.acCont[k] ? P.acCont[k].n : 0), () => GEO.filter(c => c.m === k).length]));
 /* Precious metals: answer 4 questions about a metal's home country to mine it */
@@ -2718,37 +2821,43 @@ const METALS = [
 ];
 const METAL_NEED = 4;
 function checkNew() {
+  // Remove any of the newest awards that were unlocked from older results before this update.
+  Object.keys(P.bd).forEach(k => { if (/^(sp_|cap_|city_)/.test(k) && P.bd[k] < NEW_ERA) delete P.bd[k]; });
+  Object.keys(P.mt || {}).forEach(k => { if (P.mt[k] < NEW_ERA) delete P.mt[k]; });
+  newEra();
   BADGE_KEYS.slice(MODE_KEYS.length).forEach(m => TIERS.forEach(([t, n]) => { if ((P.cat[m] || 0) >= n) unlock("bd", m + "_" + t, MEDAL[t], `${cap1(t)} badge: ${BADGE_NAMES[m]}`, `${n} right answers in ${MODES[m].name}`); }));
   SPECIAL.forEach(([id, ic, n, d, ok]) => { if (ok()) unlock("bd", "sp_" + id, ic, `Special badge: ${n}`, d); });
   CONT_GOALS.forEach(([id, k, lv, ic, n, d, v, goal]) => { if (goal() > 0 && v() >= goal()) unlock("bd", id, ic, `${n}: ${CONT[k].n}${lv === "any" ? "" : lv === "easy" ? " (Explorer)" : " (World Expert)"}`, d); });
   P.mt = P.mt || {};
-  METALS.forEach(g => { if ((P.cc[g.c] || 0) >= METAL_NEED) unlock("mt", g.id, "⛏️", `Metal mined: ${g.n}`, `Found in ${BY_ID.get(g.c).n}`); });
+  METALS.forEach(g => { if ((P.n.cc[g.c] || 0) >= METAL_NEED) unlock("mt", g.id, "⛏️", `Metal mined: ${g.n}`, `Found in ${BY_ID.get(g.c).n}`); });
   if (P.acCont && Object.entries(P.acCont).some(([k, v]) => v.n >= v.of)) award("rollcall");
   if ((P.hopPerfect || 0) >= 5) award("navigator");
 }
 function acAwards() { checkAll(); }
 function hopAward(pz, perfect, gaveUp) { if (gaveUp) return; award("hop1"); if (perfect && pz.most) award("scenic"); if (perfect && pz.kind === "land") award("landlocked"); }
 function pzAward(pz, perfect, secs) { award("pz1"); if (perfect) award("pzclean"); if (secs < 20) award("pzfast"); }
-function ingotSVG(g, on) {
-  const col = on ? g.col : "#C9D3DF";
-  return `<svg viewBox="0 0 64 64"><path d="M10 44l8-18h28l8 18z" fill="${col}" stroke="#14305E" stroke-width="3" stroke-linejoin="round"/><path d="M18 26l4-8h20l4 8" fill="${col}" stroke="#14305E" stroke-width="3" stroke-linejoin="round"/><path d="M14 44h36M22 18h20" stroke="#fff" stroke-width="2" opacity=".7"/><path d="M24 34h16" stroke="#14305E" stroke-width="2" opacity=".35"/></svg>`;
+function ingotSVG(g) {
+  return `<svg viewBox="0 0 64 64"><defs><linearGradient id="ig-${g.id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient></defs>
+    <path d="M3 56l9-26h40l9 26z" fill="${g.col}" stroke="#14305E" stroke-width="3" stroke-linejoin="round"/><path d="M3 56l9-26h40l9 26z" fill="url(#ig-${g.id})"/>
+    <path d="M12 30l7-20h26l7 20z" fill="${g.col}" stroke="#14305E" stroke-width="3" stroke-linejoin="round"/><path d="M12 30l7-20h26l7 20z" fill="#fff" opacity=".28"/>
+    <path d="M22 15h14" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".85"/><path d="M10 50h12" stroke="#fff" stroke-width="2.6" stroke-linecap="round" opacity=".6"/></svg>`;
 }
 function metalsHTML() {
-  return `<div class="awhead"><div><h3>Precious Metals</h3><p>Answer ${METAL_NEED} questions about a metal's home country to mine it. Tap any metal to read about it.</p></div></div><div class="ggrid">${METALS.map(g => {
-    const on = !!(P.mt && P.mt[g.id]), c = BY_ID.get(g.c), n = Math.min(P.cc[g.c] || 0, METAL_NEED);
-    return `<button class="gcard${on ? "" : " off"}" data-m="${g.id}">${ingotSVG(g, on)}<b>${g.n}</b><small>${on ? g.kind : `${flagImg(c)}${n}/${METAL_NEED}`}</small></button>`;
+  return `<div class="awhead"><div><h3>Precious Metals</h3><p>Answer ${METAL_NEED} questions about a metal's home country to mine it. Only answers from this update on count. Tap any metal to read about it.</p></div></div><div class="ggrid">${METALS.map(g => {
+    const on = !!(P.mt && P.mt[g.id]), c = BY_ID.get(g.c), n = Math.min(newEra().cc[g.c] || 0, METAL_NEED);
+    return `<button class="gcard metal${on ? "" : " off"}" data-m="${g.id}">${ingotSVG(g)}<b>${g.n}</b><small>${on ? g.kind : `${flagImg(c)}${n}/${METAL_NEED}`}</small></button>`;
   }).join("")}</div>`;
 }
 function metalInfo(id) {
   const g = METALS.find(x => x.id === id), c = BY_ID.get(g.c), on = !!(P.mt && P.mt[id]); sfx("tap");
-  showInfo(`<div class="gemhead">${ingotSVG(g, true)}<div><h2>${g.n}</h2><small>${g.kind} metal · ${on ? "In your collection!" : `Answer ${METAL_NEED} questions about ${esc(c.n)} to mine it.`}</small></div></div>
+  showInfo(`<div class="gemhead">${ingotSVG(g)}<div><h2>${g.n}</h2><small>${g.kind} metal · ${on ? "In your collection!" : `Answer ${METAL_NEED} questions about ${esc(c.n)} to mine it.`}</small></div></div>
     <dl class="gemdl"><dt>Where it's mined</dt><dd>${esc(g.where)}</dd>
     <dt>How valuable</dt><dd><span class="gstars">${"◆".repeat(g.stars)}<span class="off">${"◆".repeat(5 - g.stars)}</span></span></dd>
     <dt>What it's used for</dt><dd>${esc(g.uses)}</dd><dt>Did you know?</dt><dd>${esc(g.story)}</dd></dl>
     <button class="btn" id="info-close">Close</button>`);
 }
 function contGoalsHTML() {
-  return `<div class="awhead"><div><h3>Continents</h3><p>Master each continent at Explorer and World Expert level.</p></div></div>
+  return `<div class="awhead"><div><h3>Continents</h3><p>Master each continent at Explorer and World Expert level. Progress counts from this update on.</p></div></div>
     <div class="chips" id="aw-conts">${CONT_KEYS.map(k => `<button data-k="${k}" aria-pressed="${k === awCont}">${CONT[k].n}</button>`).join("")}</div>
     <div class="tgrid">${CONT_GOALS.filter(g => g[1] === awCont).map(([id, k, lv, ic, n, d, v, goal]) => {
       const on = !!P.bd[id], G0 = goal(), val = Math.min(v(), G0);
@@ -2756,7 +2865,7 @@ function contGoalsHTML() {
     }).join("")}</div>`;
 }
 function specialHTML() {
-  return `<div class="awhead"><div><h3>Special badges</h3><p>Fun badges for doing well across different games.</p></div></div><div class="tgrid">${SPECIAL.map(([id, ic, n, d]) =>
+  return `<div class="awhead"><div><h3>Special badges</h3><p>Fun badges for doing well across different games. Progress counts from this update on.</p></div></div><div class="tgrid">${SPECIAL.map(([id, ic, n, d]) =>
     `<div class="tcard${P.bd["sp_" + id] ? "" : " off"}"><span class="rosette">${ic}</span><b>${esc(n)}</b><small>${esc(d)}</small>${P.bd["sp_" + id] ? `<span class="got">Earned</span>` : ""}</div>`).join("")}</div>`;
 }
 
@@ -2791,6 +2900,8 @@ function onAnswer(q, ok) {
       const c = BY_ID.get(q.cid);
       (P.st[q.cid] = P.st[q.cid] || {})[q.mode] = 1;
       if (c) { P.ca = P.ca || {}; const ck = c.m + "_" + S.level; P.ca[ck] = (P.ca[ck] || 0) + 1; }
+      const N = newEra(); N.cc[q.cid] = (N.cc[q.cid] || 0) + 1; (N.st[q.cid] = N.st[q.cid] || {})[q.mode] = 1;
+      if (q.mode === "capitals") N.cap[q.cid] = 1;
       P.cc[q.cid] = (P.cc[q.cid] || 0) + 1;
       if (c && !P.stamp[q.cid] && catsFor(c).every(m => done(c, m))) { P.stamp[q.cid] = Date.now(); saveP(); toast("🛂", `Passport stamp: ${c.n}!`, "You answered every kind of question about it."); }
     }
@@ -2798,7 +2909,7 @@ function onAnswer(q, ok) {
     if (G.streak >= 10) award("streak10");
     if (G.timeTotal && G.timeLeft / G.timeTotal >= .9) award("fast");
     if (q.bull) award("bull");
-    if (q.city) { P.city[q.city] = 1; if (cnt(P.city) >= 25) award("metro"); }
+    if (q.city) { P.city[q.city] = 1; newEra().city[q.city] = 1; if (cnt(P.city) >= 25) award("metro"); }
     if (q.clues && G.clueIdx === 0) award("sleuth");
   }
   checkAll();
@@ -3341,7 +3452,7 @@ function acFinish(title) {
   const stars = NTA.cont ? (n >= of ? 3 : n >= of * .7 ? 2 : n >= of * .4 ? 1 : 0) : (n >= 150 ? 3 : n >= 100 ? 2 : n >= 50 ? 1 : 0);
   const key = bestKey("allc"), prev = BEST[key];
   const isBest = !prev || n > prev.score;
-  BEST[key] = { score: Math.max(n, prev ? prev.score : 0), stars: Math.max(stars, prev ? prev.stars : 0) };
+  BEST[key] = { score: Math.max(n, prev ? prev.score : 0), stars: Math.max(stars, prev ? prev.stars : 0) }; noteStars(key, stars);
   LS.set("best", BEST);
   P.seen.allc = 1;
   if (NTA.cont) {
@@ -3834,7 +3945,7 @@ function endGame() {
   const stars = pct >= .9 ? 3 : pct >= .6 ? 2 : pct >= .3 ? 1 : 0;
   const key = bestKey(G.mode), prev = BEST[key];
   const isBest = !prev || G.score > prev.score;
-  BEST[key] = { score: Math.max(G.score, prev ? prev.score : 0), stars: Math.max(stars, prev ? prev.stars : 0) };
+  BEST[key] = { score: Math.max(G.score, prev ? prev.score : 0), stars: Math.max(stars, prev ? prev.stars : 0) }; noteStars(key, stars);
   LS.set("best", BEST);
   const lbr = lbRank(G.mode, S.level, G.score);
   onRoundEnd(stars);
@@ -4551,7 +4662,7 @@ if (window.history && history.pushState) {
 }
 
 /* ================= check for updates ================= */
-const APP_VERSION = "atlas-v24";
+const APP_VERSION = "atlas-v27";
 const verNum = v => +((String(v).match(/(\d+)\s*$/) || [0, 0])[1]);
 async function remoteVersion() {
   const res = await fetch("sw.js?check=" + Date.now(), { cache: "no-store" });
