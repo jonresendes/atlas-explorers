@@ -1071,6 +1071,37 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
 .pv-row svg { height: 100%; width: auto; flex: 0 1 auto; min-width: 0; }
 .pv-row b { font-family: var(--display); font-weight: 400; font-size: 11cqw; line-height: 1; color: var(--ink); }
 .catgames.obj-sign .oprev { width: auto; height: 100%; aspect-ratio: 1.55; }
+
+/* ---- Flag Marathon ---- */
+#s-fr { gap: clamp(6px, 1.2vh, 12px); }
+.frscore { display: flex; flex-direction: column; align-items: flex-end; gap: 0; }
+.frscore small { font-size: .9rem; font-weight: 900; }
+.frprog { flex: none; height: 10px; border: 2px solid var(--ink); border-radius: 99px; background: var(--paper); overflow: hidden; }
+.frprog i { display: block; height: 100%; background: linear-gradient(90deg, #22C384, #FFC93C); transition: width .3s ease; }
+.frstatus { flex: none; text-align: center; font-weight: 900; font-size: .9rem; min-height: 1.3em; }
+.frstatus .clean { color: #12955F; } .frstatus .lost { color: #B8451F; }
+.frflag { flex: 1 1 auto; min-height: 0; display: grid; place-items: center; }
+.frflag img { max-width: min(100%, 520px); max-height: 100%; width: auto; height: auto; min-height: 60px; border: 3px solid var(--ink); border-radius: 10px; box-shadow: 0 5px 0 var(--shadow); background: #fff; }
+.frchoices { flex: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(6px, 1.2vh, 12px); width: 100%; }
+.frchoices .opt { width: 100%; min-height: clamp(52px, 8vh, 72px); justify-content: center; text-align: center; font-size: clamp(.95rem, 2.3vh, 1.2rem); }
+@media (min-width: 720px) and (min-aspect-ratio: 5/4) { .frchoices { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.frtype { display: none; flex: none; }
+#s-fr.typing .frchoices { display: none; }
+#s-fr.typing .frtype { display: grid; gap: 6px; }
+.frfeed { min-height: 1.6em; text-align: center; font-family: var(--display); font-size: 1.25rem; }
+.frfeed .ok { color: #12955F; } .frfeed .no { color: #B8451F; }
+.frmissed { display: flex; flex-wrap: wrap; gap: 4px 10px; justify-content: center; font-weight: 800; font-size: .8rem; max-height: 30vh; overflow-y: auto; }
+.frmissed span { display: inline-flex; align-items: center; gap: 4px; }
+/* ticket stars sit at the top of the stub, clear of the notches */
+.obj-ticket .ostars { top: auto; bottom: 11%; right: 3.5%; width: 19%; }
+/* preview flags: each one crops into its own cell (works the same in Safari) */
+.pv-flags > span { position: relative; overflow: hidden; border-radius: .8cqw; border: 1.5px solid var(--ink); min-height: 0; }
+.pv-flags > span img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border: 0; border-radius: 0; }
+.pv-run { display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: .8cqw; }
+.pv-strip { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: 1fr 1fr; gap: .8cqw; min-height: 0; }
+.pv-strip > span { position: relative; overflow: hidden; border: 1px solid var(--ink); border-radius: .5cqw; min-height: 0; }
+.pv-strip img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.pv-run b { font-family: var(--display); font-weight: 400; font-size: 4.4cqw; text-align: center; color: var(--ink); line-height: 1; }
 </style>
 
 </head>
@@ -1243,6 +1274,21 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
     <div class="hoptask pztask" id="pz-task"></div>
     <div class="pzboard" id="pz-board"></div>
     <div class="pzbar"><div class="acfeed hopfeed" id="pz-feed" aria-live="polite"></div><button class="btn ghost" id="pz-show">Show me</button></div>
+  </section>
+
+  <!-- FLAG MARATHON -->
+  <section class="screen" id="s-fr" hidden>
+    <div class="hud">
+      <button class="iconbtn" id="fr-pause" aria-label="Pause"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1.5"/><rect x="14" y="5" width="4" height="14" rx="1.5"/></svg></button>
+      <div class="mid"><div class="mode">Flag Marathon</div><div class="qn num" id="fr-qn">Flag 1 of 197</div></div>
+      <div class="scorebox frscore"><small>✓ <b class="num" id="fr-right">0</b></small><small>✗ <b class="num" id="fr-wrong">0</b></small></div>
+    </div>
+    <div class="frprog"><i id="fr-bar"></i></div>
+    <div class="frstatus" id="fr-status"></div>
+    <div class="frflag" id="fr-flag"></div>
+    <div class="opts frchoices" id="fr-opts"></div>
+    <div class="frtype"><div class="frfeed" id="fr-feed" aria-live="polite"></div>
+      <div class="acbar"><input id="fr-input" class="acinput" type="text" autocomplete="off" autocorrect="off" autocapitalize="words" spellcheck="false" enterkeyhint="done" placeholder="Which country is this?" aria-label="Type the country"><button class="btn ghost" id="fr-skip">I don't know</button></div></div>
   </section>
 
   <!-- PLAYERS -->
@@ -1556,6 +1602,7 @@ const ICON = {
   cities: `<svg viewBox="0 0 48 48" class="ico"><path d="M5 42V20h9v22M14 42V9h10v33M24 42V24h7v18M31 42V15h11v27" fill="#E9A6E3"/><path d="M17 14h4M17 20h4M17 26h4M17 32h4M34 20h5M34 26h5M34 32h5M8 26h3M8 32h3" stroke-width="2"/><path d="M3 42h42"/><circle cx="38" cy="7" r="3.5" fill="#FFC93C"/></svg>`,
   landmarks: `<svg viewBox="0 0 48 48" class="ico"><circle cx="37" cy="11" r="5.5" fill="#FF6B57"/><path d="M5 41L21 13l16 28z" fill="#FFC93C"/><path d="M21 13l-5 28M21 13l7 28" stroke-width="2"/><path d="M2 41h44"/></svg>`,
   neighbours: `<svg viewBox="0 0 48 48" class="ico"><path d="M5 8h15l2 12-7 6H5z" fill="#FF8FB1"/><path d="M20 8h23v15l-11 5-10-8z" fill="#7FD0F5"/><path d="M5 26h10l7-6 10 8 11-5v17H5z" fill="#9EDB7E"/><circle cx="22" cy="24" r="4" fill="#FFC93C"/></svg>`,
+  flagrun: `<svg viewBox="0 0 48 48" class="ico"><path d="M10 6v38" stroke-width="3"/><path d="M10 8c8-4 14 4 26 0v16c-12 4-18-4-26 0z" fill="#FF6B57"/><path d="M10 16c8-4 14 4 26 0" stroke="#fff" stroke-width="3"/><path d="M2 30h6M4 36h5M2 42h6" stroke-width="2.4"/><text x="41" y="44" text-anchor="end" font-size="11" font-family="Lilita One" fill="#14305E" stroke="none">197</text></svg>`,
   hop: `<svg viewBox="0 0 48 48" class="ico"><path d="M4 10h14l3 9-6 6H4zM21 19l12-9h11v14l-10 4zM15 25l6-6 13 9-3 13H8z" fill="#BDF0A0"/><path d="M10 17q8 2 13 9t14 7" stroke="#FF6B57" stroke-width="3" stroke-dasharray="3 4"/><circle cx="10" cy="17" r="4" fill="#3FB6EC"/><path d="M37 26c-4 0-6 3-6 5 0 4 6 10 6 10s6-6 6-10c0-2-2-5-6-5z" fill="#FF6B57"/><circle cx="37" cy="31" r="2" fill="#fff"/></svg>`,
   puzzle: `<svg viewBox="0 0 48 48" class="ico"><path d="M6 8h14v5a4 4 0 1 0 8 0V8h14v14h-5a4 4 0 1 0 0 8h5v12H28v-5a4 4 0 1 0-8 0v5H6V30h5a4 4 0 1 0 0-8H6z" fill="#FFC93C"/><path d="M24 8v12M24 30v12M6 26h14M28 26h14" stroke-width="1.6" stroke-dasharray="2 3"/></svg>`,
   h2h: `<svg viewBox="0 0 48 48" class="ico"><circle cx="15" cy="15" r="7" fill="#FF6B57"/><circle cx="33" cy="15" r="7" fill="#3FB6EC"/><path d="M4 40c0-8 5-13 11-13s11 5 11 13zM22 40c0-8 5-13 11-13s11 5 11 13z" fill="#FFC93C"/></svg>`,
@@ -1575,6 +1622,7 @@ const MODES = {
   landmarks: { name: "Landmarks",       c: "#D8B57A", blurb: "Find where famous places are in the world." },
   neighbours:{ name: "Neighbours",      c: "#93B4FF", blurb: "Guess the country from its neighbours." },
   cities:    { name: "Big Cities",      c: "#E9A6E3", blurb: "Find the country each famous city is in." },
+  flagrun:   { name: "Flag Marathon",   c: "#FF9A2E", blurb: "All 197 flags in one run. Can you get every one right?" },
   hop:       { name: "Border Hop",      c: "#7ED957", blurb: "Cross borders from one country to another, following the rules." },
   puzzle:    { name: "Map Puzzle",      c: "#FFC93C", blurb: "Drag country shapes into their places on the map." },
   allc:      { name: "Name Them All",   c: "#FFB3A1", blurb: "Type every country you can before time runs out." },
@@ -1582,7 +1630,7 @@ const MODES = {
 };
 const MODE_KEYS = ["flags", "capitals", "shapes", "clues", "languages", "animals", "maphunt", "cappin", "landmarks", "neighbours", "cities"];
 const ALL_TILES = [...MODE_KEYS, "mix"];
-const MENU_TILES = [...MODE_KEYS, "hop", "puzzle", "allc", "mix"];
+const MENU_TILES = [...MODE_KEYS, "flagrun", "hop", "puzzle", "allc", "mix"];
 const MAX_STARS = MENU_TILES.length * 3 * 2;
 const bestKey = (m, lv = S.level) => m + "_" + lv;
 const starStr = n => [0, 1, 2].map(i => i < n ? "★" : `<span class="off">★</span>`).join("");
@@ -1603,7 +1651,7 @@ function renderMenu() {
    The main menu shows four ways to travel. Each opens a screen with its games,
    drawn as a different travel object: train tickets, road signs, boarding passes, postcards. */
 const CATS = [
-  { k: "train", n: "Flag & Fact Express", sub: "Flags, capitals, shapes and mystery clues", c: "#FF6B57", obj: "ticket", games: ["flags", "capitals", "shapes", "clues"] },
+  { k: "train", n: "Flag & Fact Express", sub: "Flags, capitals, shapes and mystery clues", c: "#FF6B57", obj: "ticket", games: ["flags", "capitals", "shapes", "clues", "flagrun"] },
   { k: "van", n: "Map Road Trip", sub: "Maps, borders, routes and puzzles", c: "#22C384", obj: "sign", games: ["maphunt", "cappin", "neighbours", "hop", "puzzle"] },
   { k: "plane", n: "Culture Flight", sub: "Languages, animals, landmarks and cities", c: "#3FB6EC", obj: "pass", games: ["languages", "animals", "landmarks", "cities"] },
   { k: "boat", n: "Grand Voyage", sub: "Big challenges and the World Tour", c: "#7FD0F5", obj: "postcard", games: ["allc", "mix", "h2h"] }
@@ -1708,7 +1756,7 @@ const OBJ_SVG = {
     <path d="M154 62q8-6 16 0t16 0M154 72q8-6 16 0t16 0M154 82q8-6 16 0t16 0" fill="none" stroke="#8A97AA" stroke-width="2" vector-effect="non-scaling-stroke"/>
 </svg>`
 };
-const OBJ_KICK = { ticket: i => `Platform ${i + 1} · Admit one`, sign: i => `Exit ${i + 1}`, pass: i => `Gate A${i + 1} · Boarding pass`, postcard: () => "Post card" };
+const OBJ_KICK = { ticket: i => `Platform ${i + 1}`, sign: i => `Exit ${i + 1}`, pass: i => `Gate A${i + 1} · Boarding pass`, postcard: () => "Post card" };
 const catStars = cat => cat.games.filter(g => MODES[g]).reduce((s, g) => s + ((BEST[bestKey(g)] || {}).stars || 0), 0);
 let curCat = null;
 function renderVehicles() {
@@ -1760,7 +1808,8 @@ function gamePreview(k) {
     return `<svg viewBox="${b.x0 - pad} ${b.y0 - pad} ${b.w + pad * 2} ${b.h + pad * 2}" preserveAspectRatio="xMidYMid meet"><path d="${C(id).s}" fill="${fill}" stroke="#14305E" stroke-width="5" stroke-linejoin="round"/>${extra}</svg>`; };
   const route = (mapId, ids) => { const pts = ids.map(id => mcenter(mapId, id)); return `<polyline points="${pts.map(p => p.join(",")).join(" ")}" fill="none" stroke="#14305E" stroke-width="${MAPS[mapId].w / 45}" stroke-dasharray="${MAPS[mapId].w / 30} ${MAPS[mapId].w / 45}" stroke-linecap="round"/>${pts.map(p => `<circle cx="${p[0]}" cy="${p[1]}" r="${MAPS[mapId].w / 40}" fill="#14305E"/>`).join("")}`; };
   switch (k) {
-    case "flags": return `<span class="pv-flags">${["BR", "JP", "CA", "KE"].map(id => flagImg(C(id))).join("")}</span>`;
+    case "flags": return `<span class="pv-flags">${["BR", "JP", "CA", "KE"].map(id => `<span>${flagImg(C(id))}</span>`).join("")}</span>`;
+    case "flagrun": return `<span class="pv-run"><span class="pv-strip">${["FR", "IN", "MX", "ZA", "SE", "AR", "KR", "NG"].map(id => `<span>${flagImg(C(id))}</span>`).join("")}</span><b>1 → 197</b></span>`;
     case "capitals": { const c = C("FR"); return shape("FR", `<path d="M${c.cp[0]} ${c.cp[1] - 22}l6.5 13.5 15 1.8-11 10.2 3 14.7-13.5-7.4-13.5 7.4 3-14.7-11-10.2 15-1.8z" fill="#FFC93C" stroke="#14305E" stroke-width="4" stroke-linejoin="round"/>`, "#7FD0F5"); }
     case "shapes": return `<span class="pv-row">${shape("IT", "", "#C9D3DF")}<b>?</b></span>`;
     case "clues": return `<svg viewBox="0 0 160 100"><rect x="6" y="6" width="148" height="88" rx="10" fill="#fff" stroke="#14305E" stroke-width="4"/>${[0, 1, 2].map(i => `<circle cx="24" cy="${28 + i * 24}" r="8" fill="${["#FF6B57", "#FFC93C", "#7FD0F5"][i]}" stroke="#14305E" stroke-width="3"/><path d="M40 ${28 + i * 24}h${[80, 60, 70][i]}" stroke="#8E9CB3" stroke-width="7" stroke-linecap="round"/>`).join("")}<text x="128" y="88" font-size="44" font-family="Lilita One" fill="#B9A2FF" stroke="#14305E" stroke-width="2.5">?</text></svg>`;
@@ -2289,6 +2338,116 @@ function pzPause() {
   $("#pz-quit").onclick = () => { $("#info").hidden = true; PZ.on = false; goHome(); };
 }
 
+/* ================= Flag Marathon: every country's flag in one run =================
+   Explorer: pick the country from 4 choices. World Expert: type the country's name.
+   Get all 197 without a mistake to earn Keep the Cadence (Explorer) or World Tapestry (World Expert).
+   A run is saved as you go, so it can be finished later. */
+const FR = { on: false, lv: "easy", order: [], i: 0, right: 0, wrong: 0, t: 0, t0: 0, busy: false, missed: [] };
+const frKey = lv => "frun_" + lv;
+function frSave() { if (FR.on) LS.set(frKey(FR.lv), { order: FR.order, i: FR.i, right: FR.right, wrong: FR.wrong, t: FR.t + (performance.now() - FR.t0) / 1000, missed: FR.missed }); }
+function startFlagRun() {
+  sfx("tap"); H.on = false;
+  const lv = S.level, saved = LS.get(frKey(lv), null);
+  const fresh = () => { $("#info").hidden = true; frBegin(lv, null); };
+  const intro = lv === "easy" ? "Name all 197 flags by picking the right country from 4 choices." : "Name all 197 flags by typing each country's name.";
+  const prize = lv === "easy" ? "🥁 <b>Keep the Cadence</b>" : "🧵 <b>World Tapestry</b>";
+  showInfo(`<div class="acsetup"><h2>Flag Marathon</h2><p>${intro} Get every one right to earn the ${prize} badge.</p>
+    <p>It's a long run, so it saves as you go. You can stop and finish later.</p>
+    ${saved && saved.i < saved.order.length ? `<p><b>Run in progress:</b> flag ${saved.i + 1} of ${saved.order.length} · ${saved.right} right · ${saved.wrong} wrong</p>` : ""}
+    <div class="cc-actions"><button class="btn ghost" id="info-close">Back</button>
+    ${saved && saved.i < saved.order.length ? `<button class="btn alt" id="fr-new">New run</button><button class="btn" id="fr-resume">Keep going</button>` : `<button class="btn" id="fr-new">Start!</button>`}</div></div>`);
+  $("#fr-new").onclick = () => { if (saved && saved.i < saved.order.length) { confirmBox("Start a new run?", "Your run in progress will be lost.", "Start over", fresh); $("#c-no").textContent = "Cancel"; } else fresh(); };
+  const r = $("#fr-resume"); if (r) r.onclick = () => { $("#info").hidden = true; frBegin(lv, saved); };
+}
+function frBegin(lv, saved) {
+  sfx("go");
+  Object.assign(FR, saved ? { on: true, lv, order: saved.order, i: saved.i, right: saved.right, wrong: saved.wrong, t: saved.t || 0, missed: saved.missed || [] }
+    : { on: true, lv, order: shuffleArr(GEO.map(c => c.id)), i: 0, right: 0, wrong: 0, t: 0, missed: [] });
+  FR.t0 = performance.now(); FR.busy = false;
+  $("#s-fr").classList.toggle("typing", lv === "hard");
+  show("s-fr"); frShow();
+}
+function frShow() {
+  const id = FR.order[FR.i], c = BY_ID.get(id);
+  $("#fr-qn").textContent = `Flag ${FR.i + 1} of ${FR.order.length}`;
+  $("#fr-right").textContent = FR.right; $("#fr-wrong").textContent = FR.wrong;
+  $("#fr-bar").style.width = (FR.i / FR.order.length * 100).toFixed(1) + "%";
+  $("#fr-flag").innerHTML = flagImg(c);
+  $("#fr-status").innerHTML = FR.wrong ? `<span class="lost">${FR.wrong} wrong · no badge this run, but keep going for your best score!</span>` : `<span class="clean">Perfect so far! 🔥</span>`;
+  if (FR.lv === "easy") {
+    const near = shuffleArr(GEO.filter(x => x.id !== id && x.m === c.m)).slice(0, 3);
+    while (near.length < 3) { const x = pick(GEO); if (x.id !== id && !near.includes(x)) near.push(x); }
+    const opts = shuffleArr([c, ...near]);
+    $("#fr-opts").innerHTML = opts.map(o => `<button class="opt" data-id="${o.id}"><span>${esc(o.n)}</span></button>`).join("");
+    $("#fr-opts").querySelectorAll(".opt").forEach(b => safeTap(b, () => frAnswer(b.dataset.id, b)));
+  } else {
+    const inp = $("#fr-input"); inp.value = ""; inp.disabled = false;
+    setTimeout(() => { try { inp.focus({ preventScroll: true }); } catch (e) {} }, 60);
+  }
+}
+function frAnswer(pickId, btn) {
+  if (FR.busy || !FR.on) return;
+  FR.busy = true;
+  const id = FR.order[FR.i], ok = pickId === id, c = BY_ID.get(id);
+  if (ok) { FR.right++; sfx("right"); onAnswer({ mode: "flags", cid: id }, true); }
+  else { FR.wrong++; FR.missed.push(id); sfx("wrong"); buzz(60); }
+  if (FR.lv === "easy") {
+    $("#fr-opts").querySelectorAll(".opt").forEach(b => { b.disabled = true; if (b.dataset.id === id) b.classList.add("right"); else if (b === btn) b.classList.add("wrong"); else b.classList.add("dim"); });
+  } else {
+    $("#fr-input").disabled = true;
+    $("#fr-feed").innerHTML = ok ? `<span class="ok">✓ ${esc(c.n)}</span>` : `<span class="no">It's <b>${esc(c.n)}</b></span>`;
+  }
+  FR.i++; frSave();
+  setTimeout(() => {
+    FR.busy = false; $("#fr-feed").innerHTML = "";
+    if (FR.i >= FR.order.length) frFinish(); else frShow();
+  }, ok ? 550 : 1600);
+}
+/* Typing: a name is accepted as soon as it matches; Enter or "I don't know" counts as an answer */
+function frInput(submit) {
+  if (FR.busy || FR.lv !== "hard") return;
+  const v = acNorm($("#fr-input").value), id = FR.order[FR.i];
+  if (!v) { if (submit === "skip") frAnswer(null); return; }
+  const hit = AC_MAP.get(v);
+  if (hit === id) {
+    // wait a moment if a longer name for this same country is still being typed
+    const longer = AC_KEYS.some(([k, o]) => o === id && k.length > v.length && k.startsWith(v));
+    if (!longer || submit) return frAnswer(id);
+    clearTimeout(FR.wait); FR.wait = setTimeout(() => { if (AC_MAP.get(acNorm($("#fr-input").value)) === id) frAnswer(id); }, 900);
+    return;
+  }
+  if (submit) frAnswer(hit || "?");
+}
+function frFinish() {
+  FR.on = false; LS.set(frKey(FR.lv), null);
+  const n = FR.order.length, sc = FR.right, perfect = FR.wrong === 0 && sc === n, secs = Math.round(FR.t + (performance.now() - FR.t0) / 1000);
+  const stars = sc >= n - 5 ? 3 : sc >= n * .8 ? 2 : sc >= n / 2 ? 1 : 0;
+  const key = bestKey("flagrun", FR.lv), prev = BEST[key];
+  BEST[key] = { score: Math.max(sc, prev ? prev.score : 0), stars: Math.max(stars, prev ? prev.stars : 0) }; noteStars(key, stars); LS.set("best", BEST);
+  P.seen.flagrun = 1; P.rounds++; P.total += sc * 10;
+  if (perfect) { P.frPerfect = P.frPerfect || {}; P.frPerfect[FR.lv] = Date.now(); }
+  saveP(); checkAll();
+  sfx("fanfare"); if (perfect || stars === 3) confetti();
+  const mins = Math.floor(secs / 60), s2 = secs % 60;
+  showInfo(`<div class="acres"><h2>${perfect ? (FR.lv === "easy" ? "🥁 Keep the Cadence!" : "🧵 World Tapestry!") : "Marathon complete!"}</h2>
+    <div class="bigstars">${[0, 1, 2].map(i => `<span class="stars">${i < stars ? "★" : '<span class="off">★</span>'}</span>`).join("")}</div>
+    <div class="bigscore num">${sc}<small> / ${n}</small></div>
+    <p>${perfect ? "Every single flag right. You earned the badge!" : `${FR.wrong} wrong · time ${mins}:${String(s2).padStart(2, "0")}`}</p>
+    ${FR.missed.length ? `<p class="frmissed">${FR.missed.slice(0, 24).map(id => `<span title="${esc(BY_ID.get(id).n)}">${flagImg(BY_ID.get(id), "fsm")} ${esc(BY_ID.get(id).n)}</span>`).join("")}${FR.missed.length > 24 ? ` and ${FR.missed.length - 24} more` : ""}</p>` : ""}</div>
+    <div class="cc-actions"><button class="btn alt" id="fr-more">More games</button><button class="btn" id="fr-again">Run again</button></div>`);
+  $("#fr-again").onclick = () => { $("#info").hidden = true; startFlagRun(); };
+  $("#fr-more").onclick = () => { $("#info").hidden = true; goHome(); };
+  const rk = lbRank("flagrun", FR.lv, sc);
+  if (rk) { G.mode = "flagrun"; G.score = sc; setTimeout(() => askInitials(rk), 900); }
+}
+function frPause() {
+  if (!FR.on) return goHome();
+  frSave();
+  showInfo(`<h2>Paused</h2><p>Flag ${FR.i + 1} of ${FR.order.length} · ${FR.right} right · ${FR.wrong} wrong</p><p>Your run is saved. You can come back and finish it later.</p>
+    <button class="btn" id="info-close">Resume</button><button class="btn danger" id="fr-quit">Save and quit</button>`);
+  $("#fr-quit").onclick = () => { $("#info").hidden = true; frSave(); FR.on = false; goHome(); };
+}
+
 /* ================= question builders ================= */
 function countryPool(mode) {
   let p = S.level === "easy" ? GEO.filter(c => EASY.has(c.id)) : GEO.slice();
@@ -2771,6 +2930,8 @@ const SPECIAL = [
   ["photographer", "📸", "Wildlife Photographer", "Earn 3 stars in both Animal Atlas and Landmarks.", () => s3("animals") && s3("landmarks")],
   ["pathfinder", "🎯", "Pathfinder", "Earn 3 stars in both Capital Pin and Border Hop.", () => s3("cappin") && s3("hop")],
   ["secretagent", "🕵️", "Secret Agent", "Earn 3 stars in both Mystery Country and Name Them All.", () => s3("clues") && s3("allc")],
+  ["keepcadence", "🥁", "Keep the Cadence", "Explorer: name all 197 flags in one Flag Marathon run without a single mistake.", () => !!(P.frPerfect && P.frPerfect.easy)],
+  ["worldtapestry", "🧵", "World Tapestry", "World Expert: type all 197 countries from their flags in one Flag Marathon run without a single mistake.", () => !!(P.frPerfect && P.frPerfect.hard)],
   ["shapemaster", "🔷", "Shape Master", "Earn 3 stars in both Shape Shifter and Map Puzzle.", () => s3("shapes") && s3("puzzle")]
 ];
 /* Continent achievements, with an Explorer and a World Expert level for each */
@@ -4136,11 +4297,15 @@ $("#hop-undo").onclick = hopUndo;
 $("#hop-show").onclick = () => { if (HOP.solved) return; sfx("tap"); confirmBox("Show a route?", "You won't get points for this trip.", "Show me", () => { HOP.route = HOP.pz.opt.slice(); hopSolved(true); }); $("#c-no").textContent = "Keep trying"; };
 $("#pz-pause").onclick = () => { sfx("tap"); pzPause(); };
 $("#pz-show").onclick = () => { sfx("tap"); confirmBox("Show the answer?", "You won't get points for this puzzle.", "Show me", pzShow); $("#c-no").textContent = "Keep trying"; };
+$("#fr-pause").onclick = () => { sfx("tap"); frPause(); };
+$("#fr-input").addEventListener("input", () => frInput());
+$("#fr-input").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); frInput(true); } });
+$("#fr-skip").onclick = () => { sfx("tap"); frInput("skip"); };
 $("#cat-back").onclick = () => { sfx("tap"); curCat = null; renderMenu(); show("s-menu"); };
 $("#cat-games").addEventListener("click", e => {
   const b = e.target.closest(".gobj"); if (!b) return; H.on = false;
   const m = b.dataset.mode;
-  if (m === "allc") startAllc(); else if (m === "h2h") openPage("s-h2h", "s-cat"); else if (m === "hop") startHop(); else if (m === "puzzle") startPuzzle(); else startGame(m);
+  if (m === "allc") startAllc(); else if (m === "flagrun") startFlagRun(); else if (m === "h2h") openPage("s-h2h", "s-cat"); else if (m === "hop") startHop(); else if (m === "puzzle") startPuzzle(); else startGame(m);
 });
 $("#ac-input").addEventListener("input", acInput);
 $("#ac-input").addEventListener("keydown", e => { if (e.key === "Enter") { const id = AC_MAP.get(acNorm(e.target.value)); if (id && !NTA.found[id]) acAccept(id); } });
@@ -4615,6 +4780,7 @@ function appBack() {
   if (vis("#s-allc")) { if (NTA.done) acExit(); else acPause(); return; }
   if (vis("#s-hop")) { hopPause(); return; }
   if (vis("#s-pz")) { pzPause(); return; }
+  if (vis("#s-fr")) { frPause(); return; }
   if (vis("#s-map")) { if (EX.map !== "WORLD") { EX.map = "WORLD"; EX.sel = null; renderExplorer(); sfx("tap"); } else { sfx("tap"); renderMenu(); show("s-menu"); } return; }
   if (vis("#s-h2hres")) { $("#hr-menu").click(); return; }
   if (vis("#s-results")) { $("#r-menu").click(); return; }
@@ -4662,7 +4828,7 @@ if (window.history && history.pushState) {
 }
 
 /* ================= check for updates ================= */
-const APP_VERSION = "atlas-v27";
+const APP_VERSION = "atlas-v28";
 const verNum = v => +((String(v).match(/(\d+)\s*$/) || [0, 0])[1]);
 async function remoteVersion() {
   const res = await fetch("sw.js?check=" + Date.now(), { cache: "no-store" });
