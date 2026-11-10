@@ -363,7 +363,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
   background: var(--paper); color: var(--ink); box-shadow: 0 4px 0 var(--shadow);
   font-weight: 900; font-size: clamp(.92rem, 2.1vh, 1.08rem); line-height: 1.15; transition: transform .1s, box-shadow .1s, background .2s, opacity .2s;
 }
-.opt:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--shadow); }
+.opt.pressing { transform: translateY(3px); box-shadow: 0 1px 0 var(--shadow); filter: brightness(.96); }
 .opt .key { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; font-family: var(--display); font-size: 1.05rem; color: var(--paper); border: 2px solid var(--ink); }
 .opt:nth-child(1) .key { background: var(--coral); }
 .opt:nth-child(2) .key { background: var(--sky); }
@@ -585,7 +585,8 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
 
 /* ---------- Trophy Room ---------- */
 #s-awards { overflow: hidden; }
-.awtabs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; flex: none; }
+.awtabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; flex: none; }
+@media (min-width: 720px) { .awtabs { grid-template-columns: repeat(7, minmax(0, 1fr)); } }
 .awtabs button { background: var(--paper); border: 2px solid var(--ink); border-radius: 14px; padding: 4px 2px; display: grid; justify-items: center; gap: 0; font-size: .68rem; font-weight: 900; box-shadow: 0 2px 0 var(--shadow); line-height: 1.2; }
 .awtabs .ic { font-size: 1.2rem; line-height: 1.15; }
 .awtabs b { font-family: var(--display); font-weight: 400; font-size: .82rem; }
@@ -778,6 +779,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
 }
 @media (min-width: 720px) and (min-aspect-ratio: 2/1) {
   #s-menu .cases { grid-template-columns: repeat(7, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); }
+  #s-menu .cases.vehs { grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: minmax(0, 1fr); }
   #s-menu .case[data-mode="allc"] { grid-column: auto; }
 }
 @media (min-width: 720px) and (min-aspect-ratio: 5/4) and (max-height: 460px) {
@@ -862,6 +864,158 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
 .pp.new .pn { font-size: clamp(.75rem, 13cqi, 1.3rem); }
 .whomanage { flex: none; align-self: center; font-weight: 900; color: var(--ink); text-decoration: underline; padding: 6px 10px; background: none; }
 @media (max-height: 520px) { .whohead p { display: none; } .whohead h2 { font-size: 1.4rem; }  }
+
+.acsetup h2 { font-size: 1.6rem; } .acsetup p { margin: 4px 0 10px; font-weight: 700; color: var(--ink-soft); }
+.acsetup h3 { font-size: 1rem; margin: 10px 0 6px; }
+.acconts.pick { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.acconts.pick .acc { position: relative; display: grid; text-align: left; padding: 8px 10px; border: var(--ol); border-radius: 12px; background: color-mix(in srgb, var(--f) 35%, white); color: var(--ink); }
+.acconts.pick .acc[aria-pressed="true"] { background: var(--f); box-shadow: inset 0 0 0 3px var(--ink); }
+.acconts.pick .acc small { font-weight: 800; font-size: .72rem; }
+.acsetup .seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.acsetup .seg button { flex: 1; }
+.acsvg .cty.out { fill: #E4E9F0; stroke: #C5CFDC; pointer-events: none; }
+
+/* ---- ways to travel (main menu) ---- */
+#s-menu .cases.vehs { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: clamp(8px, 1.6vh, 16px); }
+.veh { position: relative; min-height: 0; container: vh / size; border: var(--ol); border-radius: 20px; overflow: hidden; color: var(--ink);
+  background: linear-gradient(180deg, #FFFFFF 0%, color-mix(in srgb, var(--c) 26%, white) 100%); box-shadow: 0 5px 0 var(--shadow);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 8px 8px 10px; transition: transform .15s ease; }
+.veh:hover { transform: translateY(-2px); }
+.veh:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--shadow); }
+.veh .vsky { flex: 1 1 auto; min-height: 0; width: 100%; display: grid; place-items: center; }
+.veh .vart { width: 100%; height: 100%; max-width: 330px; overflow: visible; }
+.veh .vlabel { flex: none; text-align: center; display: grid; gap: 1px; }
+.veh .vlabel b { font-family: var(--display); font-weight: 400; font-size: clamp(.82rem, min(8.4cqw, 10cqh), 1.6rem); line-height: 1.05; }
+.veh .vlabel small { font-weight: 800; font-size: clamp(.56rem, min(4.4cqw, 5.4cqh), .86rem); color: var(--ink-soft); line-height: 1.2; }
+.veh .vstars { position: absolute; top: 7px; right: 7px; background: var(--paper); border: 2px solid var(--ink); border-radius: 99px; padding: 0 7px; font-family: var(--display); font-size: clamp(.6rem, 5cqw, .9rem); line-height: 1.5; }
+@container vh (max-height: 170px) { .veh .vlabel small { display: none; } }
+.vart .smoke circle { fill: #EEF3F9; stroke: #14305E; stroke-width: 2.5; opacity: 0; transform-box: fill-box; transform-origin: center; animation: puff 2.6s linear infinite; }
+.vart .smoke circle:nth-child(2) { animation-delay: .65s; } .vart .smoke circle:nth-child(3) { animation-delay: 1.3s; } .vart .smoke circle:nth-child(4) { animation-delay: 1.95s; }
+@keyframes puff { 0% { transform: translate(0, 6px) scale(.45); opacity: 0; } 12% { opacity: 1; } 100% { transform: translate(-26px, -46px) scale(1.5); opacity: 0; } }
+.vart .tbody { animation: chug .5s ease-in-out infinite alternate; }
+@keyframes chug { to { transform: translateY(1.5px); } }
+.vart .vbody { animation: bounce .45s ease-in-out infinite alternate; }
+@keyframes bounce { to { transform: translateY(-2px); } }
+.vart .roadln { animation: road .7s linear infinite; }
+@keyframes road { to { transform: translateX(-40px); } }
+.vart .pbody { animation: lift 2.2s ease-in-out infinite alternate; }
+@keyframes lift { from { transform: translate(-3px, 4px); } to { transform: translate(3px, -6px); } }
+.vart .trail { animation: trail 1.1s ease-in-out infinite alternate; }
+@keyframes trail { to { transform: translateX(-8px); opacity: .5; } }
+.vart .bbody { transform-box: fill-box; transform-origin: 50% 90%; animation: bob 2.8s ease-in-out infinite alternate; }
+@keyframes bob { from { transform: rotate(-1.2deg) translateY(1px); } to { transform: rotate(1.2deg) translateY(-2px); } }
+.vart .waves { animation: waves 3s linear infinite; }
+@keyframes waves { to { transform: translateX(60px); } }
+@media (prefers-reduced-motion: reduce) { .vart *, .vart { animation: none !important; } .vart .smoke circle { opacity: .9; } }
+
+/* ---- one way to travel: its games ---- */
+#s-cat { gap: clamp(6px, 1.2vh, 12px); }
+#s-cat .topbar { position: relative; }
+#s-cat .topbar h2 { flex: 1 1 auto; min-width: 0; }
+.catart { width: clamp(70px, 18vw, 120px); flex: none; display: block; }
+.catart svg { width: 100%; height: auto; overflow: visible; display: block; }
+.catsub { margin: 0; font-weight: 800; color: var(--ink-soft); font-size: clamp(.8rem, 1.9vh, 1rem); }
+.catgames { flex: 1 1 auto; min-height: 0; display: grid; gap: clamp(8px, 1.6vh, 16px); grid-template-columns: minmax(0, 1fr); grid-auto-rows: minmax(0, 1fr); }
+.gobj { min-height: 0; container: go / size; display: grid; place-items: center; color: var(--ink); transition: transform .15s ease; padding: 0; }
+.gobj:hover { transform: translateY(-2px) rotate(-.6deg); }
+.gobj:active { transform: translateY(3px); }
+.gobj .ob { position: relative; display: block; width: min(100cqw, 100cqh * 1.75, 560px); aspect-ratio: 1.75; container: ob / inline-size; filter: drop-shadow(0 4px 0 rgba(20,48,94,.85)); }
+.obj-sign .gobj .ob { width: min(100cqw, 100cqh * 1.54, 520px); aspect-ratio: 1.54; }
+.gobj .objbg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.gobj .okick { position: absolute; left: 6%; top: 8%; font-weight: 900; font-size: max(.5rem, 3.3cqw); letter-spacing: .12em; text-transform: uppercase; opacity: .8; white-space: nowrap; }
+.gobj .oico { position: absolute; left: 6%; top: 28%; width: 22cqw; aspect-ratio: 1; border-radius: 50%; background: #fff; border: 2.5px solid var(--ink); display: grid; place-items: center; }
+.gobj .oico svg { width: 70%; height: 70%; overflow: visible; }
+.gobj .otext { position: absolute; left: 32%; right: 26%; top: 22%; bottom: 12%; display: flex; flex-direction: column; justify-content: center; gap: 1.4cqw; text-align: left; }
+.gobj .oname { font-family: var(--display); font-weight: 400; font-size: max(.85rem, 7.6cqw); line-height: 1; }
+.gobj .oblurb { font-weight: 800; font-size: max(.56rem, 3.6cqw); line-height: 1.2; opacity: .85; }
+.gobj .ostars { position: absolute; right: 4%; top: 42%; width: 19%; text-align: center; font-size: max(.6rem, 4.6cqw); }
+.gobj .ostars .off { opacity: .3; }
+.obj-ticket .otext { right: 28%; }
+.obj-sign .okick { left: 9%; top: 4.5%; color: var(--ink); opacity: 1; font-family: var(--display); font-weight: 400; letter-spacing: .06em; font-size: max(.55rem, 4.2cqw); }
+.obj-sign .oico { top: 26%; left: 8%; width: 20cqw; }
+.obj-sign .otext { color: #fff; top: 17%; bottom: 25%; left: 33%; right: 7%; }
+.obj-sign .ostars { top: auto; bottom: 25%; right: 7%; width: auto; color: #FFE27A; }
+.obj-pass .okick { color: #fff; top: 6%; opacity: 1; }
+.obj-pass .oico { top: 34%; }
+.obj-pass .otext { right: 27%; top: 30%; bottom: 6%; }
+.obj-pass .ostars { top: 40%; right: 3%; width: 21%; }
+.obj-postcard .okick { font-family: var(--display); font-weight: 400; letter-spacing: .1em; }
+.obj-postcard .otext { right: 30%; top: 18%; bottom: 20%; }
+.obj-postcard .ostars { top: 50%; right: 5%; width: 22%; }
+@container go (max-height: 120px) { .gobj .oblurb { display: none; } }
+@container ob (max-width: 240px) { .gobj .oblurb { display: none; } }
+@media (min-width: 720px) and (min-aspect-ratio: 5/4) {
+  .catgames { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .catgames.n5 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .catgames.n3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 719px) and (min-aspect-ratio: 5/4) { .catgames { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* ---- Border Hop ---- */
+#s-hop { gap: clamp(5px, 1vh, 10px); }
+.hoptask { flex: none; background: var(--paper); border: var(--ol); border-radius: 16px; padding: 8px 12px; box-shadow: 0 3px 0 var(--shadow); }
+.hopends { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; font-family: var(--display); font-size: clamp(1rem, 2.6vh, 1.35rem); }
+.hopends b { font-weight: 400; }
+.hopends .arrow { color: var(--ink-soft); }
+.hoptask p { margin: 4px 0 0; font-weight: 800; font-size: clamp(.82rem, 1.9vh, 1rem); line-height: 1.3; }
+.fsm { width: 1.5em; height: 1em; object-fit: cover; border-radius: 3px; border: 1.5px solid var(--ink); vertical-align: -.15em; flex: none; }
+.hopbox { flex: 1 1 auto; min-height: 0; }
+.hopsvg .cty, .hopsvg .mk { fill: #F6F1E1; stroke: #8E9CB3; stroke-width: .6px; vector-effect: non-scaling-stroke; cursor: pointer; }
+.hopsvg .mk { stroke: var(--ink); stroke-width: 1.5px; }
+.hopsvg .cty.nope, .hopsvg .mk.nope { fill: #DCE2EA; }
+.hopsvg .start { fill: #22C384 !important; }
+.hopsvg .end { fill: #FF6B57 !important; }
+.hopsvg .on { fill: #FFC93C !important; }
+.hopsvg .reached { fill: #22C384 !important; }
+.hopsvg .avoid { fill: #4A5568 !important; }
+.hopsvg .via { fill: #B9A2FF !important; }
+.hopsvg .flash { animation: hopflash .7s ease; }
+@keyframes hopflash { 0%, 60% { fill: #FF3B30; } }
+.hopsvg .hopline polyline { fill: none; stroke: var(--ink); stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
+.hopsvg .hopline circle { fill: var(--ink); pointer-events: none; }
+.hopsvg .hoplbl { fill: #33465F; font-weight: 800; }
+.hopsvg .hoplbl.imp { fill: var(--ink); font-weight: 900; }
+.hopfeed { flex: none; min-height: 1.5em; }
+.hopbar { flex: none; display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 6px; align-items: center; }
+.hopbar .btn { min-height: 42px; padding: 6px 12px; font-size: .95rem; }
+.hoproute { display: flex; align-items: center; gap: 4px; overflow-x: auto; white-space: nowrap; scrollbar-width: none; background: var(--paper); border: var(--ol); border-radius: 12px; padding: 6px 8px; min-height: 42px; }
+.hoproute i { font-style: normal; color: var(--ink-soft); font-weight: 900; }
+.hopstop { display: inline-flex; align-items: center; gap: 4px; font-weight: 900; font-size: .82rem; }
+.hopstop.first { color: #12955F; } .hopstop.last { color: #D2453A; }
+.hopres h3 { font-size: 1rem; margin: 10px 0 4px; }
+.hopres .hoppath { font-weight: 800; line-height: 1.6; }
+@media (min-width: 720px) and (min-aspect-ratio: 5/4) {
+  #s-hop { display: grid; grid-template-columns: minmax(260px, 340px) minmax(0, 1fr); grid-template-rows: auto auto minmax(0, 1fr) auto; column-gap: 14px; }
+  #s-hop .hud { grid-column: 1 / -1; }
+  #s-hop .hoptask { grid-column: 1; grid-row: 2; }
+  #s-hop .hopfeed { grid-column: 1; grid-row: 3; align-self: start; }
+  #s-hop .hopbar { grid-column: 1; grid-row: 4; grid-template-columns: 1fr 1fr; }
+  #s-hop .hoproute { grid-column: 1 / -1; flex-wrap: wrap; white-space: normal; }
+  #s-hop .hopbox { grid-column: 2; grid-row: 2 / 5; }
+}
+
+/* ---- Map Puzzle ---- */
+#s-pz { gap: clamp(5px, 1vh, 10px); }
+.pztask p { margin: 0; }
+.pzboard { flex: 1 1 auto; min-height: 0; position: relative; border: var(--ol); border-radius: 18px; overflow: hidden; background: #FFF7E6; box-shadow: 0 4px 0 var(--shadow); }
+.pzsvg { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; user-select: none; -webkit-user-select: none; }
+.pzsvg .sea { fill: #BFE6FF; }
+.pzsvg .grat { stroke: #A9D6F5; stroke-width: var(--sw); fill: none; }
+.pzsvg .land { fill: #E9EEF4; }
+.pzsvg .ctx { fill: #DCE5EF; stroke: #8E9CB3; stroke-width: var(--sw); }
+.pzsvg .slot { fill: #FFFFFF; stroke: none; }
+.pzsvg .tray { fill: #FFF7E6; }
+.pzsvg .pc { cursor: grab; }
+.pzsvg .pc path { stroke: var(--ink); stroke-width: calc(var(--sw) * 1.6); stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.pzsvg .pc:not(.fixed) path { filter: drop-shadow(0 2px 0 rgba(20,48,94,.6)); }
+.pzsvg .pc.lift { cursor: grabbing; }
+.pzsvg .pc.lift path { filter: drop-shadow(0 6px 4px rgba(20,48,94,.35)); opacity: .92; }
+.pzsvg .pc.fixed { cursor: default; }
+.pzsvg .pclbl { font-family: var(--display); fill: var(--ink); text-anchor: middle; dominant-baseline: middle; paint-order: stroke; stroke: #fff; stroke-linejoin: round; pointer-events: none; }
+.pzbar { flex: none; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: center; }
+.pzbar .btn { min-height: 42px; padding: 6px 14px; font-size: .95rem; }
+.lbscope { justify-content: center; flex: none; }
+.lbscope button { flex: 1; max-width: 200px; }
 </style>
 
 </head>
@@ -918,6 +1072,13 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
     </div>
   </section>
 
+  <!-- CATEGORY (one way to travel and its games) -->
+  <section class="screen" id="s-cat" hidden>
+    <div class="topbar"><button class="iconbtn" id="cat-back" aria-label="Back to all the ways to travel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><h2 id="cat-title"></h2><span class="catart" id="cat-art"></span></div>
+    <p class="catsub" id="cat-sub"></p>
+    <div class="catgames" id="cat-games"></div>
+  </section>
+
   <!-- GAME -->
   <section class="screen" id="s-game" hidden>
     <div class="hud">
@@ -947,7 +1108,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
     <div class="panel res-review" id="r-review"></div>
     <div class="res-actions">
       <button class="btn" id="r-again">Play again</button>
-      <button class="btn ghost" id="r-menu">Main menu</button>
+      <button class="btn ghost" id="r-menu">More games</button>
     </div>
   </section>
 
@@ -1004,6 +1165,31 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
     <div class="acmain"><div class="mapbox" id="ac-map"></div><div class="panel acside" id="ac-side"></div></div>
   </section>
 
+  <!-- BORDER HOP -->
+  <section class="screen" id="s-hop" hidden>
+    <div class="hud">
+      <button class="iconbtn" id="hop-pause" aria-label="Pause"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1.5"/><rect x="14" y="5" width="4" height="14" rx="1.5"/></svg></button>
+      <div class="mid"><div class="mode">Border Hop</div><div class="qn num" id="hop-qn">Trip 1 of 5</div></div>
+      <div class="scorebox"><small>Points</small><b class="num" id="hop-score">0</b></div>
+    </div>
+    <div class="hoptask" id="hop-task"></div>
+    <div class="mapbox hopbox" id="hop-map"></div>
+    <div class="acfeed hopfeed" id="hop-feed" aria-live="polite"></div>
+    <div class="hopbar"><div class="hoproute" id="hop-route"></div><button class="btn alt" id="hop-undo">Undo</button><button class="btn ghost" id="hop-show">Show me</button></div>
+  </section>
+
+  <!-- MAP PUZZLE -->
+  <section class="screen" id="s-pz" hidden>
+    <div class="hud">
+      <button class="iconbtn" id="pz-pause" aria-label="Pause"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1.5"/><rect x="14" y="5" width="4" height="14" rx="1.5"/></svg></button>
+      <div class="mid"><div class="mode">Map Puzzle</div><div class="qn num" id="pz-qn">Puzzle 1 of 3</div></div>
+      <div class="scorebox"><small>Points</small><b class="num" id="pz-score">0</b></div>
+    </div>
+    <div class="hoptask pztask" id="pz-task"></div>
+    <div class="pzboard" id="pz-board"></div>
+    <div class="pzbar"><div class="acfeed hopfeed" id="pz-feed" aria-live="polite"></div><button class="btn ghost" id="pz-show">Show me</button></div>
+  </section>
+
   <!-- PLAYERS -->
   <section class="screen page" id="s-players" hidden>
     <div class="topbar"><button class="iconbtn back" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><h2>Players</h2></div>
@@ -1021,7 +1207,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
   <section class="screen" id="s-h2hres" hidden>
     <div class="hrhead"><div class="cup">🏆</div><h2 id="hr-title">Winners!</h2><div class="ressub" id="hr-sub"></div></div>
     <div class="hrlist" id="hr-list"></div>
-    <div class="res-actions"><button class="btn" id="hr-again">Rematch</button><button class="btn ghost" id="hr-menu">Main menu</button></div>
+    <div class="res-actions"><button class="btn" id="hr-again">Rematch</button><button class="btn ghost" id="hr-menu">More games</button></div>
   </section>
 
   <!-- TROPHY ROOM -->
@@ -1034,9 +1220,10 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
   <!-- LEADERBOARD -->
   <section class="screen page" id="s-board" hidden>
     <div class="topbar"><button class="iconbtn back" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><h2>Leaderboard</h2><div class="seg" id="lb-level"></div></div>
+    <div class="seg lbscope" id="lb-scope" hidden></div>
     <div class="chips" id="lb-games"></div>
     <div class="panel lbpanel" id="lb-list"></div>
-    <p class="lbnote">Top 10 scores for each game, saved on this device.</p>
+    <p class="lbnote" id="lb-note">Top 10 scores for each game, saved on this device.</p>
   </section>
 
   <!-- ATLAS LIST -->
@@ -1137,6 +1324,25 @@ const esc = s => String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;"
 const rnd = n => Math.floor(Math.random() * n);
 const pick = a => a[rnd(a.length)];
 function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = rnd(i + 1); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+/* An answer only counts when the finger (or mouse) goes down AND comes back up on the same button.
+   Pressing a button, then sliding off it before lifting, cancels the press. Keyboard presses still work. */
+function safeTap(el, fn) {
+  el._tap = fn; el.onclick = e => { if (e.detail === 0 && el._tap) el._tap(); };   // keyboard (Enter/Space)
+  el.onpointerdown = e => {
+    if (e.button > 0 || el.disabled) return;
+    const id = e.pointerId; el.classList.add("pressing");
+    const inside = ev => { const r = el.getBoundingClientRect(); return ev.clientX >= r.left && ev.clientX <= r.right && ev.clientY >= r.top && ev.clientY <= r.bottom; };
+    const move = ev => { if (ev.pointerId === id) el.classList.toggle("pressing", inside(ev)); };
+    const end = ev => {
+      if (ev.pointerId !== id) return;
+      removeEventListener("pointermove", move, true); removeEventListener("pointerup", end, true); removeEventListener("pointercancel", end, true);
+      const ok = ev.type === "pointerup" && inside(ev) && el.classList.contains("pressing");
+      el.classList.remove("pressing");
+      if (ok && !el.disabled && el._tap) el._tap();
+    };
+    addEventListener("pointermove", move, true); addEventListener("pointerup", end, true); addEventListener("pointercancel", end, true);
+  };
+}
 const LS = {
   get(k, d) { try { const v = localStorage.getItem("atlasx_" + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
   set(k, v) { try { localStorage.setItem("atlasx_" + k, JSON.stringify(v)); } catch (e) {} }
@@ -1295,6 +1501,9 @@ const ICON = {
   cities: `<svg viewBox="0 0 48 48" class="ico"><path d="M5 42V20h9v22M14 42V9h10v33M24 42V24h7v18M31 42V15h11v27" fill="#E9A6E3"/><path d="M17 14h4M17 20h4M17 26h4M17 32h4M34 20h5M34 26h5M34 32h5M8 26h3M8 32h3" stroke-width="2"/><path d="M3 42h42"/><circle cx="38" cy="7" r="3.5" fill="#FFC93C"/></svg>`,
   landmarks: `<svg viewBox="0 0 48 48" class="ico"><circle cx="37" cy="11" r="5.5" fill="#FF6B57"/><path d="M5 41L21 13l16 28z" fill="#FFC93C"/><path d="M21 13l-5 28M21 13l7 28" stroke-width="2"/><path d="M2 41h44"/></svg>`,
   neighbours: `<svg viewBox="0 0 48 48" class="ico"><path d="M5 8h15l2 12-7 6H5z" fill="#FF8FB1"/><path d="M20 8h23v15l-11 5-10-8z" fill="#7FD0F5"/><path d="M5 26h10l7-6 10 8 11-5v17H5z" fill="#9EDB7E"/><circle cx="22" cy="24" r="4" fill="#FFC93C"/></svg>`,
+  hop: `<svg viewBox="0 0 48 48" class="ico"><path d="M4 10h14l3 9-6 6H4zM21 19l12-9h11v14l-10 4zM15 25l6-6 13 9-3 13H8z" fill="#BDF0A0"/><path d="M10 17q8 2 13 9t14 7" stroke="#FF6B57" stroke-width="3" stroke-dasharray="3 4"/><circle cx="10" cy="17" r="4" fill="#3FB6EC"/><path d="M37 26c-4 0-6 3-6 5 0 4 6 10 6 10s6-6 6-10c0-2-2-5-6-5z" fill="#FF6B57"/><circle cx="37" cy="31" r="2" fill="#fff"/></svg>`,
+  puzzle: `<svg viewBox="0 0 48 48" class="ico"><path d="M6 8h14v5a4 4 0 1 0 8 0V8h14v14h-5a4 4 0 1 0 0 8h5v12H28v-5a4 4 0 1 0-8 0v5H6V30h5a4 4 0 1 0 0-8H6z" fill="#FFC93C"/><path d="M24 8v12M24 30v12M6 26h14M28 26h14" stroke-width="1.6" stroke-dasharray="2 3"/></svg>`,
+  h2h: `<svg viewBox="0 0 48 48" class="ico"><circle cx="15" cy="15" r="7" fill="#FF6B57"/><circle cx="33" cy="15" r="7" fill="#3FB6EC"/><path d="M4 40c0-8 5-13 11-13s11 5 11 13zM22 40c0-8 5-13 11-13s11 5 11 13z" fill="#FFC93C"/></svg>`,
   map: `<svg viewBox="0 0 48 48" class="ico"><circle cx="24" cy="24" r="17" fill="#3FB6EC"/><path d="M12 17c5-3 8 1 9 5s-3 6 1 9 6 1 6 5M29 10c2 3 6 2 7 5s-3 5 0 7 5 0 6 3" stroke="#74CC45" stroke-width="5"/><circle cx="24" cy="24" r="17"/></svg>`
 };
 
@@ -1311,12 +1520,14 @@ const MODES = {
   landmarks: { name: "Landmarks",       c: "#D8B57A", blurb: "Find where famous places are in the world." },
   neighbours:{ name: "Neighbours",      c: "#93B4FF", blurb: "Guess the country from its neighbours." },
   cities:    { name: "Big Cities",      c: "#E9A6E3", blurb: "Find the country each famous city is in." },
-  allc:      { name: "Name Them All",   c: "#FFB3A1", blurb: "Type every country you can in 15 minutes." },
+  hop:       { name: "Border Hop",      c: "#7ED957", blurb: "Cross borders from one country to another, following the rules." },
+  puzzle:    { name: "Map Puzzle",      c: "#FFC93C", blurb: "Drag country shapes into their places on the map." },
+  allc:      { name: "Name Them All",   c: "#FFB3A1", blurb: "Type every country you can before time runs out." },
   mix:       { name: "World Tour",      c: "#5B79D6", blurb: "A surprise mix of all eleven games." }
 };
 const MODE_KEYS = ["flags", "capitals", "shapes", "clues", "languages", "animals", "maphunt", "cappin", "landmarks", "neighbours", "cities"];
 const ALL_TILES = [...MODE_KEYS, "mix"];
-const MENU_TILES = [...MODE_KEYS.slice(0, -1), "allc", MODE_KEYS[MODE_KEYS.length - 1], "mix"]; // order makes the double-width tiles line up
+const MENU_TILES = [...MODE_KEYS, "hop", "puzzle", "allc", "mix"];
 const MAX_STARS = MENU_TILES.length * 3 * 2;
 const bestKey = (m, lv = S.level) => m + "_" + lv;
 const starStr = n => [0, 1, 2].map(i => i < n ? "★" : `<span class="off">★</span>`).join("");
@@ -1324,20 +1535,661 @@ const starStr = n => [0, 1, 2].map(i => i < n ? "★" : `<span class="off">★</
 function renderMenu() {
   $("#lv-easy").setAttribute("aria-pressed", S.level === "easy");
   $("#lv-hard").setAttribute("aria-pressed", S.level === "hard");
-  $("#cases").innerHTML = MENU_TILES.map(k => {
-    const m = MODES[k], b = BEST[bestKey(k)];
-    return `<button class="case${k === "mix" || k === "allc" ? " wide" : ""}" data-mode="${k}" style="--c:${m.c}" aria-label="${m.name}">
-      <span class="handle"></span>
-      <span class="body"><span class="sticker">${ICON[k]}</span><span class="tag">${m.name}</span></span>
-      ${b ? `<span class="stars">${starStr(b.stars)}</span>` : ""}
-    </button>`;
-  }).join("");
+  renderVehicles();
   const total = Object.entries(BEST).filter(([k]) => MENU_TILES.includes(k.split("_")[0])).reduce((s, [, b]) => s + (b.stars || 0), 0);
   $("#totalstars").innerHTML = `<div><b class="num">★${total}</b><small>of ${MAX_STARS}</small></div>`;
   $("#totalstars").setAttribute("aria-label", `${total} of ${MAX_STARS} stars collected`);
   $("#tagline").textContent = S.level === "easy" ? `${EASY.size} famous countries to visit` : `All ${GEO.length} countries to visit`;
   const who = (() => { try { const m = plMe(); return m && m.name; } catch (e) { return null; } })();
   if (who) $("#tagline").textContent = `${who}'s passport · ` + $("#tagline").textContent;
+}
+
+/* ================= travel categories (main menu) =================
+   The main menu shows four ways to travel. Each opens a screen with its games,
+   drawn as a different travel object: train tickets, road signs, boarding passes, postcards. */
+const CATS = [
+  { k: "train", n: "Flag & Fact Express", sub: "Flags, capitals, shapes and mystery clues", c: "#FF6B57", obj: "ticket", games: ["flags", "capitals", "shapes", "clues"] },
+  { k: "van", n: "Map Road Trip", sub: "Maps, borders, routes and puzzles", c: "#22C384", obj: "sign", games: ["maphunt", "cappin", "neighbours", "hop", "puzzle"] },
+  { k: "plane", n: "Culture Flight", sub: "Languages, animals, landmarks and cities", c: "#3FB6EC", obj: "pass", games: ["languages", "animals", "landmarks", "cities"] },
+  { k: "boat", n: "Grand Voyage", sub: "Big challenges and the World Tour", c: "#7FD0F5", obj: "postcard", games: ["allc", "mix", "h2h"] }
+];
+const INK = "#14305E";
+const VEHICLE = {
+  van: `<svg viewBox="0 0 240 150" class="vart van" aria-hidden="true">
+    <rect x="4" y="128" width="232" height="16" rx="8" fill="#5B6B82"/>
+    <g class="roadln"><path d="M8 136h22M48 136h22M88 136h22M128 136h22M168 136h22M208 136h22M248 136h22" stroke="#fff" stroke-width="3" stroke-linecap="round"/></g>
+    <g class="vbody">
+      <rect x="66" y="10" width="62" height="16" rx="4" fill="#FFB25E" stroke="${INK}" stroke-width="3.5"/><path d="M84 10V6h26v4" fill="none" stroke="${INK}" stroke-width="3"/>
+      <path d="M56 26h118" stroke="${INK}" stroke-width="4" stroke-linecap="round"/>
+      <path d="M34 34q0-8 8-8h132q14 0 22 12l14 22q4 6 4 14v40q0 8-8 8H34q-8 0-8-8V42q0-8 8-8z" fill="#fff" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M26 82h188v32q0 8-8 8H34q-8 0-8-8z" fill="#22C384" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+      <rect x="40" y="40" width="36" height="28" rx="6" fill="#BFE6FF" stroke="${INK}" stroke-width="3.5"/>
+      <rect x="84" y="40" width="36" height="28" rx="6" fill="#BFE6FF" stroke="${INK}" stroke-width="3.5"/>
+      <rect x="128" y="40" width="36" height="28" rx="6" fill="#BFE6FF" stroke="${INK}" stroke-width="3.5"/>
+      <path d="M172 40h6q8 0 13 8l9 16q2 4-3 4h-25z" fill="#BFE6FF" stroke="${INK}" stroke-width="3.5" stroke-linejoin="round"/>
+      <circle cx="207" cy="98" r="6" fill="#FFE27A" stroke="${INK}" stroke-width="3"/>
+      <g stroke="${INK}" stroke-width="2.5">
+        <circle cx="50" cy="100" r="9" fill="#FFC93C"/><path d="M50 94l1.8 4 4.2.4-3.2 2.8 1 4.2-3.8-2.2-3.8 2.2 1-4.2-3.2-2.8 4.2-.4z" fill="#fff" stroke-width="1.2"/>
+        <rect x="68" y="91" width="26" height="17" rx="3" fill="#FF6B57"/><path d="M72 99h18" stroke="#fff" stroke-width="3"/>
+        <circle cx="112" cy="100" r="9" fill="#3FB6EC"/><path d="M104 100h16M112 92c-4 5-4 11 0 16M112 92c4 5 4 11 0 16" fill="none" stroke-width="1.6"/>
+        <path d="M134 95c0-4 6-6 8-1 2-5 8-3 8 1 0 5-8 9-8 9s-8-4-8-9z" fill="#FF8FB1"/>
+        <rect x="158" y="92" width="22" height="15" rx="7.5" fill="#B9A2FF"/>
+      </g>
+      <circle cx="66" cy="122" r="17" fill="${INK}"/><circle cx="66" cy="122" r="7" fill="#E8EEF6"/>
+      <circle cx="176" cy="122" r="17" fill="${INK}"/><circle cx="176" cy="122" r="7" fill="#E8EEF6"/>
+    </g></svg>`,
+  train: `<svg viewBox="0 0 240 150" class="vart train" aria-hidden="true">
+    <g class="smoke"><circle cx="158" cy="28" r="9"/><circle cx="158" cy="28" r="11"/><circle cx="158" cy="28" r="13"/><circle cx="158" cy="28" r="10"/></g>
+    <path d="M4 136h232" stroke="${INK}" stroke-width="4" stroke-linecap="round"/>
+    <g fill="#8B6A4E">${[14, 44, 74, 104, 134, 164, 194, 224].map(x => `<rect x="${x - 8}" y="137" width="16" height="6" rx="2"/>`).join("")}</g>
+    <g class="tbody">
+      <path d="M146 38h24l-3 8h-18z" fill="${INK}"/>
+      <rect x="148" y="44" width="18" height="26" fill="#3A3F55" stroke="${INK}" stroke-width="3.5"/>
+      <rect x="66" y="64" width="112" height="46" rx="12" fill="#FF6B57" stroke="${INK}" stroke-width="4"/>
+      <path d="M108 64q0-14 12-14t12 14" fill="#FFC93C" stroke="${INK}" stroke-width="3.5"/>
+      <rect x="176" y="62" width="14" height="50" rx="4" fill="#3A3F55" stroke="${INK}" stroke-width="3.5"/>
+      <circle cx="192" cy="76" r="6" fill="#FFE27A" stroke="${INK}" stroke-width="3"/>
+      <path d="M86 76h76M86 98h76" stroke="#FFC93C" stroke-width="4"/>
+      <path d="M18 36h62" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>
+      <rect x="24" y="38" width="50" height="76" rx="6" fill="#FF6B57" stroke="${INK}" stroke-width="4"/>
+      <rect x="33" y="48" width="32" height="26" rx="5" fill="#BFE6FF" stroke="${INK}" stroke-width="3.5"/>
+      <rect x="16" y="108" width="186" height="12" rx="4" fill="${INK}"/>
+      <path d="M200 108l18 14H198z" fill="#FFC93C" stroke="${INK}" stroke-width="3.5" stroke-linejoin="round"/>
+      <g class="wheels"><circle cx="52" cy="122" r="16" fill="#3A3F55" stroke="${INK}" stroke-width="4"/><circle cx="94" cy="122" r="16" fill="#3A3F55" stroke="${INK}" stroke-width="4"/>
+      <circle cx="144" cy="126" r="11" fill="#3A3F55" stroke="${INK}" stroke-width="4"/><circle cx="176" cy="126" r="11" fill="#3A3F55" stroke="${INK}" stroke-width="4"/>
+      <circle cx="52" cy="122" r="4" fill="#FFC93C"/><circle cx="94" cy="122" r="4" fill="#FFC93C"/></g>
+      <path class="rod" d="M52 116h42" stroke="#C9D3DF" stroke-width="5" stroke-linecap="round"/>
+    </g></svg>`,
+  plane: `<svg viewBox="0 0 240 150" class="vart plane" aria-hidden="true">
+    <rect x="0" y="130" width="240" height="14" rx="4" fill="#5B6B82"/>
+    <path d="M10 137h18M44 137h18M78 137h18M112 137h18M146 137h18M180 137h18M214 137h18" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+    <g class="trail" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".9"><path d="M8 116h34"/><path d="M20 104h30"/><path d="M4 92h26"/></g>
+    <g class="pbody"><g transform="rotate(-16 120 80)">
+      <path d="M40 66h132q30 0 42 14-12 14-42 14H40q-10 0-10-14t10-14z" fill="#fff" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M40 66h0l-16-34h22l30 34z" fill="#3FB6EC" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M34 88h134" stroke="#3FB6EC" stroke-width="6"/>
+      <path d="M200 70q12 3 14 10h-20z" fill="#BFE6FF" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
+      <g fill="#BFE6FF" stroke="${INK}" stroke-width="2">${[70, 88, 106, 124, 142, 160, 178].map(x => `<circle cx="${x}" cy="76" r="4.2"/>`).join("")}</g>
+      <path d="M96 88l30 0-34 36H74z" fill="#3FB6EC" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+      <rect x="98" y="96" width="30" height="14" rx="7" fill="#E8EEF6" stroke="${INK}" stroke-width="3.5"/>
+    </g></g></svg>`,
+  boat: `<svg viewBox="0 0 240 150" class="vart boat" aria-hidden="true">
+    <g class="bbody">
+      <g class="smoke ship"><circle cx="150" cy="22" r="7"/><circle cx="150" cy="22" r="9"/><circle cx="150" cy="22" r="8"/></g>
+      <path d="M142 30h18l-2 22h-14z" fill="#FF6B57" stroke="${INK}" stroke-width="3.5" stroke-linejoin="round"/><path d="M142 30h18v6h-18z" fill="${INK}"/>
+      <path d="M118 36h16l-2 16h-12z" fill="#FF6B57" stroke="${INK}" stroke-width="3.5" stroke-linejoin="round"/><path d="M118 36h16v5h-16z" fill="${INK}"/>
+      <path d="M70 52h104q10 0 14 10H62q2-10 8-10z" fill="#fff" stroke="${INK}" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M50 62h150q12 0 18 14H40q2-14 10-14z" fill="#fff" stroke="${INK}" stroke-width="3.5" stroke-linejoin="round"/>
+      <g fill="#BFE6FF" stroke="${INK}" stroke-width="1.8">${[78, 92, 106, 120, 134, 148, 162].map(x => `<rect x="${x}" y="55" width="8" height="5" rx="1.5"/>`).join("")}${[56, 70, 84, 98, 112, 126, 140, 154, 168, 182, 196].map(x => `<rect x="${x}" y="66" width="9" height="6" rx="1.5"/>`).join("")}</g>
+      <g fill="#FFB000" stroke="${INK}" stroke-width="2"><rect x="60" y="76" width="18" height="7" rx="3.5"/><rect x="104" y="76" width="18" height="7" rx="3.5"/><rect x="148" y="76" width="18" height="7" rx="3.5"/></g>
+      <path d="M22 82h204l-14 34q-4 8-12 8H48q-8 0-12-8z" fill="#fff" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M30 100h188l-6 16q-4 8-12 8H48q-8 0-12-8z" fill="#1D2B64" stroke="${INK}" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M26 92h196" stroke="#FF6B57" stroke-width="4"/>
+      <g fill="#BFE6FF" stroke="${INK}" stroke-width="2">${[48, 66, 84, 102, 120, 138, 156, 174, 192].map(x => `<circle cx="${x}" cy="86" r="3"/>`).join("")}</g>
+      <path d="M200 38v14M200 38l14 4-14 4" fill="#22C384" stroke="${INK}" stroke-width="2.5" stroke-linejoin="round"/>
+    </g>
+    <g class="waves"><path d="M-40 124q15-9 30 0t30 0 30 0 30 0 30 0 30 0 30 0 30 0 30 0 30 0 30 0V150H-40z" fill="#3FB6EC" stroke="${INK}" stroke-width="3.5"/>
+    <path d="M-60 138q15-7 30 0t30 0 30 0 30 0 30 0 30 0 30 0 30 0 30 0 30 0 30 0V150H-60z" fill="#7FD0F5"/></g></svg>`
+};
+
+/* Each game drawn as a travel object, coloured with the game's colour. */
+const OBJ_SVG = {
+  ticket: c => `<svg viewBox="0 0 200 120" preserveAspectRatio="none" class="objbg" aria-hidden="true">
+    <path d="M10 4h180a6 6 0 0 1 6 6v38a12 12 0 0 0 0 24v38a6 6 0 0 1-6 6H10a6 6 0 0 1-6-6V72a12 12 0 0 0 0-24V10a6 6 0 0 1 6-6z" fill="${c}" stroke="${INK}" stroke-width="3.5" vector-effect="non-scaling-stroke"/>
+    <path d="M150 10v100" stroke="${INK}" stroke-width="2.5" stroke-dasharray="5 5" vector-effect="non-scaling-stroke"/></svg>`,
+  sign: c => `<svg viewBox="0 0 200 130" preserveAspectRatio="none" class="objbg" aria-hidden="true">
+    <rect x="58" y="96" width="10" height="32" fill="#8A97AA" stroke="${INK}" stroke-width="3" vector-effect="non-scaling-stroke"/><rect x="132" y="96" width="10" height="32" fill="#8A97AA" stroke="${INK}" stroke-width="3" vector-effect="non-scaling-stroke"/>
+    <rect x="4" y="18" width="192" height="84" rx="12" fill="#1E8F4E" stroke="${INK}" stroke-width="3.5" vector-effect="non-scaling-stroke"/>
+    <rect x="10" y="24" width="180" height="72" rx="8" fill="none" stroke="#fff" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
+    <rect x="14" y="4" width="56" height="20" rx="5" fill="${c}" stroke="${INK}" stroke-width="3" vector-effect="non-scaling-stroke"/></svg>`,
+  pass: c => `<svg viewBox="0 0 200 120" preserveAspectRatio="none" class="objbg" aria-hidden="true">
+    <rect x="4" y="4" width="192" height="112" rx="10" fill="#fff" stroke="${INK}" stroke-width="3.5" vector-effect="non-scaling-stroke"/>
+    <path d="M4 32V14a10 10 0 0 1 10-10h172a10 10 0 0 1 10 10v18z" fill="${c}" stroke="${INK}" stroke-width="3.5" vector-effect="non-scaling-stroke"/>
+    <path d="M152 36v76" stroke="${INK}" stroke-width="2.5" stroke-dasharray="4 4" vector-effect="non-scaling-stroke"/>
+    <g fill="${INK}">${[160, 164, 167, 172, 175, 179, 183, 186].map((x, i) => `<rect x="${x}" y="84" width="${i % 3 ? 1.6 : 2.8}" height="24"/>`).join("")}</g></svg>`,
+  postcard: c => `<svg viewBox="0 0 200 120" preserveAspectRatio="none" class="objbg" aria-hidden="true">
+    <rect x="4" y="4" width="192" height="112" rx="6" fill="#FFF7E6" stroke="${INK}" stroke-width="3.5" vector-effect="non-scaling-stroke"/>
+    <path d="M150 12h36v40h-36z" fill="${c}" stroke="${INK}" stroke-width="2.5" stroke-dasharray="3 2" vector-effect="non-scaling-stroke"/>
+    <path d="M126 22q8-6 16 0t16 0M126 32q8-6 16 0t16 0M126 42q8-6 16 0t16 0" fill="none" stroke="#8A97AA" stroke-width="2" vector-effect="non-scaling-stroke"/>
+    <path d="M14 96h90M14 106h70" stroke="#C9B48A" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>`
+};
+const OBJ_KICK = { ticket: i => `Platform ${i + 1} · Admit one`, sign: i => `Exit ${i + 1}`, pass: i => `Gate A${i + 1} · Boarding pass`, postcard: () => "Post card" };
+const catStars = cat => cat.games.filter(g => MODES[g]).reduce((s, g) => s + ((BEST[bestKey(g)] || {}).stars || 0), 0);
+let curCat = null;
+function renderVehicles() {
+  $("#cases").className = "cases vehs";
+  $("#cases").innerHTML = CATS.map(cat => {
+    const max = cat.games.filter(g => MODES[g]).length * 3;
+    return `<button class="veh" data-cat="${cat.k}" style="--c:${cat.c}" aria-label="${cat.n}: ${cat.sub}">
+      <span class="vsky">${VEHICLE[cat.k]}</span>
+      <span class="vlabel"><b>${cat.n}</b><small>${cat.sub}</small></span>
+      <span class="vstars num">★ ${catStars(cat)}/${max}</span></button>`;
+  }).join("");
+}
+function openCat(k) {
+  curCat = k; const cat = CATS.find(c => c.k === k);
+  $("#cat-title").textContent = cat.n;
+  $("#cat-art").innerHTML = VEHICLE[k];
+  $("#cat-sub").textContent = `${cat.sub} · ${S.level === "easy" ? "Explorer" : "World Expert"} class`;
+  $("#cat-games").className = `catgames obj-${cat.obj} n${cat.games.length}`;
+  $("#cat-games").innerHTML = cat.games.map((g, i) => {
+    const m = g === "h2h" ? { name: "Head-to-Head", c: "#FF8FB1", blurb: "Teams take turns or play quiz-show style." } : MODES[g];
+    const b = BEST[bestKey(g)];
+    return `<button class="gobj" data-mode="${g}" style="--c:${m.c}" aria-label="${m.name}">
+      <span class="ob">${OBJ_SVG[cat.obj](m.c)}
+        <span class="okick">${OBJ_KICK[cat.obj](i)}</span>
+        <span class="oico">${ICON[g] || ICON.h2h}</span>
+        <span class="otext"><span class="oname">${m.name}</span><span class="oblurb">${m.blurb}</span></span>
+        ${b ? `<span class="ostars">${starStr(b.stars)}</span>` : ""}</span></button>`;
+  }).join("");
+  show("s-cat");
+}
+function goHome() {
+  if (curCat) openCat(curCat); else { renderMenu(); show("s-menu"); }
+}
+
+/* ================= Border Hop: the land-border map and route puzzles =================
+   Countries are joined only where they share a land border on the mainland map.
+   Borders that exist only through an overseas territory or a detached exclave are left out,
+   so every route can be followed on the map:
+   Spain–Morocco (Ceuta and Melilla), Russia–Poland and Russia–Lithuania (Kaliningrad),
+   Azerbaijan–Türkiye (Nakhchivan), and France–Brazil / France–Suriname (French Guiana). */
+const HOP_CUT = [["ES", "MA"], ["RU", "PL"], ["RU", "LT"], ["AZ", "TR"], ["LK", "IN"]];
+const ADJ = new Map(GEO.map(c => [c.id, new Set()]));
+(() => {
+  const byName = new Map(GEO.map(c => [c.n, c.id]));
+  GEO.forEach(c => c.b.forEach(n => { const o = byName.get(n); if (o) { ADJ.get(c.id).add(o); ADJ.get(o).add(c.id); } }));
+  HOP_CUT.forEach(([a, b]) => { ADJ.get(a).delete(b); ADJ.get(b).delete(a); });
+})();
+const LANDLOCKED = new Set(GEO.filter(c => c.ll).map(c => c.id));
+const CASPIAN = new Set(["KZ", "TM", "AZ"]);
+/* Countries that stretch across two continents sit out "stay on one continent" trips. */
+const TRANSCONT = new Set(["RU", "TR", "KZ", "GE", "AZ", "EG"]);
+
+/* A rule says which countries a route may use.
+   ok(id, isEnd): may the route enter this country? (start and finish count as ends) */
+function hopRule(kind, arg) {
+  const C = id => GEO_BY.get(id);
+  switch (kind) {
+    case "coast": return { kind, ok: id => !LANDLOCKED.has(id) };
+    case "land": return { kind, ok: (id, end) => end || LANDLOCKED.has(id) };
+    case "cont": return { kind, arg, ok: id => C(id).m === arg && !TRANSCONT.has(id) };
+    case "avoid": return { kind, arg, ok: id => id !== arg };
+    default: return { kind: "none", ok: () => true };
+  }
+}
+const GEO_BY = new Map(GEO.map(c => [c.id, c]));
+
+/* Fewest countries from s to e (counting both), following the rule. Returns the route or null. */
+function hopShortest(s, e, rule, banned) {
+  if (!rule.ok(s, true) || !rule.ok(e, true)) return null;
+  const prev = new Map([[s, null]]), q = [s];
+  while (q.length) {
+    const u = q.shift();
+    if (u === e) break;
+    for (const v of ADJ.get(u)) {
+      if (prev.has(v) || (banned && banned.has(v))) continue;
+      if (v !== e && !rule.ok(v, false)) continue;
+      if (v === e && !rule.ok(v, true)) continue;
+      prev.set(v, u); q.push(v);
+    }
+  }
+  if (!prev.has(e)) return null;
+  const path = []; for (let x = e; x; x = prev.get(x)) path.unshift(x);
+  return path;
+}
+/* A short route that also passes through z (no country twice): the best of going
+   s→z then z→e, or planning z→e first. Players who find an even shorter one still score in full. */
+function hopVia(s, e, z, rule) {
+  const join = (a, b) => { if (!a || !b) return null; const p = a.concat(b.slice(1)); return new Set(p).size === p.length ? p : null; };
+  const a1 = hopShortest(s, z, rule), b1 = a1 && hopShortest(z, e, rule, new Set(a1.slice(0, -1)));
+  const b2 = hopShortest(z, e, rule), a2 = b2 && hopShortest(s, z, rule, new Set(b2.slice(1)));
+  const p1 = join(a1, b1), p2 = join(a2, b2);
+  return !p1 ? p2 : !p2 ? p1 : p1.length <= p2.length ? p1 : p2;
+}
+/* Countries reachable from s using only rule-allowed middle countries */
+function hopRegion(s, rule) {
+  const seen = new Set([s]), q = [s];
+  while (q.length) { const u = q.shift(); for (const v of ADJ.get(u)) if (!seen.has(v) && rule.ok(v, false)) { seen.add(v); q.push(v); } }
+  return seen;
+}
+/* Longest route from s to e with no country twice (exact; only used on small regions) */
+function hopLongest(s, e, rule) {
+  let best = null, steps = 0;
+  const seen = new Set([s]), path = [s];
+  const dfs = u => {
+    if (++steps > 60000) return;
+    for (const v of ADJ.get(u)) {
+      if (seen.has(v)) continue;
+      if (v === e) { if (rule.ok(v, true) && (!best || path.length + 1 > best.length)) best = [...path, v]; continue; }
+      if (!rule.ok(v, false)) continue;
+      seen.add(v); path.push(v); dfs(v); path.pop(); seen.delete(v);
+    }
+  };
+  dfs(s);
+  return steps > 60000 ? null : best;
+}
+
+/* Make one random puzzle that is guaranteed to have an answer.
+   level "easy": famous countries, shorter trips, simpler rules. "hard": every country, longer trips, all rules. */
+function hopMake(level, avoidSame) {
+  const easy = level === "easy";
+  const endsPool = GEO.filter(c => ADJ.get(c.id).size && (easy ? EASY.has(c.id) && c.a > 20000 : c.a > 1500)).map(c => c.id);
+  const kinds = easy ? ["none", "none", "coast", "cont", "avoid", "coast"] : ["coast", "land", "cont", "avoid", "via", "most", "most", "none"];
+  for (let tries = 0; tries < 600; tries++) {
+    const kind = kinds[Math.floor(Math.random() * kinds.length)];
+    const s = endsPool[Math.floor(Math.random() * endsPool.length)];
+    let rule, arg = null, most = false, ruleKind = kind;
+    if (kind === "most") { most = true; ruleKind = ["cont", "land", "coast"][Math.floor(Math.random() * 3)]; }
+    if (ruleKind === "cont") arg = GEO_BY.get(s).m;
+    rule = hopRule(ruleKind, arg);
+    if (!rule.ok(s, true)) continue;
+    const region = hopRegion(s, rule);
+    if (most && region.size > 15) continue;
+    const ends = shuffleArr(endsPool.filter(e => e !== s && !ADJ.get(s).has(e) && (rule.kind !== "cont" || GEO_BY.get(e).m === arg)
+      && (!most || region.has(e) || [...ADJ.get(e)].some(x => region.has(x)))));
+    for (const e of ends.slice(0, most ? 8 : 30)) {
+      if (avoidSame && (avoidSame.has(s) || avoidSame.has(e))) continue;
+      const free = hopShortest(s, e, hopRule("none"));
+      if (!free) continue;
+      let opt, pz = { s, e, kind: ruleKind, arg, most, level };
+      if (ruleKind === "avoid") {
+        const mids = free.slice(1, -1).filter(z => GEO_BY.get(z).a > 1500); if (!mids.length) continue;
+        const z = mids[Math.floor(Math.random() * mids.length)];
+        pz.arg = z; rule = hopRule("avoid", z);
+        opt = hopShortest(s, e, rule);
+        if (!opt || opt.length <= free.length) continue;          // the rule must make a difference
+      } else if (kind === "via") {
+        const near = shuffleArr([...ADJ.keys()].filter(z => z !== s && z !== e && !free.includes(z) && GEO_BY.get(z).a > 1500 && (easy ? EASY.has(z) : true)));
+        let found = null;
+        for (const z of near.slice(0, 12)) {
+          const p = hopVia(s, e, z, hopRule("none"));
+          if (p && p.length - free.length >= 1 && p.length - free.length <= 3) { found = [z, p]; break; }
+        }
+        if (!found) continue;
+        pz.kind = "via"; pz.arg = found[0]; rule = hopRule("none"); opt = found[1];
+      } else if (most) {
+        opt = hopLongest(s, e, rule);
+        const short = hopShortest(s, e, rule);
+        if (!opt || !short || opt.length - short.length < 2 || opt.length > 12) continue;
+        pz.min = short.length;
+      } else {
+        opt = hopShortest(s, e, rule);
+        if (!opt) continue;
+        if (ruleKind !== "none" && opt.length === free.length && Math.random() < .7) continue;   // prefer rules that change the route
+      }
+      const len = opt.length;
+      if (!most) { if (easy ? len < 3 || len > 5 : len < 4 || len > 9) continue; }
+      pz.opt = opt; pz.best = len;
+      return pz;
+    }
+  }
+  return null;
+}
+function shuffleArr(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+/* Can the player step from the end of their route into country v? Returns null if fine, or the reason why not. */
+function hopCheckStep(pz, route, v) {
+  const last = route[route.length - 1], c = GEO_BY.get(v), L = GEO_BY.get(last);
+  if (route.includes(v)) return `You've already been to ${c.n}. No country twice!`;
+  if (!ADJ.get(last).has(v)) return `${c.n} doesn't share a land border with ${L.n}.`;
+  const end = v === pz.e;
+  const rule = pz.kind === "via" ? hopRule("none") : hopRule(pz.kind, pz.arg);
+  if (!rule.ok(v, end)) {
+    if (pz.kind === "coast") return `${c.n} has no coastline${CASPIAN.has(v) ? " (the Caspian Sea is a lake, so it doesn't count)" : ""}. Stick to countries by the sea.`;
+    if (pz.kind === "land") return `${c.n} has a coastline. In between, use only landlocked countries.`;
+    if (pz.kind === "cont") return TRANSCONT.has(v) ? `${c.n} stretches across two continents, so it's off-limits on this trip.` : `${c.n} isn't in ${CONT[pz.arg].n}. Stay on the continent!`;
+    if (pz.kind === "avoid") return `You can't go through ${c.n} on this trip.`;
+  }
+  if (end && pz.kind === "via" && !route.includes(pz.arg)) return `Visit ${GEO_BY.get(pz.arg).n} before you finish.`;
+  return null;
+}
+
+/* ================= Border Hop: the game ================= */
+const HOP = { on: false, i: 0, n: 5, score: 0, list: [], pz: null, route: [], perfect: 0, done: false, results: [] };
+const flagSm = id => flagImg(GEO_BY.get(id), "fsm");
+const cName = id => esc(GEO_BY.get(id).n);
+function hopRuleText(pz) {
+  const z = () => flagSm(pz.arg) + " " + cName(pz.arg);
+  const lines = {
+    none: () => "Cross into as few countries as you can.",
+    coast: () => "Only travel through countries that have a coastline on an ocean or sea.",
+    land: () => "Every country in between must be <b>landlocked</b> (no coastline).",
+    cont: () => `Stay in <b>${CONT[pz.arg].n}</b> the whole way.`,
+    avoid: () => `Use as few countries as you can, but you <b>can't</b> go through ${z()}.`,
+    via: () => `Use as few countries as you can, and you <b>must</b> pass through ${z()}.`
+  };
+  const rule = lines[pz.kind]();
+  return pz.most ? `<b>Scenic route!</b> Visit as <b>many</b> countries as you can, never the same one twice. ${rule}` : rule;
+}
+function startHop() {
+  sfx("go"); H.on = false;
+  const used = new Set(), list = [];
+  for (let k = 0; k < HOP.n; k++) { const pz = hopMake(S.level, used); if (pz) { list.push(pz); used.add(pz.s); used.add(pz.e); } }
+  Object.assign(HOP, { on: true, i: 0, score: 0, list, perfect: 0, done: false, results: [] });
+  show("s-hop"); hopLoad();
+}
+function hopLoad() {
+  const pz = HOP.pz = HOP.list[HOP.i]; HOP.route = [pz.s]; HOP.solved = false;
+  $("#hop-qn").textContent = `Trip ${HOP.i + 1} of ${HOP.list.length}`;
+  $("#hop-score").textContent = HOP.score.toLocaleString();
+  $("#hop-task").innerHTML = `<div class="hopends">${flagSm(pz.s)}<b>${cName(pz.s)}</b><span class="arrow">➜</span>${flagSm(pz.e)}<b>${cName(pz.e)}</b></div><p>${hopRuleText(pz)}</p>`;
+  const W = MAPS.WC, easy = pz.level === "easy";
+  const rule = pz.kind === "via" ? hopRule("none") : hopRule(pz.kind, pz.arg);
+  const cls = id => {
+    const k = ["cty"];
+    if (id === pz.s) k.push("start"); else if (id === pz.e) k.push("end");
+    else if (pz.kind === "avoid" && id === pz.arg) k.push("avoid");
+    else if (pz.kind === "via" && id === pz.arg) k.push("via");
+    else if (easy && !rule.ok(id, false)) k.push("nope");
+    return k.join(" ");
+  };
+  $("#hop-map").innerHTML = `<svg class="map hopsvg" viewBox="0 0 ${W.w} ${W.h}" preserveAspectRatio="xMidYMid meet" data-map="WC" data-w="${W.w}" data-h="${W.h}">
+    <path class="land" d="${W.land}"/>
+    <g>${W.c.map(([id, d]) => `<path class="${cls(id)}" data-id="${id}" d="${d}"/>`).join("")}</g>
+    <g class="leaders"></g><g class="hopline"></g>
+    <g>${W.m.map(([id, x, y]) => `<circle class="mk ${cls(id).replace("cty", "")}" data-id="${id}" data-x0="${x}" data-y0="${y}" cx="${x}" cy="${y}" r="6"/>`).join("")}</g>
+    <g class="fx"></g></svg>`;
+  const svg = $("#hop-map svg");
+  scaleMarkers(svg);
+  enableZoom(svg, $("#hop-map"), { home: hopView(svg, pz) });
+  svg.addEventListener("zoomed", hopDraw);
+  svg.addEventListener("click", e => { const id = hitCountry(svg, e); if (id) hopTap(id); });
+  hopFeed(`Start in <b>${cName(pz.s)}</b>. Tap a country next door to cross the border.`);
+  hopDraw();
+}
+/* Frame the map around the trip */
+function hopView(svg, pz) {
+  const ids = new Set([...pz.opt, pz.s, pz.e, ...(pz.arg && GEO_BY.get(pz.arg) ? [pz.arg] : [])]);
+  let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+  ids.forEach(id => { const lp = MAPS.WC.lp[id]; const el = svg.querySelector(`.cty[data-id="${id}"]`);
+    let b = el ? el.getBBox() : null; if (b && b.width > 500 && lp) b = { x: lp[0] - 120, y: lp[1] - 80, width: 240, height: 160 };
+    if (!b && lp) b = { x: lp[0] - 10, y: lp[1] - 10, width: 20, height: 20 };
+    if (!b) return; x0 = Math.min(x0, b.x); y0 = Math.min(y0, b.y); x1 = Math.max(x1, b.x + b.width); y1 = Math.max(y1, b.y + b.height); });
+  const W = +svg.dataset.w, H = +svg.dataset.h, r = svg.getBoundingClientRect(), ratio = r.width && r.height ? r.width / r.height : W / H;
+  const w = Math.min(W, Math.max((x1 - x0) * 1.35, (y1 - y0) * 1.35 * ratio, 150));
+  return { x: (x0 + x1) / 2 - w / 2, y: (y0 + y1) / 2 - w * H / W / 2, w };
+}
+function hopFeed(html, cls) { const f = $("#hop-feed"); f.className = "acfeed hopfeed" + (cls ? " " + cls : ""); f.innerHTML = `<span>${html}</span>`; }
+function hopPos(svg, id) {
+  const mk = svg.querySelector(`.mk[data-id="${id}"]`); if (mk) return [+mk.getAttribute("cx"), +mk.getAttribute("cy"), 0];
+  return MAPS.WC.lp[id] || [0, 0, 0];
+}
+/* Route line, country colours and names in view */
+function hopDraw() {
+  const svg = $("#hop-map svg"); if (!svg) return;
+  const pz = HOP.pz, s = svgScale(svg);
+  svg.querySelectorAll(".on").forEach(el => el.classList.remove("on"));
+  HOP.route.slice(1).forEach(id => { if (id !== pz.e) svg.querySelectorAll(`[data-id="${id}"]`).forEach(el => el.classList.add("on")); });
+  if (HOP.solved) svg.querySelectorAll(`[data-id="${pz.e}"]`).forEach(el => el.classList.add("reached"));
+  const pts = HOP.route.map(id => hopPos(svg, id));
+  $("#hop-map .hopline").innerHTML = pts.length > 1 ? `<polyline points="${pts.map(p => p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" ")}" style="stroke-width:${(4 / s).toFixed(2)}px;stroke-dasharray:${(8 / s).toFixed(1)} ${(6 / s).toFixed(1)}"/>` +
+    pts.map(p => `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="${(5 / s).toFixed(1)}"/>`).join("") : "";
+  // Names: the trip's countries first, then the biggest countries, skipping any that would overlap.
+  const vb = svg.viewBox.baseVal, important = new Set([pz.s, pz.e, pz.arg, ...HOP.route]);
+  const ids = GEO.map(c => c.id).filter(id => { const p = hopPos(svg, id); return p[0] >= vb.x && p[0] <= vb.x + vb.width && p[1] >= vb.y && p[1] <= vb.y + vb.height; });
+  const items = ids.map(id => { const [x, y, sz] = hopPos(svg, id); return { id, x, y, sz, imp: important.has(id), name: GEO_BY.get(id).n }; })
+    .sort((a, b) => (b.imp - a.imp) || (b.sz - a.sz));
+  const placed = []; let html = "";
+  for (const it of items) {
+    const px = it.imp ? 13 : Math.max(8, Math.min(12.5, it.sz * s * .22)), fs = px / s;
+    if (!it.imp && it.sz && it.sz * s < 7) continue;
+    const w = it.name.length * px * .6 / s + 6 / s, h = px * 1.2 / s, gap = 9 / s;
+    const tries = it.sz ? [[0, 0], [0, -h * .9], [0, h * .9]] : [[0, -gap - h / 2], [0, gap + h / 2], [w / 2 + gap, 0], [-w / 2 - gap, 0]];
+    let spot = null;
+    for (const [dx, dy] of tries) { const cx = it.x + dx, cy = it.y + dy, r = [cx - w / 2, cy - h / 2, cx + w / 2, cy + h / 2];
+      if (!placed.some(q => r[0] < q[2] && r[2] > q[0] && r[1] < q[3] && r[3] > q[1])) { spot = [cx, cy, r]; break; } }
+    if (!spot) continue;
+    placed.push(spot[2]);
+    html += `<text class="lbl hoplbl${it.imp ? " imp" : ""}" x="${spot[0].toFixed(1)}" y="${(spot[1] + fs * .36).toFixed(1)}" style="font-size:${fs.toFixed(2)}px;stroke-width:${(3 / s).toFixed(2)}px">${esc(it.name)}</text>`;
+  }
+  svg.querySelector(".fx").innerHTML = html;
+  $("#hop-route").innerHTML = HOP.route.map((id, k) => `<span class="hopstop${k === 0 ? " first" : ""}${id === pz.e ? " last" : ""}">${flagSm(id)}${cName(id)}</span>`).join('<i>›</i>');
+  $("#hop-route").scrollLeft = 1e6;
+  $("#hop-undo").disabled = HOP.route.length < 2 || HOP.solved;
+}
+function hopTap(id) {
+  if (HOP.solved || !HOP.on) return;
+  const pz = HOP.pz, last = HOP.route[HOP.route.length - 1];
+  if (id === last && HOP.route.length > 1) return hopUndo();
+  if (id === pz.s && HOP.route.length === 1) return hopFeed(`You're in <b>${cName(pz.s)}</b>. Now tap a country next door.`);
+  const why = hopCheckStep(pz, HOP.route, id);
+  if (why) {
+    sfx("wrong"); buzz(40); hopFeed(esc(why), "dup");
+    const svg = $("#hop-map svg"); svg.querySelectorAll(`[data-id="${id}"]`).forEach(el => { el.classList.remove("flash"); void el.getBBox(); el.classList.add("flash"); });
+    return;
+  }
+  sfx("tap"); HOP.route.push(id);
+  if (id === pz.e) return hopSolved();
+  hopFeed(`${flagSm(id)} <b>${cName(id)}</b>. ${HOP.route.length - 1} border${HOP.route.length > 2 ? "s" : ""} crossed. Keep going!`, "ok");
+  hopDraw();
+}
+function hopUndo() {
+  if (HOP.route.length < 2 || HOP.solved) return;
+  const gone = HOP.route.pop(); sfx("tap");
+  hopFeed(`Back out of <b>${cName(gone)}</b>.`); hopDraw();
+}
+function hopSolved(gaveUp) {
+  const pz = HOP.pz, len = HOP.route.length; HOP.solved = true;
+  let pts = 0, perfect = false;
+  if (!gaveUp) {
+    if (pz.most) { perfect = len >= pz.best; pts = perfect ? 300 : Math.max(60, Math.round(300 * (len - pz.min) / (pz.best - pz.min))); }
+    else { const extra = len - pz.best; perfect = extra <= 0; pts = perfect ? 300 : Math.max(60, 300 - 70 * extra); }
+  }
+  HOP.score += pts; if (perfect) HOP.perfect++;
+  HOP.results.push({ pz, route: HOP.route.slice(), pts, perfect, gaveUp: !!gaveUp });
+  P.seen.hop = 1; if (!gaveUp) P.cat.hop = (P.cat.hop || 0) + 1; if (perfect) P.hopPerfect = (P.hopPerfect || 0) + 1;
+  hopAward(pz, perfect, gaveUp); saveP(); checkAll();
+  hopDraw();
+  $("#hop-score").textContent = HOP.score.toLocaleString();
+  const best = pz.opt.map(id => `${flagSm(id)}${cName(id)}`).join(" › ");
+  sfx(perfect ? "fanfare" : gaveUp ? "wrong" : "right"); if (perfect) confetti();
+  const title = gaveUp ? "Here's a route that works" : perfect ? (pz.most ? "The longest route there is!" : "Perfect route!") : "You made it!";
+  const sub = gaveUp ? "" : `${len} countries${pz.most ? "" : ` · the shortest is ${pz.best}`}${pz.most ? ` · the longest is ${pz.best}` : ""} · <b>+${pts}</b>`;
+  showInfo(`<div class="hopres"><h2>${title}</h2>${sub ? `<p>${sub}</p>` : ""}
+    ${perfect && !gaveUp ? "" : `<h3>${pz.most ? "The longest route" : "A shortest route"} (${pz.best} countries)</h3><p class="hoppath">${best}</p>`}
+    <button class="btn" id="hop-next">${HOP.i + 1 < HOP.list.length ? "Next trip" : "See my results"}</button></div>`);
+  $("#hop-next").onclick = () => { $("#info").hidden = true; HOP.i++; if (HOP.i < HOP.list.length) hopLoad(); else hopFinish(); };
+}
+function hopFinish() {
+  HOP.on = false;
+  const max = HOP.list.length * 300, sc = HOP.score;
+  const stars = sc >= max * .8 ? 3 : sc >= max * .55 ? 2 : sc >= max * .3 ? 1 : 0;
+  const key = bestKey("hop"), prev = BEST[key], isBest = !prev || sc > prev.score;
+  BEST[key] = { score: Math.max(sc, prev ? prev.score : 0), stars: Math.max(stars, prev ? prev.stars : 0) }; LS.set("best", BEST);
+  P.rounds++; P.total += sc; award("first"); if (S.level === "hard" && stars === 3) award("expert"); checkAll();
+  sfx("fanfare"); if (stars === 3) confetti();
+  showInfo(`<div class="acres"><h2>Trip complete!</h2><div class="bigstars">${[0, 1, 2].map(i => `<span class="stars">${i < stars ? "★" : '<span class="off">★</span>'}</span>`).join("")}</div>
+    <div class="bigscore num">${sc.toLocaleString()}</div><p>${HOP.perfect} of ${HOP.list.length} perfect routes${isBest && sc ? " · New best!" : ""}</p></div>
+    <div class="cc-actions"><button class="btn alt" id="hop-more">More games</button><button class="btn" id="hop-again">Play again</button></div>`);
+  $("#hop-again").onclick = () => { $("#info").hidden = true; startHop(); };
+  $("#hop-more").onclick = () => { $("#info").hidden = true; goHome(); };
+  const rk = lbRank("hop", S.level, sc);
+  if (rk) { G.mode = "hop"; G.score = sc; setTimeout(() => askInitials(rk), 900); }
+}
+function hopPause() {
+  if (!HOP.on) return goHome();
+  showInfo(`<h2>Paused</h2><p>Trip ${HOP.i + 1} of ${HOP.list.length} · ${HOP.score.toLocaleString()} points</p>
+    <button class="btn" id="info-close">Resume</button><button class="btn danger" id="hop-quit">Quit to games</button>`);
+  $("#hop-quit").onclick = () => { $("#info").hidden = true; HOP.on = false; goHome(); };
+}
+
+/* ================= Map Puzzle: drag country shapes into place =================
+   Explorer: a continent map with a blank space where the pieces go.
+   World Expert: a group of neighbouring countries anywhere in the world, with only
+   one piece already in place to build around. Every group is connected by land borders. */
+const PZ = { on: false, i: 0, n: 3, score: 0, list: [], cur: null, results: [] };
+const PZ_COLS = ["#FF8A6B", "#FFC93C", "#8FDB6E", "#7FD0F5", "#B9A2FF", "#FF8FB1", "#5FD7C4", "#FFB25E"];
+/* Split a map path into its separate parts, with a bounding box for each */
+function pathParts(d) {
+  return d.split(/(?=M)/).map(seg => {
+    const n = seg.match(/-?\d+(\.\d+)?/g).map(Number);
+    let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    for (let i = 0; i + 1 < n.length; i += 2) { x0 = Math.min(x0, n[i]); x1 = Math.max(x1, n[i]); y0 = Math.min(y0, n[i + 1]); y1 = Math.max(y1, n[i + 1]); }
+    return { d: seg, x0, y0, x1, y1, a: (x1 - x0) * (y1 - y0) };
+  });
+}
+/* The main land of a country, plus islands close to it (far-away islands are left off the piece) */
+function mainShape(d) {
+  const parts = pathParts(d), main = parts.reduce((a, b) => b.a > a.a ? b : a);
+  const mw = main.x1 - main.x0, mh = main.y1 - main.y0, cx = (main.x0 + main.x1) / 2, cy = (main.y0 + main.y1) / 2;
+  const keep = parts.filter(p => p === main || (Math.abs((p.x0 + p.x1) / 2 - cx) < mw * .9 && Math.abs((p.y0 + p.y1) / 2 - cy) < mh * .9));
+  const b = keep.reduce((o, p) => ({ x0: Math.min(o.x0, p.x0), y0: Math.min(o.y0, p.y0), x1: Math.max(o.x1, p.x1), y1: Math.max(o.y1, p.y1) }), { x0: 1e9, y0: 1e9, x1: -1e9, y1: -1e9 });
+  return { d: keep.map(p => p.d).join(""), ...b, w: b.x1 - b.x0, h: b.y1 - b.y0, cx: (b.x0 + b.x1) / 2, cy: (b.y0 + b.y1) / 2 };
+}
+/* Pick a connected group of countries that are all big enough to drag */
+function pzMake(level) {
+  const easy = level === "easy", k = easy ? 4 : 5;
+  for (let tries = 0; tries < 400; tries++) {
+    const mapId = easy ? pick(["EU", "AF", "AS", "NA", "SA", "EU", "AF"]) : "WC";
+    const M = MAPS[mapId], paths = new Map(M.c.map(([id, d]) => [id, d]));
+    const okC = id => paths.has(id) && id !== "RU" && (!easy || GEO_BY.get(id).m === mapId);
+    const seeds = [...paths.keys()].filter(id => okC(id) && (!easy || EASY.has(id)) && ADJ.get(id).size);
+    if (!seeds.length) continue;
+    const set = [pick(seeds)];
+    while (set.length < k) {
+      const cand = [...new Set(set.flatMap(id => [...ADJ.get(id)]))].filter(id => okC(id) && !set.includes(id));
+      if (!cand.length) break;
+      set.push(pick(cand));
+    }
+    if (set.length < k) continue;
+    const sh = new Map(set.map(id => [id, mainShape(paths.get(id))]));
+    const all = [...sh.values()], ux0 = Math.min(...all.map(p => p.x0)), uy0 = Math.min(...all.map(p => p.y0)), ux1 = Math.max(...all.map(p => p.x1)), uy1 = Math.max(...all.map(p => p.y1));
+    const U = Math.max(ux1 - ux0, uy1 - uy0);
+    if (all.some(p => Math.max(p.w, p.h) < U * .17)) continue;      // too small to grab
+    if (U > M.w * .75) continue;                                      // too spread out
+    return { mapId, set, sh, box: { x0: ux0, y0: uy0, x1: ux1, y1: uy1 }, level, anchor: easy ? null : set.reduce((a, b) => sh.get(b).w * sh.get(b).h > sh.get(a).w * sh.get(a).h ? b : a) };
+  }
+  return null;
+}
+function startPuzzle() {
+  sfx("go"); H.on = false;
+  const list = []; const seen = new Set();
+  for (let t = 0; list.length < PZ.n && t < 30; t++) { const p = pzMake(S.level); if (p && !p.set.some(id => seen.has(id))) { list.push(p); p.set.forEach(id => seen.add(id)); } }
+  Object.assign(PZ, { on: true, i: 0, score: 0, list, results: [] });
+  show("s-pz"); pzLoad();
+}
+function pzLoad() {
+  const pz = PZ.cur = PZ.list[PZ.i], M = MAPS[pz.mapId], easy = pz.level === "easy";
+  pz.placed = new Set(pz.anchor ? [pz.anchor] : []); pz.miss = 0; pz.t0 = performance.now();
+  $("#pz-qn").textContent = `Puzzle ${PZ.i + 1} of ${PZ.list.length}`;
+  $("#pz-score").textContent = PZ.score.toLocaleString();
+  $("#pz-task").innerHTML = easy
+    ? `<p>Drag each country into the empty space on the map of <b>${CONT[pz.mapId].n}</b>.</p>`
+    : `<p>These countries are neighbours. ${flagSm(pz.anchor)} <b>${cName(pz.anchor)}</b> is already in place. Build the rest around it!</p>`;
+  // Board and tray share one drawing, so a piece is the same size in the tray as on the board.
+  const box = $("#pz-board"), r = box.getBoundingClientRect(), wide = r.width > r.height * 1.15;
+  const bw0 = pz.box.x1 - pz.box.x0, bh0 = pz.box.y1 - pz.box.y0, pad = Math.max(bw0, bh0) * (easy ? .35 : .45);
+  const boardFrac = wide ? .66 : .64;
+  const aspect = wide ? (r.width * boardFrac) / r.height : r.width / (r.height * boardFrac);
+  let bw = bw0 + pad * 2, bh = bh0 + pad * 2; if (bw / bh < aspect) bw = bh * aspect; else bh = bw / aspect;
+  const bx = (pz.box.x0 + pz.box.x1) / 2 - bw / 2, by = (pz.box.y0 + pz.box.y1) / 2 - bh / 2;
+  const tw = wide ? bw * (1 - boardFrac) / boardFrac : bw, th = wide ? bh : bh * (1 - boardFrac) / boardFrac;
+  const tx0 = wide ? bx + bw : bx, ty0 = wide ? by : by + bh;
+  pz.vb = { x: bx, y: by, w: wide ? bw + tw : bw, h: wide ? bh : bh + th };
+  const loose = pz.set.filter(id => !pz.placed.has(id)), n = loose.length;
+  const cols = wide ? (n > 3 ? 2 : 1) : n, rows = Math.ceil(n / cols), sw = tw / cols, shh = th / rows;
+  pz.pc = {};
+  loose.forEach((id, j) => {
+    const s = pz.sh.get(id), c = j % cols, rr = Math.floor(j / cols);
+    const scx = tx0 + sw * (c + .5), scy = ty0 + shh * (rr + .5) - shh * .06;
+    const sc = Math.min(1, sw * .8 / s.w, shh * .66 / s.h);
+    pz.pc[id] = { home: { x: scx - s.cx, y: scy - s.cy, s: sc }, x: scx - s.cx, y: scy - s.cy, s: sc };
+  });
+  const sw2 = Math.max(bw, bh) / 400;
+  const ctx = easy ? M.c.filter(([id]) => !pz.set.includes(id)).map(([id, d]) => `<path class="ctx" d="${d}"/>`).join("") : "";
+  const grid = easy ? "" : Array.from({ length: 13 }, (_, i) => `<path class="grat" d="M${bx + bw * i / 12} ${by}V${by + bh}M${bx} ${by + bh * i / 12}H${bx + bw}"/>`).join("");
+  const slots = easy ? pz.set.map(id => `<path class="slot" d="${pz.sh.get(id).d}"/>`).join("") : "";
+  const col = id => PZ_COLS[pz.set.indexOf(id) % PZ_COLS.length];
+  box.innerHTML = `<svg class="pzsvg" viewBox="${pz.vb.x} ${pz.vb.y} ${pz.vb.w} ${pz.vb.h}" preserveAspectRatio="xMidYMid meet" style="--sw:${sw2}px">
+    <rect class="sea" x="${bx}" y="${by}" width="${bw}" height="${bh}"/>${grid}${easy ? `<path class="land" d="${M.land}"/>` : ""}${ctx}${slots}
+    <rect class="tray" x="${tx0}" y="${ty0}" width="${tw}" height="${th}"/>
+    <g class="pcs">${pz.set.map(id => { const s = pz.sh.get(id), fixed = pz.placed.has(id);
+      return `<g class="pc${fixed ? " fixed" : ""}" data-id="${id}"><path d="${s.d}" style="fill:${col(id)}"/><text x="${s.cx}" y="${s.cy}" class="pclbl">${esc(GEO_BY.get(id).n)}</text></g>`; }).join("")}</g></svg>`;
+  const svg = box.querySelector("svg");
+  svg.querySelectorAll(".pc").forEach(g => pzPlace(g));
+  svg.querySelectorAll(".pc:not(.fixed)").forEach(g => pzDrag(svg, g));
+  pzFeed(easy ? "Drag a piece onto the map. It snaps in when it's in the right spot." : "Drag a piece next to the ones already placed. It snaps in when it's in the right spot.");
+}
+function pzPlace(g) {
+  const pz = PZ.cur, id = g.dataset.id, s = pz.sh.get(id), p = pz.placed.has(id) ? { x: 0, y: 0, s: 1 } : pz.pc[id];
+  g.setAttribute("transform", `translate(${p.x + s.cx} ${p.y + s.cy}) scale(${p.s}) translate(${-s.cx} ${-s.cy})`);
+  const t = g.querySelector("text"), k = Math.max(pz.vb.w, pz.vb.h) / 34 / p.s;
+  t.style.fontSize = Math.min(k, s.h * .5, s.w / Math.max(4, GEO_BY.get(id).n.length) * 1.9) + "px";
+  t.style.strokeWidth = (k / 5) + "px";
+}
+function pzDrag(svg, g) {
+  const pz = PZ.cur, id = g.dataset.id, s = pz.sh.get(id);
+  const pt = e => { const m = svg.getScreenCTM().inverse(), q = svg.createSVGPoint(); q.x = e.clientX; q.y = e.clientY; return q.matrixTransform(m); };
+  g.addEventListener("pointerdown", e => {
+    if (pz.placed.has(id) || !PZ.on) return;
+    e.preventDefault(); const pid = e.pointerId;
+    g.parentNode.appendChild(g); g.classList.add("lift"); sfx("tap");
+    const lift = e.pointerType === "touch" ? Math.max(pz.vb.w, pz.vb.h) * .05 : 0;
+    const P0 = pz.pc[id];
+    const move = ev => { if (ev.pointerId !== pid) return; const q = pt(ev); P0.s = 1; P0.x = q.x - s.cx; P0.y = q.y - lift - s.cy; pzPlace(g); };
+    move(e);
+    const up = ev => {
+      if (ev.pointerId !== pid) return;
+      removeEventListener("pointermove", move, true); removeEventListener("pointerup", up, true); removeEventListener("pointercancel", up, true);
+      g.classList.remove("lift");
+      const tol = Math.max(Math.max(s.w, s.h) * .2, Math.max(pz.vb.w, pz.vb.h) * .035);
+      if (ev.type === "pointerup" && Math.hypot(P0.x, P0.y) < tol) {
+        pz.placed.add(id); g.classList.add("fixed"); pzPlace(g); sfx("right"); buzz(10);
+        pzFeed(`${flagSm(id)} <b>${cName(id)}</b> fits!`, "ok");
+        if (pz.placed.size === pz.set.length) setTimeout(pzSolved, 450);
+      } else {
+        const far = Math.hypot(P0.x, P0.y);
+        Object.assign(P0, P0.home); pzPlace(g);
+        if (ev.type === "pointerup" && far < Math.max(pz.vb.w, pz.vb.h) * .6 && !pz.inTray(ev)) { pz.miss++; sfx("wrong"); buzz(40); pzFeed(`Not quite. <b>${cName(id)}</b> goes somewhere else.`, "dup"); }
+      }
+    };
+    addEventListener("pointermove", move, true); addEventListener("pointerup", up, true); addEventListener("pointercancel", up, true);
+  });
+  pz.inTray = ev => { const tr = svg.querySelector(".tray").getBoundingClientRect(); return ev.clientX >= tr.left && ev.clientX <= tr.right && ev.clientY >= tr.top && ev.clientY <= tr.bottom; };
+}
+function pzFeed(html, cls) { const f = $("#pz-feed"); f.className = "acfeed hopfeed" + (cls ? " " + cls : ""); f.innerHTML = `<span>${html}</span>`; }
+function pzSolved(gaveUp) {
+  const pz = PZ.cur, secs = (performance.now() - pz.t0) / 1000;
+  let pts = 0;
+  if (!gaveUp) pts = Math.max(50, 300 + Math.max(0, Math.round(100 - Math.max(0, secs - 20) * 2)) - 50 * pz.miss);
+  PZ.score += pts; const perfect = !gaveUp && pz.miss === 0;
+  PZ.results.push({ pz, pts, perfect, secs });
+  P.seen.puzzle = 1; if (!gaveUp) P.cat.puzzle = (P.cat.puzzle || 0) + 1; if (perfect) P.pzPerfect = (P.pzPerfect || 0) + 1;
+  pzAward(pz, perfect, secs); saveP(); checkAll();
+  $("#pz-score").textContent = PZ.score.toLocaleString();
+  sfx(gaveUp ? "wrong" : "fanfare"); if (perfect) confetti();
+  showInfo(`<div class="hopres"><h2>${gaveUp ? "Here's how it fits" : perfect ? "Perfect fit!" : "Puzzle done!"}</h2>
+    <p>${pz.set.map(id => `${flagSm(id)} ${cName(id)}`).join(" · ")}</p>
+    ${gaveUp ? "" : `<p>${Math.round(secs)} seconds · ${pz.miss} wrong drop${pz.miss === 1 ? "" : "s"} · <b>+${pts}</b></p>`}
+    <button class="btn" id="pz-next">${PZ.i + 1 < PZ.list.length ? "Next puzzle" : "See my results"}</button></div>`);
+  $("#pz-next").onclick = () => { $("#info").hidden = true; PZ.i++; if (PZ.i < PZ.list.length) pzLoad(); else pzFinish(); };
+}
+function pzShow() {
+  const pz = PZ.cur; if (!pz || pz.placed.size === pz.set.length) return;
+  pz.set.forEach(id => pz.placed.add(id));
+  $("#pz-board svg").querySelectorAll(".pc").forEach(g => { g.classList.add("fixed"); pzPlace(g); });
+  setTimeout(() => pzSolved(true), 700);
+}
+function pzFinish() {
+  PZ.on = false;
+  const max = PZ.list.length * 400, sc = PZ.score, stars = sc >= max * .75 ? 3 : sc >= max * .5 ? 2 : sc >= max * .25 ? 1 : 0;
+  const key = bestKey("puzzle"), prev = BEST[key], isBest = !prev || sc > prev.score;
+  BEST[key] = { score: Math.max(sc, prev ? prev.score : 0), stars: Math.max(stars, prev ? prev.stars : 0) }; LS.set("best", BEST);
+  P.rounds++; P.total += sc; award("first"); if (S.level === "hard" && stars === 3) award("expert"); checkAll();
+  sfx("fanfare"); if (stars === 3) confetti();
+  showInfo(`<div class="acres"><h2>Puzzles complete!</h2><div class="bigstars">${[0, 1, 2].map(i => `<span class="stars">${i < stars ? "★" : '<span class="off">★</span>'}</span>`).join("")}</div>
+    <div class="bigscore num">${sc.toLocaleString()}</div><p>${PZ.results.filter(r => r.perfect).length} of ${PZ.list.length} with no wrong drops${isBest && sc ? " · New best!" : ""}</p></div>
+    <div class="cc-actions"><button class="btn alt" id="pz-more">More games</button><button class="btn" id="pz-again">Play again</button></div>`);
+  $("#pz-again").onclick = () => { $("#info").hidden = true; startPuzzle(); };
+  $("#pz-more").onclick = () => { $("#info").hidden = true; goHome(); };
+  const rk = lbRank("puzzle", S.level, sc);
+  if (rk) { G.mode = "puzzle"; G.score = sc; setTimeout(() => askInitials(rk), 900); }
+}
+function pzPause() {
+  if (!PZ.on) return goHome();
+  showInfo(`<h2>Paused</h2><p>Puzzle ${PZ.i + 1} of ${PZ.list.length} · ${PZ.score.toLocaleString()} points</p>
+    <button class="btn" id="info-close">Resume</button><button class="btn danger" id="pz-quit">Quit to games</button>`);
+  $("#pz-quit").onclick = () => { $("#info").hidden = true; PZ.on = false; goHome(); };
 }
 
 /* ================= question builders ================= */
@@ -1718,7 +2570,7 @@ const GEMS = [
 ];
 
 /* ================= progress, stamps and accolades ================= */
-const freshP = () => ({ st: {}, cc: {}, cat: {}, seen: {}, cont: {}, aw: {}, tr: {}, bd: {}, gm: {}, stamp: {}, city: {}, total: 0, rounds: 0, ini: "" });
+const freshP = () => ({ st: {}, cc: {}, cat: {}, seen: {}, cont: {}, aw: {}, tr: {}, bd: {}, gm: {}, mt: {}, ca: {}, stamp: {}, city: {}, total: 0, rounds: 0, ini: "" });
 let P = Object.assign(freshP(), LS.get("progress", {}));
 const saveP = () => LS.set("progress", P);
 let LB = LS.get("board", {});
@@ -1787,6 +2639,127 @@ const TROPHIES = [
   ["knowall", "platinum", "Know It All", "Name every country in the world in Name Them All.", () => P.acBest || 0, GEO.length]
 ];
 
+/* ================= new accolades (added alongside the originals; nothing old is reset) ================= */
+const BADGE_KEYS = [...MODE_KEYS, "hop", "puzzle"];
+Object.assign(BADGE_NAMES, { hop: "Border Hopper", puzzle: "Jigsaw Genius" });
+AWARDS.push(
+  ["hop1", "🧭", "First Crossing", "Finish a Border Hop trip."],
+  ["navigator", "🗺️", "Navigator", "Find 5 perfect routes in Border Hop."],
+  ["scenic", "🏞️", "Scenic Route", "Find the longest possible route on a scenic Border Hop trip."],
+  ["landlocked", "⛰️", "Over the Mountains", "Find a perfect route through landlocked countries."],
+  ["pz1", "🧩", "Snap!", "Finish a Map Puzzle."],
+  ["pzclean", "✨", "Perfect Fit", "Finish a Map Puzzle with no wrong drops."],
+  ["pzfast", "⏱️", "Speedy Snapper", "Finish a Map Puzzle in under 20 seconds."],
+  ["rollcall", "📣", "Roll Call", "Name every country on a continent in Name Them All."]
+);
+/* Special badges: fun combinations across games */
+const s3 = m => ["easy", "hard"].some(lv => ((BEST[m + "_" + lv] || {}).stars || 0) >= 3);
+const SPECIAL = [
+  ["truscott", "🚂", "Travelling Truscott", "Name all 197 countries in under 9 minutes in Name Them All.", () => (P.acFast || 1e9) < 540],
+  ["italianchef", "🍕", "Italian Chef", "Earn Italy's passport stamp and find Naples in Big Cities.", () => !!(P.stamp.IT && P.city.Naples)],
+  ["sushichef", "🍣", "Sushi Chef", "Earn Japan's passport stamp and find Osaka in Big Cities.", () => !!(P.stamp.JP && P.city.Osaka)],
+  ["tacochef", "🌮", "Taco Chef", "Earn Mexico's passport stamp and find Guadalajara in Big Cities.", () => !!(P.stamp.MX && P.city.Guadalajara)],
+  ["frenchbaker", "🥐", "French Baker", "Earn France's passport stamp and find Lyon in Big Cities.", () => !!(P.stamp.FR && P.city.Lyon)],
+  ["currychef", "🍛", "Curry Chef", "Earn India's passport stamp and find Mumbai in Big Cities.", () => !!(P.stamp.IN && P.city.Mumbai)],
+  ["metromaestro", "🚇", "Metro Maestro", "Earn 3 stars in both Capital Quest and Big Cities.", () => s3("capitals") && s3("cities")],
+  ["ambassador", "🤝", "Ambassador", "Earn 3 stars in both Flag Finder and Say Hello.", () => s3("flags") && s3("languages")],
+  ["mastercarto", "📐", "Master Cartographer", "Earn 3 stars in both Map Hunt and Map Puzzle.", () => s3("maphunt") && s3("puzzle")],
+  ["borderguard", "🛃", "Border Guard", "Earn 3 stars in both Neighbours and Border Hop.", () => s3("neighbours") && s3("hop")],
+  ["photographer", "📸", "Wildlife Photographer", "Earn 3 stars in both Animal Atlas and Landmarks.", () => s3("animals") && s3("landmarks")],
+  ["pathfinder", "🎯", "Pathfinder", "Earn 3 stars in both Capital Pin and Border Hop.", () => s3("cappin") && s3("hop")],
+  ["secretagent", "🕵️", "Secret Agent", "Earn 3 stars in both Mystery Country and Name Them All.", () => s3("clues") && s3("allc")],
+  ["shapemaster", "🔷", "Shape Master", "Earn 3 stars in both Shape Shifter and Map Puzzle.", () => s3("shapes") && s3("puzzle")]
+];
+/* Continent achievements, with an Explorer and a World Expert level for each */
+const CONT_SCHOLAR = { AF: "Safari Scholar", AS: "Silk Road Scholar", EU: "Grand Tour Guide", NA: "Route 66 Ranger", SA: "Andes Adventurer", OC: "Reef Ranger" };
+const SCHOLAR_GOAL = { easy: 25, hard: 50 };
+const contCaps = (k, lv) => GEO.filter(c => c.m === k && c.cap && (lv === "hard" || EASY.has(c.id)));
+const contCities = (k, lv) => CITIES.filter(x => { const c = BY_ID.get(x[2]); return c && c.m === k && (lv === "hard" || EASY.has(c.id)); });
+const CONT_GOALS = [];
+CONT_KEYS.forEach(k => ["easy", "hard"].forEach(lv => {
+  const tag = lv === "easy" ? "Explorer" : "World Expert";
+  CONT_GOALS.push([`cs_${k}_${lv}`, k, lv, "📚", CONT_SCHOLAR[k], `${SCHOLAR_GOAL[lv]} right answers about countries in ${CONT[k].n} (${tag})`, () => (P.ca && P.ca[k + "_" + lv]) || 0, () => SCHOLAR_GOAL[lv]]);
+  CONT_GOALS.push([`cap_${k}_${lv}`, k, lv, "🏛️", "Capital Captain", `Get every ${lv === "easy" ? "famous " : ""}capital in ${CONT[k].n} right in Capital Quest (${tag})`, () => contCaps(k, lv).filter(c => done(c, "capitals")).length, () => contCaps(k, lv).length]);
+  CONT_GOALS.push([`city_${k}_${lv}`, k, lv, "🏙️", "City Champion", `Get every ${lv === "easy" ? "famous-country " : ""}big city in ${CONT[k].n} right (${tag})`, () => contCities(k, lv).filter(x => P.city[x[1]]).length, () => contCities(k, lv).length]);
+}));
+CONT_KEYS.forEach(k => CONT_GOALS.push([`roll_${k}`, k, "any", "📣", "Roll Call", `Name every country in ${CONT[k].n} in Name Them All`, () => (P.acCont && P.acCont[k] ? P.acCont[k].n : 0), () => GEO.filter(c => c.m === k).length]));
+/* Precious metals: answer 4 questions about a metal's home country to mine it */
+const METALS = [
+  { id: "gold", n: "Gold", col: "#F2C14E", c: "GH", kind: "Precious", stars: 5, where: "China, Australia, Russia, Canada, the United States and Ghana",
+    uses: "Jewelry, coins, and tiny wires inside phones and computers.", story: "Ghana was once called the Gold Coast, and it is now Africa's biggest gold producer. Gold never rusts, so treasures like Tutankhamun's golden mask still shine after more than 3,000 years." },
+  { id: "silver", n: "Silver", col: "#D9DEE5", c: "MX", kind: "Precious", stars: 4, where: "Mexico, China, Peru and Chile",
+    uses: "Jewelry, coins, mirrors and solar panels. It carries electricity better than any other metal.", story: "Mexico mines more silver than any other country. Spanish 'pieces of eight' made from Mexican and Bolivian silver were spent all over the world for hundreds of years." },
+  { id: "platinum", n: "Platinum", col: "#E6ECEF", c: "ZA", kind: "Precious", stars: 5, where: "South Africa, Russia and Zimbabwe",
+    uses: "Catalytic converters that clean car exhaust, jewelry and medical tools.", story: "South Africa mines about 70% of the world's platinum. Platinum is much rarer than gold." },
+  { id: "palladium", n: "Palladium", col: "#CFD6DD", c: "RU", kind: "Precious", stars: 5, where: "Russia and South Africa",
+    uses: "Catalytic converters, electronics and dental fillings.", story: "Russia and South Africa mine most of the world's palladium. It was discovered in 1803 and named after Pallas, an asteroid found the year before." },
+  { id: "copper", n: "Copper", col: "#D9824B", c: "CL", kind: "Everyday", stars: 2, where: "Chile, Peru, DR Congo, China and the United States",
+    uses: "Electrical wires, water pipes and coins.", story: "Chile mines more copper than any other country, about a quarter of the world's supply. Mixed with tin, copper makes bronze, which gave the Bronze Age its name." },
+  { id: "iron", n: "Iron", col: "#8A8F99", c: "AU", kind: "Everyday", stars: 1, where: "Australia, Brazil, China and India",
+    uses: "Made into steel for buildings, bridges, cars and ships.", story: "Australia mines more iron ore than any other country. Earth's core is made mostly of iron." },
+  { id: "aluminium", n: "Aluminium", col: "#C3CCD6", c: "GN", kind: "Everyday", stars: 1, where: "Australia, Guinea, China and Brazil (as bauxite rock)",
+    uses: "Drink cans, foil, bikes and aeroplanes.", story: "Guinea has the world's largest reserves of bauxite, the rock aluminium is made from. In the 1800s aluminium was so hard to make that it cost more than gold." },
+  { id: "lithium", n: "Lithium", col: "#BFC7D2", c: "BO", kind: "Important", stars: 3, where: "Australia, Chile, China and Argentina",
+    uses: "Rechargeable batteries in phones, laptops and electric cars.", story: "Bolivia's Salar de Uyuni, the biggest salt flat on Earth, holds one of the largest supplies of lithium. It's the lightest metal of all." },
+  { id: "cobalt", n: "Cobalt", col: "#3D6FD1", c: "CD", kind: "Important", stars: 3, where: "DR Congo, Indonesia and Russia",
+    uses: "Batteries, strong magnets, jet engines, and the deep 'cobalt blue' color in glass and paint.", story: "DR Congo mines about 70% of the world's cobalt. Its name comes from 'kobold', a goblin in old German stories that miners blamed for tricky ore." },
+  { id: "tin", n: "Tin", col: "#B9C1CB", c: "MY", kind: "Everyday", stars: 2, where: "China, Indonesia, Myanmar and Peru",
+    uses: "Solder that joins parts in electronics, and the shiny coating on 'tin' cans.", story: "Malaysia was once the world's biggest tin producer. Its capital, Kuala Lumpur, grew from a tin-mining settlement started in 1857." },
+  { id: "nickel", n: "Nickel", col: "#A8B0A0", c: "ID", kind: "Important", stars: 2, where: "Indonesia, the Philippines and Russia",
+    uses: "Stainless steel, batteries and coins.", story: "Indonesia mines more nickel than any other country. Its name comes from a German word for a mischievous 'copper demon', because miners thought the ore was cursed copper." },
+  { id: "uranium", n: "Uranium", col: "#9BD46B", c: "KZ", kind: "Rare", stars: 3, where: "Kazakhstan, Canada, Namibia and Australia",
+    uses: "Fuel for nuclear power stations.", story: "Kazakhstan mines more uranium than any other country. It was discovered in 1789 and named after the planet Uranus." },
+  { id: "zinc", n: "Zinc", col: "#AEB8C2", c: "PE", kind: "Everyday", stars: 1, where: "China, Peru, Australia and India",
+    uses: "A coating that stops steel from rusting, batteries, and sunscreen.", story: "Peru is one of the world's top zinc miners. Copper mixed with zinc makes brass, used for trumpets and door handles." },
+  { id: "tungsten", n: "Tungsten", col: "#7D8794", c: "CN", kind: "Rare", stars: 3, where: "China, Vietnam and Russia",
+    uses: "Drill bits, cutting tools and old-style light bulb filaments.", story: "China produces more than 80% of the world's tungsten. It melts at a higher temperature than any other metal, and its symbol is W, from its other name, wolfram." },
+  { id: "manganese", n: "Manganese", col: "#9C8AA5", c: "GA", kind: "Important", stars: 2, where: "South Africa, Gabon and Australia",
+    uses: "Makes steel stronger, and is used in batteries.", story: "Gabon is one of the world's top manganese producers. Prehistoric cave painters used black manganese powder in their art." }
+];
+const METAL_NEED = 4;
+function checkNew() {
+  BADGE_KEYS.slice(MODE_KEYS.length).forEach(m => TIERS.forEach(([t, n]) => { if ((P.cat[m] || 0) >= n) unlock("bd", m + "_" + t, MEDAL[t], `${cap1(t)} badge: ${BADGE_NAMES[m]}`, `${n} right answers in ${MODES[m].name}`); }));
+  SPECIAL.forEach(([id, ic, n, d, ok]) => { if (ok()) unlock("bd", "sp_" + id, ic, `Special badge: ${n}`, d); });
+  CONT_GOALS.forEach(([id, k, lv, ic, n, d, v, goal]) => { if (goal() > 0 && v() >= goal()) unlock("bd", id, ic, `${n}: ${CONT[k].n}${lv === "any" ? "" : lv === "easy" ? " (Explorer)" : " (World Expert)"}`, d); });
+  P.mt = P.mt || {};
+  METALS.forEach(g => { if ((P.cc[g.c] || 0) >= METAL_NEED) unlock("mt", g.id, "⛏️", `Metal mined: ${g.n}`, `Found in ${BY_ID.get(g.c).n}`); });
+  if (P.acCont && Object.entries(P.acCont).some(([k, v]) => v.n >= v.of)) award("rollcall");
+  if ((P.hopPerfect || 0) >= 5) award("navigator");
+}
+function acAwards() { checkAll(); }
+function hopAward(pz, perfect, gaveUp) { if (gaveUp) return; award("hop1"); if (perfect && pz.most) award("scenic"); if (perfect && pz.kind === "land") award("landlocked"); }
+function pzAward(pz, perfect, secs) { award("pz1"); if (perfect) award("pzclean"); if (secs < 20) award("pzfast"); }
+function ingotSVG(g, on) {
+  const col = on ? g.col : "#C9D3DF";
+  return `<svg viewBox="0 0 64 64"><path d="M10 44l8-18h28l8 18z" fill="${col}" stroke="#14305E" stroke-width="3" stroke-linejoin="round"/><path d="M18 26l4-8h20l4 8" fill="${col}" stroke="#14305E" stroke-width="3" stroke-linejoin="round"/><path d="M14 44h36M22 18h20" stroke="#fff" stroke-width="2" opacity=".7"/><path d="M24 34h16" stroke="#14305E" stroke-width="2" opacity=".35"/></svg>`;
+}
+function metalsHTML() {
+  return `<div class="awhead"><div><h3>Precious Metals</h3><p>Answer ${METAL_NEED} questions about a metal's home country to mine it. Tap any metal to read about it.</p></div></div><div class="ggrid">${METALS.map(g => {
+    const on = !!(P.mt && P.mt[g.id]), c = BY_ID.get(g.c), n = Math.min(P.cc[g.c] || 0, METAL_NEED);
+    return `<button class="gcard${on ? "" : " off"}" data-m="${g.id}">${ingotSVG(g, on)}<b>${g.n}</b><small>${on ? g.kind : `${flagImg(c)}${n}/${METAL_NEED}`}</small></button>`;
+  }).join("")}</div>`;
+}
+function metalInfo(id) {
+  const g = METALS.find(x => x.id === id), c = BY_ID.get(g.c), on = !!(P.mt && P.mt[id]); sfx("tap");
+  showInfo(`<div class="gemhead">${ingotSVG(g, true)}<div><h2>${g.n}</h2><small>${g.kind} metal · ${on ? "In your collection!" : `Answer ${METAL_NEED} questions about ${esc(c.n)} to mine it.`}</small></div></div>
+    <dl class="gemdl"><dt>Where it's mined</dt><dd>${esc(g.where)}</dd>
+    <dt>How valuable</dt><dd><span class="gstars">${"◆".repeat(g.stars)}<span class="off">${"◆".repeat(5 - g.stars)}</span></span></dd>
+    <dt>What it's used for</dt><dd>${esc(g.uses)}</dd><dt>Did you know?</dt><dd>${esc(g.story)}</dd></dl>
+    <button class="btn" id="info-close">Close</button>`);
+}
+function contGoalsHTML() {
+  return `<div class="awhead"><div><h3>Continents</h3><p>Master each continent at Explorer and World Expert level.</p></div></div>
+    <div class="chips" id="aw-conts">${CONT_KEYS.map(k => `<button data-k="${k}" aria-pressed="${k === awCont}">${CONT[k].n}</button>`).join("")}</div>
+    <div class="tgrid">${CONT_GOALS.filter(g => g[1] === awCont).map(([id, k, lv, ic, n, d, v, goal]) => {
+      const on = !!P.bd[id], G0 = goal(), val = Math.min(v(), G0);
+      return `<div class="tcard${on ? "" : " off"}"><span class="rosette">${ic}</span><b>${esc(n)}</b><small>${esc(d)}</small>${on ? `<span class="got">Earned</span>` : `<div class="bar"><i style="width:${G0 ? (val / G0 * 100).toFixed(1) : 0}%"></i></div><small class="num">${val} / ${G0}</small>`}</div>`;
+    }).join("")}</div>`;
+}
+function specialHTML() {
+  return `<div class="awhead"><div><h3>Special badges</h3><p>Fun badges for doing well across different games.</p></div></div><div class="tgrid">${SPECIAL.map(([id, ic, n, d]) =>
+    `<div class="tcard${P.bd["sp_" + id] ? "" : " off"}"><span class="rosette">${ic}</span><b>${esc(n)}</b><small>${esc(d)}</small>${P.bd["sp_" + id] ? `<span class="got">Earned</span>` : ""}</div>`).join("")}</div>`;
+}
+
 /* toasts */
 const toastQ = []; let toastBusy = false;
 function toast(icon, title, sub) { toastQ.push([icon, title, sub]); if (!toastBusy) nextToast(); }
@@ -1807,6 +2780,7 @@ function checkAll() {
   MODE_KEYS.forEach(m => TIERS.forEach(([t, n]) => { if ((P.cat[m] || 0) >= n) unlock("bd", m + "_" + t, MEDAL[t], `${cap1(t)} badge: ${BADGE_NAMES[m]}`, `${n} right answers in ${MODES[m].name}`); }));
   TROPHIES.forEach(([id, , n, d, v, goal]) => { if (v() >= goal) unlock("tr", id, "🏆", `Trophy: ${n}`, d); });
   GEMS.forEach(g => { if ((P.cc[g.c] || 0) >= 3) unlock("gm", g.id, "💎", `Gem found: ${g.n}`, `Discovered in ${BY_ID.get(g.c).n}`); });
+  checkNew();
   saveP();
 }
 function onAnswer(q, ok) {
@@ -1816,6 +2790,7 @@ function onAnswer(q, ok) {
     if (q.cid) {
       const c = BY_ID.get(q.cid);
       (P.st[q.cid] = P.st[q.cid] || {})[q.mode] = 1;
+      if (c) { P.ca = P.ca || {}; const ck = c.m + "_" + S.level; P.ca[ck] = (P.ca[ck] || 0) + 1; }
       P.cc[q.cid] = (P.cc[q.cid] || 0) + 1;
       if (c && !P.stamp[q.cid] && catsFor(c).every(m => done(c, m))) { P.stamp[q.cid] = Date.now(); saveP(); toast("🛂", `Passport stamp: ${c.n}!`, "You answered every kind of question about it."); }
     }
@@ -1905,17 +2880,32 @@ function askInitials(rank) {
   inp.oninput = () => { inp.value = inp.value.toUpperCase().replace(/[^A-Z]/g, "").slice(0, 3); };
 }
 let lbMode = "flags", lbLv = null;
+let lbScope = "device";
 function renderBoard() {
   lbLv = lbLv || S.level;
+  const online = !!CL.cfg;
+  $("#lb-scope").hidden = !online; if (!online) lbScope = "device";
+  if (online) seg($("#lb-scope"), ["everyone", "device"], ["Everyone", "This device"], lbScope, v => { lbScope = v; renderBoard(); });
   seg($("#lb-level"), ["easy", "hard"], ["Explorer", "Expert"], lbLv, v => { lbLv = v; renderBoard(); });
   $("#lb-games").innerHTML = MENU_TILES.map(k => `<button data-k="${k}" aria-pressed="${k === lbMode}">${MODES[k].name}</button>`).join("");
   $("#lb-games").querySelectorAll("button").forEach(b => b.onclick = () => { lbMode = b.dataset.k; renderBoard(); sfx("tap"); });
   const on = $("#lb-games").querySelector('[aria-pressed="true"]'); if (on) on.scrollIntoView({ block: "nearest", inline: "center" });
-  const l = lbList(lbMode, lbLv), b = BEST[bestKey(lbMode, lbLv)];
-  $("#lb-list").innerHTML = (l.length
-    ? l.map((e, i) => `<div class="lbrow${e.i === P.ini ? " me" : ""}"><span class="rk">${["🥇", "🥈", "🥉"][i] || i + 1}</span><span class="ini">${esc(e.i)}<small>${new Date(e.d).toLocaleDateString()}</small></span><span class="sc num">${e.s.toLocaleString()}</span></div>`).join("")
-    : `<p class="empty">No scores yet. Play ${MODES[lbMode].name} to get on the board!</p>`)
-    + `<div class="lbbest"><span>Best stars</span><span class="stars">${starStr(b ? b.stars : 0)}</span></div>`;
+  const b = BEST[bestKey(lbMode, lbLv)], key = bestKey(lbMode, lbLv), me = (() => { try { return plMe(); } catch (e) { return null; } })();
+  const rows = (l, mine) => l.map((e, i) => `<div class="lbrow${mine(e) ? " me" : ""}"><span class="rk">${["🥇", "🥈", "🥉"][i] || i + 1}</span><span class="ini">${esc(e.i)}<small>${e.d ? new Date(e.d).toLocaleDateString() : ""}</small></span><span class="sc num">${e.s.toLocaleString()}</span></div>`).join("");
+  const foot = `<div class="lbbest"><span>Your best stars</span><span class="stars">${starStr(b ? b.stars : 0)}</span></div>`;
+  if (lbScope === "device") {
+    const l = lbList(lbMode, lbLv);
+    $("#lb-list").innerHTML = (l.length ? rows(l, e => e.i === P.ini) : `<p class="empty">No scores yet. Play ${MODES[lbMode].name} to get on the board!</p>`) + foot;
+    $("#lb-note").textContent = "Top 10 scores for each game, saved on this device.";
+    return;
+  }
+  $("#lb-note").textContent = me ? "Top 10 players everywhere. Your best score is added when you're signed in and online." : "Top 10 players everywhere. Sign in with a passport to add your scores.";
+  const draw = l => { $("#lb-list").innerHTML = (l.length ? rows(l, e => me && e.uid === me.uid) : `<p class="empty">No one has posted a ${MODES[lbMode].name} score yet. Be the first!</p>`) + foot; };
+  if (boardCache[key]) draw(boardCache[key]); else $("#lb-list").innerHTML = `<p class="empty">Loading the world leaderboard…</p>` + foot;
+  if (!navigator.onLine) { if (!boardCache[key]) $("#lb-list").innerHTML = `<p class="empty">Connect to the internet to see everyone's scores.</p>` + foot; return; }
+  const want = key;
+  cloudBoardPost().catch(() => {}).finally(() => cloudBoardTop(key).then(l => { if (want === bestKey(lbMode, lbLv) && lbScope === "everyone") draw(l); })
+    .catch(err => { if (want === bestKey(lbMode, lbLv) && lbScope === "everyone") $("#lb-list").innerHTML = `<p class="empty">${err.message === "rules" ? "The online leaderboard isn't switched on yet. Update the Firestore rules in Firebase." : "Couldn't load the world leaderboard just now."}</p>` + foot; }));
 }
 
 /* ================= Trophy Room ================= */
@@ -1925,16 +2915,17 @@ const rot = id => ((id.charCodeAt(0) * 7 + id.charCodeAt(1) * 13) % 17) - 8;
 function openAwards(tab) { if (tab) awTab = tab; openPage("s-awards"); }
 function renderAwards() {
   const tabs = [["passport", "🛂", "Stamps", `${stampCount()}/${GEO.length}`], ["trophies", "🏆", "Trophies", `${cnt(P.tr)}/${TROPHIES.length}`],
-    ["badges", "🏅", "Badges", `${cnt(P.bd)}/${MODE_KEYS.length * 3}`], ["awards", "🎖️", "Awards", `${cnt(P.aw)}/${AWARDS.length}`], ["gems", "💎", "Gems", `${cnt(P.gm)}/${GEMS.length}`]];
+    ["badges", "🏅", "Badges", `${BADGE_KEYS.reduce((a, m) => a + TIERS.filter(([t]) => P.bd[m + "_" + t]).length, 0) + SPECIAL.filter(x => P.bd["sp_" + x[0]]).length}/${BADGE_KEYS.length * 3 + SPECIAL.length}`], ["awards", "🎖️", "Awards", `${cnt(P.aw)}/${AWARDS.length}`],
+    ["conts", "🌍", "Continents", `${CONT_GOALS.filter(g => P.bd[g[0]]).length}/${CONT_GOALS.length}`], ["gems", "💎", "Gems", `${cnt(P.gm)}/${GEMS.length}`], ["metals", "⛏️", "Metals", `${cnt(P.mt || {})}/${METALS.length}`]];
   $("#aw-tabs").innerHTML = tabs.map(([k, ic, n, v]) => `<button data-k="${k}" aria-pressed="${k === awTab}"><span class="ic">${ic}</span>${n}<b class="num">${v}</b></button>`).join("");
   $("#aw-tabs").querySelectorAll("button").forEach(b => b.onclick = () => { awTab = b.dataset.k; renderAwards(); sfx("tap"); });
   const body = $("#aw-body");
   body.className = "awbody" + (awTab === "passport" ? " passpage" : "");
-  body.innerHTML = ({ passport: passportHTML, trophies: trophiesHTML, badges: badgesHTML, awards: awardsHTML, gems: gemsHTML })[awTab]();
+  body.innerHTML = ({ passport: passportHTML, trophies: trophiesHTML, badges: badgesHTML, awards: awardsHTML, gems: gemsHTML, conts: contGoalsHTML, metals: metalsHTML })[awTab]();
   body.scrollTop = 0;
   body.querySelectorAll("#aw-conts button").forEach(b => b.onclick = () => { awCont = b.dataset.k; renderAwards(); sfx("tap"); });
   body.querySelectorAll(".pstamp").forEach(b => b.onclick = () => stampInfo(b.dataset.id));
-  body.querySelectorAll(".gcard").forEach(b => b.onclick = () => gemInfo(b.dataset.g));
+  body.querySelectorAll(".gcard").forEach(b => b.onclick = () => b.dataset.m ? metalInfo(b.dataset.m) : gemInfo(b.dataset.g));
 }
 function passportHTML() {
   const list = GEO.filter(c => c.m === awCont).sort((a, b) => a.n.localeCompare(b.n));
@@ -1966,10 +2957,10 @@ function trophiesHTML() {
 }
 const medalSVG = col => `<svg viewBox="0 0 40 48"><path d="M10 1h8l4 14h-8zM30 1h-8l-4 14h8z" fill="#FF6B57" stroke="#14305E" stroke-width="2" stroke-linejoin="round"/><circle cx="20" cy="31" r="15" fill="${col}" stroke="#14305E" stroke-width="2.5"/><circle cx="20" cy="31" r="10" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="1.5"/></svg>`;
 function badgesHTML() {
-  return `<div class="awhead"><div><h3>Badges</h3><p>Earn bronze (10), silver (50) and gold (150) right answers in every game.</p></div></div>${MODE_KEYS.map(m => {
+  return `<div class="awhead"><div><h3>Badges</h3><p>Earn bronze (10), silver (50) and gold (150) right answers in every game.</p></div></div>${BADGE_KEYS.map(m => {
     const n = P.cat[m] || 0;
     return `<div class="brow"><span class="dot" style="--c:${MODES[m].c}">${ICON[m]}</span><div><b>${BADGE_NAMES[m]}</b><small>${MODES[m].name} · ${n} right</small></div><div class="medals">${TIERS.map(([t, goal, col]) => `<span class="medal-b${n >= goal ? "" : " off"}" title="${cap1(t)}">${medalSVG(col)}${goal}</span>`).join("")}</div></div>`;
-  }).join("")}`;
+  }).join("")}${specialHTML()}`;
 }
 function awardsHTML() {
   return `<div class="awhead"><div><h3>Awards</h3><p>Special moments from your travels.</p></div></div><div class="tgrid">${AWARDS.map(([id, ic, n, d]) => `<div class="tcard${P.aw[id] ? "" : " off"}"><span class="rosette">${ic}</span><b>${esc(n)}</b><small>${esc(d)}</small></div>`).join("")}</div>`;
@@ -2107,6 +3098,7 @@ function h2hResults() {
 
 /* ================= Name Them All: type every country in 15 minutes ================= */
 const AC_TIME = 15 * 60;
+const AC_TIMES = { hard: [[1200, "20 min"], [900, "15 min"], [600, "10 min"], [450, "7½ min"]], easy: [[600, "10 min"], [420, "7 min"], [300, "5 min"], [180, "3 min"]] };
 const acNorm = s => String(s).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase()
   .replace(/&/g, " and ").replace(/^\s*the\s+/, "").replace(/\bsaint\b/g, "st").replace(/\bst\.?(?=\s)/g, "st").replace(/[^a-z]/g, "");
 const AC_EXTRA = {
@@ -2143,14 +3135,37 @@ GEO.forEach(c => {
   });
 });
 const AC_KEYS = [...AC_MAP.entries()];
-const NTA = { on: false, found: {}, order: [], left: AC_TIME, raf: 0, last: 0, paused: false, wait: 0, done: false, review: false };
+const NTA = { on: false, found: {}, order: [], left: AC_TIME, total: AC_TIME, raf: 0, last: 0, paused: false, wait: 0, done: false, review: false, cont: null, pool: GEO.map(c => c.id), inPool: new Set(GEO.map(c => c.id)) };
 
-function acRemaining() { return GEO.filter(c => !NTA.found[c.id]); }
+function acRemaining() { return NTA.pool.filter(id => !NTA.found[id]).map(id => BY_ID.get(id)); }
 function acFmt(s) { s = Math.max(0, Math.ceil(s)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; }
+/* Before a game: Explorers pick a continent; everyone picks a time limit. */
 function startAllc() {
   sfx("tap");
+  const lv = S.level, times = AC_TIMES[lv];
+  let secs = (S.acTime && S.acTime[lv]) || times[lv === "hard" ? 1 : 1][0];
+  if (!times.some(t => t[0] === secs)) secs = times[1][0];
+  let cont = S.acCont || "EU";
+  const draw = () => {
+    showInfo(`<div class="acsetup"><h2>Name Them All</h2>
+      <p>${lv === "easy" ? "Pick a continent, then type every country in it before time runs out." : "Type every country in the world before time runs out."}</p>
+      ${lv === "easy" ? `<h3>Continent</h3><div class="acconts pick">${CONT_KEYS.map(k => `<button class="acc" data-k="${k}" aria-pressed="${k === cont}" style="--f:${CONT[k].col}"><b>${CONT[k].n}</b><span class="num">${GEO.filter(c => c.m === k).length} countries</span>${P.acCont && P.acCont[k] ? `<small>Best ${P.acCont[k].n}/${P.acCont[k].of}</small>` : ""}</button>`).join("")}</div>` : ""}
+      <h3>Time limit</h3><div class="seg actime">${times.map(([v, l]) => `<button data-v="${v}" aria-pressed="${v === secs}">${l}</button>`).join("")}</div>
+      <div class="cc-actions"><button class="btn ghost" id="info-close">Back</button><button class="btn" id="ac-go">Start!</button></div></div>`);
+    $("#info-in").querySelectorAll(".acc").forEach(b => b.onclick = () => { cont = b.dataset.k; sfx("tap"); draw(); });
+    $("#info-in").querySelectorAll(".actime button").forEach(b => b.onclick = () => { secs = +b.dataset.v; sfx("tap"); draw(); });
+    $("#ac-go").onclick = () => {
+      S.acTime = Object.assign({}, S.acTime, { [lv]: secs }); if (lv === "easy") S.acCont = cont; saveS();
+      $("#info").hidden = true; acBegin(lv === "easy" ? cont : null, secs);
+    };
+  };
+  draw();
+}
+function acBegin(cont, secs) {
+  sfx("go");
   H.on = false;
-  Object.assign(NTA, { on: true, found: {}, order: [], left: AC_TIME, paused: false, done: false, review: false });
+  const pool = cont ? GEO.filter(c => c.m === cont).map(c => c.id) : GEO.map(c => c.id);
+  Object.assign(NTA, { on: true, found: {}, order: [], left: secs, total: secs, paused: false, done: false, review: false, cont, pool, inPool: new Set(pool), lv: S.level });
   const W = MAPS.WC;
   const PAL = shuffle(["#FF8A6B", "#FFC93C", "#8FDB6E", "#7FD0F5", "#B9A2FF", "#FF8FB1", "#5FD7C4", "#FFB25E"]), col = {};
   shuffle(GEO).forEach(c => {
@@ -2159,22 +3174,32 @@ function startAllc() {
   });
   $("#ac-map").innerHTML = `<svg class="map acsvg" viewBox="0 0 ${W.w} ${W.h}" preserveAspectRatio="xMidYMid meet" data-map="WC" data-w="${W.w}" data-h="${W.h}"><g id="acworld">
     <path class="land" d="${W.land}"/>
-    <g>${W.c.map(([id, d]) => `<path class="cty" data-id="${id}" d="${d}" style="--f:${col[id]}"/>`).join("")}</g>
+    <g>${W.c.map(([id, d]) => `<path class="cty${NTA.inPool.has(id) ? "" : " out"}" data-id="${id}" d="${d}" style="--f:${col[id]}"/>`).join("")}</g>
     <g class="leaders"></g>
-    <g>${W.m.map(([id, x, y]) => `<circle class="mk" data-id="${id}" data-x0="${x}" data-y0="${y}" cx="${x}" cy="${y}" r="6" style="--f:${col[id]}"/>`).join("")}</g>
+    <g>${W.m.filter(([id]) => NTA.inPool.has(id)).map(([id, x, y]) => `<circle class="mk" data-id="${id}" data-x0="${x}" data-y0="${y}" cx="${x}" cy="${y}" r="6" style="--f:${col[id]}"/>`).join("")}</g>
     <g class="fx"></g></g></svg>`;
   const svg = $("#ac-map svg");
   wrapCopies(svg, svg.querySelector("#acworld"));
   show("s-allc");
-  scaleMarkers(svg); enableZoom(svg, $("#ac-map"), { wrap: true });
+  scaleMarkers(svg); enableZoom(svg, $("#ac-map"), { wrap: true, home: cont ? acContView(svg, pool) : null });
   svg.addEventListener("zoomed", acLabels);
   svg.addEventListener("click", e => { if (!NTA.review) return; const id = acHit(svg, e); if (id) acPeek(id); });
   const inp = $("#ac-input"); inp.value = ""; inp.disabled = false;
   $("#ac-giveup").textContent = "Give up";
-  acFeed("Type any country. Spelling counts, but short forms like USA or UAE work too!");
+  acFeed(cont ? `<span>Type every country in <b>${CONT[cont].n}</b>. Spelling counts, but short forms work too!</span>` : "Type any country. Spelling counts, but short forms like USA or UAE work too!");
   acSide(); acTick(); acLabels();
   NTA.last = performance.now(); cancelAnimationFrame(NTA.raf); NTA.raf = requestAnimationFrame(acLoop);
   setTimeout(() => { try { inp.focus(); } catch (e) {} }, 80);
+}
+/* The part of the world map that shows one continent */
+function acContView(svg, pool) {
+  let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+  pool.forEach(id => { const el = svg.querySelector(`#acworld .cty[data-id="${id}"]`); if (!el) return; const b = el.getBBox(); if (b.width > 900) return;
+    x0 = Math.min(x0, b.x); y0 = Math.min(y0, b.y); x1 = Math.max(x1, b.x + b.width); y1 = Math.max(y1, b.y + b.height); });
+  const W = +svg.dataset.w, H = +svg.dataset.h, cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+  const r = svg.getBoundingClientRect(), ratio = r.width && r.height ? r.width / r.height : W / H;
+  const w = Math.min(W, Math.max((x1 - x0) * 1.12, (y1 - y0) * 1.12 * ratio, 220));
+  return { x: cx - w / 2, y: cy - w * H / W / 2, w };
 }
 function acLoop(now) {
   if (!NTA.on || NTA.done) return;
@@ -2187,7 +3212,7 @@ function acLoop(now) {
 function acTick() {
   $("#ac-time").textContent = acFmt(NTA.left);
   $("#ac-timebox").classList.toggle("low", NTA.left <= 60);
-  $("#ac-count").textContent = `${NTA.order.length} of ${GEO.length} countries`;
+  $("#ac-count").textContent = `${NTA.order.length} of ${NTA.pool.length} countries${NTA.cont ? " in " + CONT[NTA.cont].n : ""}`;
 }
 function acFeed(html, cls) { const f = $("#ac-feed"); f.className = "acfeed" + (cls ? " " + cls : ""); f.innerHTML = html; }
 function acInput() {
@@ -2197,9 +3222,14 @@ function acInput() {
   if (!v) { if (inp.value && !/[a-z0-9]/i.test(inp.value)) inp.value = ""; return; }
   const id = AC_MAP.get(v);
   if (id && NTA.found[id]) { acFeed(`You already have <b>${esc(BY_ID.get(id).n)}</b>!`, "dup"); return; }
+  if (id && !NTA.inPool.has(id)) {
+    const longerIn = AC_KEYS.some(([k, o]) => NTA.inPool.has(o) && !NTA.found[o] && k.length > v.length && k.startsWith(v));
+    if (!longerIn) acFeed(`<span><b>${esc(BY_ID.get(id).n)}</b> is in ${CONT[BY_ID.get(id).m].n}, not ${CONT[NTA.cont].n}.</span>`, "hint");
+    return;
+  }
   if (id) {
     // Wait a moment if this could still become a longer name (Niger → Nigeria, UK → Ukraine)
-    const longer = AC_KEYS.some(([k, o]) => (o === id || !NTA.found[o]) && k.length > v.length && k.startsWith(v));
+    const longer = AC_KEYS.some(([k, o]) => (o === id || (!NTA.found[o] && NTA.inPool.has(o))) && k.length > v.length && k.startsWith(v));
     if (!longer) return acAccept(id);
     NTA.wait = setTimeout(() => { if (acNorm(inp.value) === v) acAccept(id); }, 900);
     return;
@@ -2218,7 +3248,7 @@ function acAccept(id) {
   if (svg.querySelector(`.mk[data-id="${id}"]`)) scaleMarkers(svg);
   acLabels(id);
   acSide(); acTick();
-  if (NTA.order.length === GEO.length) acFinish("You named every country!");
+  if (NTA.order.length === NTA.pool.length) acFinish(NTA.cont ? `You named every country in ${CONT[NTA.cont].n}!` : "You named every country!");
 }
 /* Which country was tapped, even on the wrapped-around copies of the map */
 function acHit(svg, e) {
@@ -2228,7 +3258,7 @@ function acHit(svg, e) {
   if (bd <= 12 * k) return best;
   const t = e.target.closest && e.target.closest(".cty[data-id]"); if (t) return t.dataset.id;
   const pt = new DOMPoint(x, y);
-  for (const el of svg.querySelectorAll("#acworld .cty")) if (el.isPointInFill(pt)) return el.dataset.id;
+  for (const el of svg.querySelectorAll("#acworld .cty:not(.out)")) if (el.isPointInFill(pt)) return el.dataset.id;
   return null;
 }
 function acPos(svg, id) {
@@ -2240,7 +3270,7 @@ function acPos(svg, id) {
 function acLabels(pulseId) {
   const svg = $("#ac-map svg"); if (!svg) return;
   const s = svgScale(svg), fx = svg.querySelector(".fx");
-  const ids = NTA.review ? GEO.map(c => c.id) : NTA.order;
+  const ids = NTA.review ? NTA.pool : NTA.order;
   // Place names for the biggest countries first; a name that would overlap one
   // already placed waits until you zoom in far enough for it to fit.
   const items = ids.map(id => { const [x, y, sz] = acPos(svg, id); return { id, x, y, sz, name: BY_ID.get(id).n, miss: !NTA.found[id] }; })
@@ -2266,7 +3296,7 @@ function acLabels(pulseId) {
   }
 }
 function acSide() {
-  const rows = CONT_KEYS.map(k => {
+  const rows = (NTA.cont ? [NTA.cont] : CONT_KEYS).map(k => {
     const all = GEO.filter(c => c.m === k), got = all.filter(c => NTA.found[c.id]).length;
     return `<button class="acc" data-k="${k}" style="--f:${CONT[k].col}"><b>${CONT[k].n}</b><span class="num">${got}/${all.length}</span><i style="width:${(got / all.length * 100).toFixed(1)}%"></i></button>`;
   }).join("");
@@ -2300,36 +3330,46 @@ function acPause() {
 }
 function acExit() {
   NTA.on = false; NTA.done = true; NTA.paused = false; cancelAnimationFrame(NTA.raf); clearTimeout(NTA.wait);
-  $("#app").classList.remove("paused"); renderMenu(); show("s-menu");
+  $("#app").classList.remove("paused"); goHome();
 }
 function acFinish(title) {
   if (NTA.done) return;
   NTA.done = true; NTA.review = true; clearTimeout(NTA.wait); cancelAnimationFrame(NTA.raf);
   const inp = $("#ac-input"); inp.disabled = true; inp.blur();
   $("#ac-giveup").textContent = "Done";
-  const n = NTA.order.length, stars = n >= 150 ? 3 : n >= 100 ? 2 : n >= 50 ? 1 : 0;
-  const used = AC_TIME - Math.max(0, NTA.left);
+  const n = NTA.order.length, of = NTA.pool.length, used = NTA.total - Math.max(0, NTA.left);
+  const stars = NTA.cont ? (n >= of ? 3 : n >= of * .7 ? 2 : n >= of * .4 ? 1 : 0) : (n >= 150 ? 3 : n >= 100 ? 2 : n >= 50 ? 1 : 0);
   const key = bestKey("allc"), prev = BEST[key];
   const isBest = !prev || n > prev.score;
   BEST[key] = { score: Math.max(n, prev ? prev.score : 0), stars: Math.max(stars, prev ? prev.stars : 0) };
   LS.set("best", BEST);
-  P.acBest = Math.max(P.acBest || 0, n); P.seen.allc = 1; saveP();
-  if (n >= 100) award("memory");
+  P.seen.allc = 1;
+  if (NTA.cont) {
+    P.acCont = P.acCont || {}; const pc = P.acCont[NTA.cont];
+    if (!pc || n > pc.n || (n === pc.n && used < pc.t)) P.acCont[NTA.cont] = { n, of, t: Math.round(used) };
+  } else {
+    P.acBest = Math.max(P.acBest || 0, n);
+    if (n >= of) P.acFast = Math.min(P.acFast || 1e9, Math.round(used));
+    if (n >= 100) award("memory");
+  }
+  saveP(); acAwards(n, of, used);
   checkAll();
-  $("#ac-map svg").querySelectorAll(".cty:not(.found), .mk:not(.found)").forEach(el => { el.classList.add("missed"); el.classList.remove("hid"); });
+  $("#ac-map svg").querySelectorAll(".cty:not(.found):not(.out), .mk:not(.found)").forEach(el => { el.classList.add("missed"); el.classList.remove("hid"); });
   scaleMarkers($("#ac-map svg"));
   acLabels(); acSide();
   acFeed("Tap any country on the map to see its name. Red ones were missed.", "hint");
   sfx("fanfare"); if (stars === 3) confetti();
   showInfo(`<div class="acres"><h2>${esc(title)}</h2><div class="bigstars">${[0, 1, 2].map(i => `<span class="stars">${i < stars ? "★" : '<span class="off">★</span>'}</span>`).join("")}</div>
-    <div class="bigscore num">${n}<small> / ${GEO.length}</small></div>
+    <div class="bigscore num">${n}<small> / ${of}</small></div>
     <p>countries named in ${acFmt(used)}${isBest && n ? " · New best!" : ""}</p></div>
     <div class="cc-actions"><button class="btn alt" id="info-close">See what I missed</button><button class="btn" id="ac-again">Play again</button></div>
     <button class="btn ghost" id="ac-menu">Main menu</button>`);
   $("#ac-again").onclick = () => { $("#info").hidden = true; startAllc(); };
   $("#ac-menu").onclick = () => { $("#info").hidden = true; acExit(); };
-  const rk = lbRank("allc", S.level, n);
-  if (rk) { G.mode = "allc"; G.score = n; setTimeout(() => askInitials(rk), 900); }
+  // Leaderboard points: 10 per country named, plus a bonus for every second left if you named them all.
+  const pts = n * 10 + (n >= of ? Math.round(Math.max(0, NTA.left)) : 0);
+  const rk = lbRank("allc", S.level, pts);
+  if (rk) { G.mode = "allc"; G.score = pts; setTimeout(() => askInitials(rk), 900); }
 }
 
 /* ================= maps ================= */
@@ -2485,7 +3525,10 @@ function enableZoom(svg, holder, opt = {}) {
   if (opt.wrap) holder.classList.add("wraps");
   bi.onclick = e => { e.stopPropagation(); sfx("tap"); zoomAt(1.7, ...mid()); };
   bo.onclick = e => { e.stopPropagation(); sfx("tap"); zoomAt(1 / 1.7, ...mid()); };
-  br.onclick = e => { e.stopPropagation(); sfx("tap"); vb = { ...base }; apply(); };
+  const home = () => { vb = opt.home ? { ...opt.home, h: opt.home.w * base.h / base.w } : { ...base }; clamp(); apply(); };
+  br.onclick = e => { e.stopPropagation(); sfx("tap"); home(); };
+  svg._zoomTo = v => { opt.home = v; home(); };
+  if (opt.home) home();
 }
 function countryPos(svg, cid) {
   const c = BY_ID.get(cid);
@@ -2577,11 +3620,11 @@ function renderQ() {
     } else {
       stage.innerHTML = `<div class="card"><div class="vis">${q.visual}</div><div class="prompt">${esc(q.prompt)}</div></div>${opts}`;
     }
-    document.querySelectorAll(".opt").forEach(b => b.onclick = () => choose(+b.dataset.i));
+    document.querySelectorAll(".opt").forEach(b => safeTap(b, () => choose(+b.dataset.i)));
   }
   renderTeambar();
   if (H.on && H.style === "show") {
-    document.querySelectorAll(".opt").forEach(b => { b.onclick = null; b.tabIndex = -1; });
+    document.querySelectorAll(".opt").forEach(b => { b.onclick = null; b._tap = null; b.tabIndex = -1; });
     const rb = `<button class="btn" id="reveal" type="button">Reveal answer</button>`;
     if (q.clues) $("#nextclue").insertAdjacentHTML("afterend", rb); else stage.insertAdjacentHTML("beforeend", `<div class="hostbar">${rb}</div>`);
     $("#reveal").onclick = reveal;
@@ -2780,7 +3823,7 @@ function quitToMenu() {
   stopTimer(); G.active = false; G.paused = false;
   H.on = false; $("#app").classList.remove("h2h", "h2h-show"); $("#turn").hidden = true; renderTeambar();
   $("#pause").hidden = true; $("#app").classList.remove("paused"); hideSheet();
-  renderMenu(); show("s-menu");
+  goHome();
 }
 
 /* ================= results ================= */
@@ -2865,7 +3908,8 @@ function goBack() {
   if (returnTo === "s-map") { show("s-map"); returnTo = "s-menu"; return; }
   if (returnTo === "s-settings") { openPage("s-settings"); return; }
   if (returnTo === "s-who") { returnTo = "s-menu"; openWho(whoCanLeave); return; }
-  renderMenu(); show("s-menu");
+  if (returnTo === "s-cat" && curCat) { returnTo = "s-menu"; openCat(curCat); return; }
+  curCat = null; renderMenu(); show("s-menu");
 }
 function renderHowto() {
   const items = MENU_TILES.map(k => [MODES[k].c, ICON[k], MODES[k].name, MODES[k].blurb]);
@@ -2975,7 +4019,18 @@ function selectCountry(id) {
 
 /* ================= wiring ================= */
 document.querySelectorAll(".ticket button").forEach(b => b.onclick = () => { S.level = b.dataset.level; saveS(); sfx("tap"); renderMenu(); });
-$("#cases").addEventListener("click", e => { const b = e.target.closest(".case"); if (!b) return; H.on = false; if (b.dataset.mode === "allc") startAllc(); else startGame(b.dataset.mode); });
+$("#cases").addEventListener("click", e => { const b = e.target.closest(".veh"); if (!b) return; sfx("tap"); openCat(b.dataset.cat); });
+$("#hop-pause").onclick = () => { sfx("tap"); hopPause(); };
+$("#hop-undo").onclick = hopUndo;
+$("#hop-show").onclick = () => { if (HOP.solved) return; sfx("tap"); confirmBox("Show a route?", "You won't get points for this trip.", "Show me", () => { HOP.route = HOP.pz.opt.slice(); hopSolved(true); }); $("#c-no").textContent = "Keep trying"; };
+$("#pz-pause").onclick = () => { sfx("tap"); pzPause(); };
+$("#pz-show").onclick = () => { sfx("tap"); confirmBox("Show the answer?", "You won't get points for this puzzle.", "Show me", pzShow); $("#c-no").textContent = "Keep trying"; };
+$("#cat-back").onclick = () => { sfx("tap"); curCat = null; renderMenu(); show("s-menu"); };
+$("#cat-games").addEventListener("click", e => {
+  const b = e.target.closest(".gobj"); if (!b) return; H.on = false;
+  const m = b.dataset.mode;
+  if (m === "allc") startAllc(); else if (m === "h2h") openPage("s-h2h", "s-cat"); else if (m === "hop") startHop(); else if (m === "puzzle") startPuzzle(); else startGame(m);
+});
 $("#ac-input").addEventListener("input", acInput);
 $("#ac-input").addEventListener("keydown", e => { if (e.key === "Enter") { const id = AC_MAP.get(acNorm(e.target.value)); if (id && !NTA.found[id]) acAccept(id); } });
 $("#ac-pause").onclick = () => { sfx("tap"); if (NTA.done) acExit(); else acPause(); };
@@ -2983,7 +4038,7 @@ $("#ac-giveup").onclick = () => { sfx("tap"); if (NTA.done) return acExit(); NTA
 $("#m-h2h").onclick = () => openPage("s-h2h");
 $("#h2h-start").onclick = startH2H;
 $("#hr-again").onclick = () => { H.on = true; startGame(H.mode, H.count); };
-$("#hr-menu").onclick = () => { sfx("tap"); H.on = false; $("#app").classList.remove("h2h", "h2h-show"); renderMenu(); show("s-menu"); };
+$("#hr-menu").onclick = () => { sfx("tap"); H.on = false; $("#app").classList.remove("h2h", "h2h-show"); goHome(); };
 $("#set-howto").onclick = () => openPage("s-howto", "s-settings");
 $("#m-map").onclick = () => openExplorer("WORLD");
 $("#m-settings").onclick = () => openPage("s-settings");
@@ -3036,7 +4091,7 @@ $("#p-sound").onclick = () => { S.sound = !S.sound; saveS(); syncToggles(); sfx(
 $("#p-vibe").onclick = () => { S.vibe = !S.vibe; saveS(); syncToggles(); buzz(60); };
 $("#sh-next").onclick = nextQ;
 $("#r-again").onclick = () => startGame(G.mode);
-$("#r-menu").onclick = () => { sfx("tap"); renderMenu(); show("s-menu"); };
+$("#r-menu").onclick = () => { sfx("tap"); goHome(); };
 
 document.addEventListener("visibilitychange", () => {
   if (document.hidden && G.active && !G.locked) pause();
@@ -3067,24 +4122,42 @@ document.addEventListener("keydown", e => {
    when the device is back online. A shared device can remember several players.
    The Firebase project is named in cloud.json, next to index.html:
      { "apiKey": "…", "projectId": "…" }                                          */
+/* Some browsers (like the Amazon Kids web browser on Fire tablets) wipe a site's saved data
+   when the game is closed or sent to the background. Who's signed in is also kept in a
+   long-lasting cookie, so players are remembered there too. Their progress comes back
+   from the cloud as soon as the game opens. */
+const CK_NAME = "atlasx_pl", CK_PATH = location.pathname.replace(/[^/]*$/, "") || "/";
+function ckRead() { try { const m = document.cookie.match(/(?:^|;\s*)atlasx_pl=([^;]*)/); return m ? JSON.parse(decodeURIComponent(m[1])) : null; } catch (e) { return null; } }
+function ckWrite() {
+  try {
+    const keep = CL.players.map(({ uid, name, refresh, cc }) => ({ uid, name, refresh, cc }));
+    let v = encodeURIComponent(JSON.stringify({ p: keep, a: CL.active, c: CL.cfg }));
+    while (v.length > 3800 && keep.length > 1) { keep.splice(keep.findIndex(x => x.uid !== CL.active), 1); v = encodeURIComponent(JSON.stringify({ p: keep, a: CL.active, c: CL.cfg })); }
+    document.cookie = `${CK_NAME}=${v}; max-age=34560000; path=${CK_PATH}; SameSite=Lax${location.protocol === "https:" ? "; Secure" : ""}`;
+  } catch (e) {}
+}
+const CK0 = ckRead(), LSP = LS.get("players", null);
+const useCk = !(LSP && LSP.length) && CK0 && CK0.p && CK0.p.length;
+try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {}); } catch (e) {}
 const CL = {
-  cfg: LS.get("cloudcfg", null),          // { apiKey, projectId }
-  players: LS.get("players", []),         // [{ uid, name, refresh }] remembered on this device
-  active: LS.get("player", null),         // uid of the player using the device, or null for guest
+  cfg: LS.get("cloudcfg", null) || (CK0 && CK0.c) || null,   // { apiKey, projectId }
+  players: useCk ? CK0.p : (LSP || []),                       // [{ uid, name, refresh, cc }] remembered on this device
+  active: useCk ? (CK0.a || null) : LS.get("player", null),   // uid of the player using the device, or null for guest
   token: null, tokenExp: 0,
   state: "idle", lastSync: LS.get("lastsync", 0), timer: 0, busy: false
 };
+if (useCk) { LS.set("players", CL.players); LS.set("player", CL.active); if (CL.cfg) LS.set("cloudcfg", CL.cfg); }
 const PL_COLORS = ["#FF6B57", "#3FB6EC", "#22C384", "#FFB000", "#9A7BFF", "#FF8A3D", "#E85FA8", "#2BB3A3"];
 const plColor = name => PL_COLORS[[...name].reduce((a, ch) => a + ch.charCodeAt(0), 0) % PL_COLORS.length];
 const plMe = () => CL.players.find(p => p.uid === CL.active) || null;
-const plSave = () => { LS.set("players", CL.players); LS.set("player", CL.active); };
+const plSave = () => { LS.set("players", CL.players); LS.set("player", CL.active); ckWrite(); };
 const plEmail = name => name.toLowerCase() + "@players.atlas-explorers.app";   // never emailed; Firebase just needs this shape
 const plValidName = name => /^[A-Za-z0-9_]{3,16}$/.test(name);
 
 async function cloudConfig() {
   try {
     const r = await fetch("cloud.json?t=" + Date.now(), { cache: "no-store" });
-    if (r.ok) { const c = await r.json(); if (c && c.apiKey && c.projectId) { CL.cfg = { apiKey: String(c.apiKey).trim(), projectId: String(c.projectId).trim() }; LS.set("cloudcfg", CL.cfg); } }
+    if (r.ok) { const c = await r.json(); if (c && c.apiKey && c.projectId) { CL.cfg = { apiKey: String(c.apiKey).trim(), projectId: String(c.projectId).trim() }; LS.set("cloudcfg", CL.cfg); ckWrite(); } }
   } catch (e) {}
   return CL.cfg;
 }
@@ -3162,6 +4235,36 @@ function useData(d) {
 }
 
 /* ---- syncing ---- */
+
+/* ================= shared leaderboard (everyone who plays online) =================
+   Each signed-in player keeps one entry per game and level: their best score and initials.
+   Firestore: boards/{game_level}/players/{uid} = { ini, score, at } */
+const boardUrl = key => `https://firestore.googleapis.com/v1/projects/${encodeURIComponent(CL.cfg.projectId)}/databases/(default)/documents/boards/${key}`;
+async function cloudBoardPost() {
+  const me = plMe(); if (!me || !CL.cfg || !navigator.onLine) return;
+  const posted = LS.get("lbposted_" + me.uid, {});
+  const ini = (P.ini || me.name.replace(/[^A-Za-z]/g, "").slice(0, 3)).toUpperCase() || "???";
+  for (const [key, b] of Object.entries(BEST)) {
+    const [m] = key.split("_"); if (!MODES[m] || !(b.score > 0) || (posted[key] || 0) >= b.score) continue;
+    try {
+      const tok = await idToken(me);
+      const r = await fetch(`${boardUrl(key)}/players/${me.uid}`, { method: "PATCH", headers: { Authorization: "Bearer " + tok, "Content-Type": "application/json" },
+        body: JSON.stringify({ fields: { ini: { stringValue: ini }, score: { integerValue: String(b.score) }, at: { integerValue: String(Date.now()) } } }) });
+      if (r.ok) { posted[key] = b.score; LS.set("lbposted_" + me.uid, posted); }
+    } catch (e) { return; }
+  }
+}
+const boardCache = {};
+async function cloudBoardTop(key) {
+  const body = { structuredQuery: { from: [{ collectionId: "players" }], orderBy: [{ field: { fieldPath: "score" }, direction: "DESCENDING" }], limit: 10 } };
+  const headers = { "Content-Type": "application/json" };
+  try { if (plMe()) headers.Authorization = "Bearer " + await idToken(); } catch (e) {}
+  const r = await fetch(`${boardUrl(key)}:runQuery`, { method: "POST", headers, body: JSON.stringify(body) });
+  if (!r.ok) throw new Error(r.status === 403 ? "rules" : "net");
+  const j = await r.json();
+  return boardCache[key] = j.filter(x => x.document).map(x => { const f = x.document.fields || {}; return { i: (f.ini && f.ini.stringValue) || "???", s: +((f.score && f.score.integerValue) || 0), d: +((f.at && f.at.integerValue) || 0), uid: x.document.name.split("/").pop() }; });
+}
+
 function cloudDirty() { if (CL.quiet || !CL.active) return; clearTimeout(CL.timer); CL.timer = setTimeout(cloudSync, 4000); }
 async function cloudSync(force) {
   const me = plMe();
@@ -3180,6 +4283,7 @@ async function cloudSync(force) {
     }
     await cloudPut(me, data);
     CL.lastSync = Date.now(); LS.set("lastsync", CL.lastSync); CL.state = "ok";
+    cloudBoardPost();
   } catch (e) {
     CL.state = e.signedOut ? "signedout" : e.message === "rules" ? "rules" : "error";
   }
@@ -3297,7 +4401,14 @@ async function renderPlayers() {
   $("#set-player").onclick = () => { sfx("tap"); openWho(true); };
   $("#pl-row").hidden = !CL.cfg; plStatus();
   const later = () => { if (CL.active) cloudSync(); };
-  cloudConfig().then(() => { $("#pl-row").hidden = !CL.cfg; if (CL.active && plMe()) setTimeout(later, 1500); });
+  cloudConfig().then(() => {
+    $("#pl-row").hidden = !CL.cfg;
+    if (CL.active && plMe()) setTimeout(later, useCk ? 100 : 1500);
+    // First open on a device that hadn't seen the cloud settings yet: show the passports
+    // now, as long as nobody has started playing.
+    if (CL.cfg && !$("#s-menu").hidden && !CL.touched && !CL.active) openWho(false);
+  });
+  addEventListener("pointerdown", () => { CL.touched = true; }, { once: true, capture: true });
   document.addEventListener("visibilitychange", () => { if (!document.hidden) later(); else if (CL.active) { clearTimeout(CL.timer); cloudSync(); } });
   addEventListener("online", later);
   setInterval(later, 5 * 60 * 1000);
@@ -3352,7 +4463,7 @@ function renderWho() {
     sfx("tap");
     if (b.dataset.new) { plTab = CL.players.length ? "in" : "new"; openPage("s-players", "s-who"); renderPlayers(); return; }
     const uid = b.dataset.uid || null;
-    if (uid === CL.active) { renderMenu(); show("s-menu"); sfx("go"); return; }
+    if (uid === CL.active) { curCat = null; renderMenu(); show("s-menu"); sfx("go"); return; }
     switchPlayer(uid);
   });
   $("#who-manage").hidden = !CL.players.length;
@@ -3391,10 +4502,13 @@ function appBack() {
   if (vis("#pause")) { resume(); return; }
   if (vis("#s-game")) { if (G.active) pause(); else quitToMenu(); return; }
   if (vis("#s-allc")) { if (NTA.done) acExit(); else acPause(); return; }
+  if (vis("#s-hop")) { hopPause(); return; }
+  if (vis("#s-pz")) { pzPause(); return; }
   if (vis("#s-map")) { if (EX.map !== "WORLD") { EX.map = "WORLD"; EX.sel = null; renderExplorer(); sfx("tap"); } else { sfx("tap"); renderMenu(); show("s-menu"); } return; }
   if (vis("#s-h2hres")) { $("#hr-menu").click(); return; }
   if (vis("#s-results")) { $("#r-menu").click(); return; }
   if (vis("#s-who") && whoCanLeave) { renderMenu(); show("s-menu"); return; }
+  if (vis("#s-cat")) { $("#cat-back").click(); return; }
   const page = document.querySelector(".screen.page:not([hidden])");
   if (page) { goBack(); return; }
   toast("👋", "Press back twice quickly", "to close the app");
@@ -3437,7 +4551,7 @@ if (window.history && history.pushState) {
 }
 
 /* ================= check for updates ================= */
-const APP_VERSION = "atlas-v22";
+const APP_VERSION = "atlas-v24";
 const verNum = v => +((String(v).match(/(\d+)\s*$/) || [0, 0])[1]);
 async function remoteVersion() {
   const res = await fetch("sw.js?check=" + Date.now(), { cache: "no-store" });
@@ -3554,7 +4668,7 @@ $("#m-install").onclick = async () => {
 $("#installhelp").addEventListener("click", e => { if (e.target.id === "installhelp") $("#installhelp").hidden = true; });
 if (HAS_MANIFEST && "serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
   window.addEventListener("load", () => navigator.serviceWorker.register("sw.js", { updateViaCache: "none" }).then(reg => {
-    document.addEventListener("visibilitychange", () => { if (!document.hidden && navigator.onLine) reg.update().catch(() => {}); });
+    document.addEventListener("visibilitychange", () => { if (reg && !document.hidden && navigator.onLine) reg.update().catch(() => {}); });
   }).catch(() => {}));
 }
 updateInstall();

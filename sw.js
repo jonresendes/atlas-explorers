@@ -1,6 +1,6 @@
 // Atlas Explorers offline support.
 // Change VERSION whenever you upload a new index.html so phones pick up the update.
-const VERSION = "atlas-v22";
+const VERSION = "atlas-v24";
 const CORE = [
   "./",
   "index.html",
