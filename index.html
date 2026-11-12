@@ -1102,6 +1102,10 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
 .pv-strip > span { position: relative; overflow: hidden; border: 1px solid var(--ink); border-radius: .5cqw; min-height: 0; }
 .pv-strip img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .pv-run b { font-family: var(--display); font-weight: 400; font-size: 4.4cqw; text-align: center; color: var(--ink); line-height: 1; }
+.whofoot { flex: none; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 16px; }
+.whoinstall { min-height: 44px; padding: 6px 18px; font-size: 1rem; }
+.helpmore { margin: 10px 0; font-weight: 800; }
+.helpmore summary { cursor: pointer; color: var(--ink-soft); }
 </style>
 
 </head>
@@ -1116,7 +1120,8 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
       <p>Tap your passport to start.</p>
     </div>
     <div class="passgrid" id="who-grid"></div>
-    <button class="whomanage" id="who-manage" type="button">Manage passports</button>
+    <div class="whofoot"><button class="whomanage" id="who-manage" type="button">Manage passports</button>
+      <button class="btn alt whoinstall" id="who-install" type="button" hidden>📲 Install the app</button></div>
   </section>
 
   <!-- MENU -->
@@ -1224,6 +1229,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
       <div class="row"><span class="lbl">Difficulty</span><div class="seg" id="set-level"></div></div>
       <div class="row" id="pl-row"><span class="lbl">Player<span class="sub" id="pl-sub">Save progress online and play on any device</span></span><button class="btn alt" id="set-player" style="min-height:40px;font-size:1rem;padding:6px 14px;white-space:nowrap">Sign in</button></div>
       <div class="row" id="upd-row" hidden><span class="lbl">Version <span class="num" id="upd-ver"></span><span class="sub" id="upd-status">Get the newest games and fixes</span></span><span class="updbtns"><a class="btn alt" id="upd-gh" target="_blank" rel="noopener" hidden>GitHub</a><button class="btn" id="set-update">Check for updates</button></span></div>
+      <div class="row" id="inst-row" hidden><span class="lbl">Install the app<span class="sub" id="inst-sub">Its own icon and window, and it works offline</span></span><button class="btn alt" id="set-install" style="min-height:40px;font-size:1rem;padding:6px 14px;white-space:nowrap">Install</button></div>
       <div class="row"><span class="lbl">How to play<span class="sub">Rules for every game</span></span><button class="btn alt" id="set-howto" style="min-height:40px;font-size:1rem;padding:6px 14px">Open</button></div>
       <div class="row"><span class="lbl">Reset progress<span class="sub">Clears scores, stamps and trophies</span></span><button class="btn danger" id="set-reset" style="min-height:40px;font-size:1rem;padding:6px 14px">Reset</button></div>
     </div>
@@ -4828,7 +4834,7 @@ if (window.history && history.pushState) {
 }
 
 /* ================= check for updates ================= */
-const APP_VERSION = "atlas-v28";
+const APP_VERSION = "atlas-v29";
 const verNum = v => +((String(v).match(/(\d+)\s*$/) || [0, 0])[1]);
 async function remoteVersion() {
   const res = await fetch("sw.js?check=" + Date.now(), { cache: "no-store" });
@@ -4908,10 +4914,12 @@ const IS_MOBILE = IS_IOS || /android|mobile/i.test(navigator.userAgent);
 const IS_FIRE = /\bSilk\b|\bKF[A-Z]{2,4}\b|AmazonWebAppPlatform/.test(navigator.userAgent);
 let installPrompt = null;
 function updateInstall() {
-  $("#m-install").hidden = !HAS_MANIFEST || IS_STANDALONE || !(installPrompt || IS_MOBILE);
+  const can = HAS_MANIFEST && !IS_STANDALONE;
+  $("#m-install").hidden = !can;
+  ["#who-install", "#inst-row"].forEach(sel => { const el = $(sel); if (el) el.hidden = !can; });
 }
 window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); installPrompt = e; updateInstall(); });
-window.addEventListener("appinstalled", () => { installPrompt = null; $("#m-install").hidden = true; });
+window.addEventListener("appinstalled", () => { installPrompt = null; ["#m-install", "#who-install", "#inst-row"].forEach(sel => { const el = $(sel); if (el) el.hidden = true; }); toast("📲", "Installed!", "Open Atlas Explorers from its new icon."); });
 const SHARE_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M6 11H5v10h14V11h-1"/></svg>`;
 const DOTS_ICON = `<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2.2"/><circle cx="12" cy="12" r="2.2"/><circle cx="12" cy="19" r="2.2"/></svg>`;
 function showInstallHelp() {
@@ -4927,21 +4935,34 @@ function showInstallHelp() {
     <li><span>Open this page in the <b>Silk</b> browser while connected to the internet, and let it finish loading.</span></li>
     <li><span>Tap the menu button ${DOTS_ICON} in the top corner, then <b>Add to Home Screen</b> (or <b>Install app</b>), then confirm.</span></li>
     <li><span>Open Atlas Explorers from the new home-screen icon once while online. After that it works without the internet.</span></li></ol>`;
+  const edge = /Edg\//.test(navigator.userAgent);
+  const computer = `<div class="helphead" style="margin-bottom:8px">Computer (${edge ? "Edge" : "Chrome"})</div><ol class="steps">
+    ${edge ? `<li><span>Click the menu button <b>…</b> in the top-right corner.</span></li>
+    <li><span>Choose <b>Apps</b>, then <b>Install this site as an app</b>, then <b>Install</b>.</span></li>`
+    : `<li><span>Click the menu button ${DOTS_ICON} in the top-right corner.</span></li>
+    <li><span>Choose <b>Cast, save, and share</b>, then <b>Install page as app…</b>, then <b>Install</b>. (Some versions show an install icon at the right end of the address bar instead.)</span></li>`}
+    <li><span><b>No install option?</b> School and work computers often block installing apps. Choose <b>${edge ? "More tools → Pin to taskbar" : "Create shortcut…"}</b> instead${edge ? "" : ", tick <b>Open as window</b>, and click <b>Create</b>"}. You get a desktop icon that opens the game in its own window.</span></li></ol>`;
+  const phone = IS_FIRE ? fire : `<div class="helpcols"><div>${IS_IOS ? ios : android}</div><div>${IS_IOS ? android : ios}</div></div>`;
   $("#installhelp-in").innerHTML = `<h2 style="font-size:1.7rem">Get the app</h2>
-    <p>Put Atlas Explorers on your home screen. It opens full screen and works without the internet.</p>
-    ${IS_FIRE ? fire : `<div class="helpcols"><div>${IS_IOS ? ios : android}</div><div>${IS_IOS ? android : ios}</div></div>`}
+    <p>Put Atlas Explorers on your ${IS_MOBILE || IS_FIRE ? "home screen" : "computer"}. It opens in its own window and works without the internet.</p>
+    ${IS_MOBILE || IS_FIRE ? phone : `${computer}<details class="helpmore"><summary>Phone or tablet instructions</summary><div class="helpcols"><div>${android}</div><div>${ios}</div></div></details>`}
     <button class="btn" id="installhelp-close">Got it</button>`;
   $("#installhelp").hidden = false;
   $("#installhelp-close").onclick = () => { $("#installhelp").hidden = true; sfx("tap"); };
 }
-$("#m-install").onclick = async () => {
+/* One install action for every Install button: the browser's own install box when it offers one,
+   otherwise step-by-step instructions for this device. */
+async function doInstall() {
   sfx("tap");
   if (installPrompt) {
     installPrompt.prompt();
     try { await installPrompt.userChoice; } catch (e) {}
     installPrompt = null; updateInstall();
   } else showInstallHelp();
-};
+}
+$("#m-install").onclick = doInstall;
+$("#who-install").onclick = doInstall;
+$("#set-install").onclick = doInstall;
 $("#installhelp").addEventListener("click", e => { if (e.target.id === "installhelp") $("#installhelp").hidden = true; });
 if (HAS_MANIFEST && "serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
   window.addEventListener("load", () => navigator.serviceWorker.register("sw.js", { updateViaCache: "none" }).then(reg => {
