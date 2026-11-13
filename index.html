@@ -2743,6 +2743,162 @@ const LANDMARKS = [
   ["🌿", "Sargasso Sea", "Atlantic Ocean", "The only sea in the world with no coastline, full of floating seaweed.", "o"],
   ["🧊", "North Pole", "Arctic Ocean", "The top of the world sits on floating sea ice, not on land.", "o"]
 ];
+// one curated landmark for every country not covered above
+const LM_MORE = [
+  ["🏠", "Casa de la Vall", "AD", "A stone house from 1580 that was the parliament of this tiny mountain country in the Pyrenees for centuries.", "", []],
+  ["🏞️", "Band-e Amir Lakes", "AF", "A chain of six deep-blue lakes held back by natural walls of mineral rock, high in the Hindu Kush mountains.", "", []],
+  ["⚓", "Nelson's Dockyard", "AG", "A naval dockyard from the 1700s, named after the British admiral Horatio Nelson and still used by sailing boats today.", "", []],
+  ["🏛️", "Butrint", "AL", "An ancient city by a lagoon with Greek, Roman and Venetian ruins, including a theatre over 2,000 years old.", "", []],
+  ["⛪", "Tatev Monastery", "AM", "A monastery on a cliff edge, reached by the 'Wings of Tatev', one of the longest cable cars in the world.", "", []],
+  ["💧", "Kalandula Falls", "AO", "One of Africa's biggest waterfalls, more than 100 metres high and about 400 metres wide.", "", []],
+  ["🏰", "Schönbrunn Palace", "AT", "An emperors' summer palace with 1,441 rooms and the world's oldest zoo, opened in 1752.", "", []],
+  ["🔥", "Yanar Dag", "AZ", "A 'burning mountain' where natural gas seeping out of the hillside keeps flames burning day and night.", "", []],
+  ["🌉", "Stari Most", "BA", "A 16th-century stone bridge where brave divers leap about 20 metres into the river below.", "", []],
+  ["🕳️", "Harrison's Cave", "BB", "A crystal cave full of stalactites, streams and waterfalls that visitors explore on an underground tram.", "", []],
+  ["🐅", "Sundarbans", "BD", "The largest mangrove forest in the world and home of the Bengal tiger, shared with India.", "", ["IN"]],
+  ["⚛️", "Atomium", "BE", "A giant shiny model of an iron crystal, magnified 165 billion times, built for the 1958 World's Fair.", "", []],
+  ["⛰️", "Sindou Peaks", "BF", "A line of strange, tall sandstone pillars shaped by wind and rain over millions of years.", "", []],
+  ["⛪", "Rila Monastery", "BG", "A colourful monastery founded over 1,000 years ago, hidden deep in the Rila Mountains.", "", []],
+  ["🌳", "Tree of Life", "BH", "A lone tree, around 400 years old, that survives in the middle of the desert with no obvious water source.", "", []],
+  ["🔺", "Source of the Nile Pyramid", "BI", "A small stone pyramid that marks a spring, the southernmost source of the Nile River.", "", []],
+  ["🛶", "Ganvié", "BJ", "A village of about 20,000 people built on stilts in a lake, where everyone gets around by canoe.", "", []],
+  ["🕌", "Omar Ali Saifuddien Mosque", "BN", "A mosque with a golden dome beside a lagoon, with a stone royal boat sitting in the water.", "", []],
+  ["🐷", "Pig Beach", "BS", "A beach on an uninhabited island where pigs swim out to greet visiting boats.", "", []],
+  ["🐅", "Tiger's Nest Monastery", "BT", "A monastery clinging to a cliff about 900 metres above a valley in the Himalayas.", "", []],
+  ["🏰", "Mir Castle", "BY", "A red-brick castle from the 1500s with five towers, reflected in a pond.", "", []],
+  ["🦍", "Virunga National Park", "CD", "Africa's oldest national park, home to mountain gorillas and a volcano with a glowing lava lake.", "", []],
+  ["🐘", "Dzanga-Sangha", "CF", "A rainforest reserve where forest elephants gather by the hundreds at a muddy clearing.", "", []],
+  ["🦍", "Odzala-Kokoua", "CG", "One of Africa's oldest national parks, home to thousands of western lowland gorillas.", "", []],
+  ["⛪", "Basilica of Our Lady of Peace", "CI", "One of the largest churches in the world, with a dome modelled on St. Peter's in Rome.", "", []],
+  ["💧", "Lobé Falls", "CM", "One of the few waterfalls in the world that tumbles straight into the sea.", "", []],
+  ["🌈", "Caño Cristales", "CO", "The 'river of five colours', where tiny water plants turn the riverbed red, yellow, green and blue.", "", []],
+  ["🌋", "Arenal Volcano", "CR", "A cone-shaped volcano surrounded by rainforest and natural hot springs.", "", []],
+  ["🚜", "Viñales Valley", "CU", "A green valley with giant rounded limestone hills called mogotes, where farmers still plough with oxen.", "", []],
+  ["🌋", "Pico do Fogo", "CV", "An active volcano almost 2,830 metres tall; people grow grapes and coffee inside its giant crater.", "", []],
+  ["🌊", "Aphrodite's Rock", "CY", "A sea rock where, in Greek legend, the goddess Aphrodite rose from the waves.", "", []],
+  ["🌉", "Charles Bridge", "CZ", "A stone bridge over 600 years old, lined with 30 statues of saints.", "", []],
+  ["🧂", "Lake Assal", "DJ", "A salt lake 155 metres below sea level, the lowest point in Africa.", "", []],
+  ["🧜", "The Little Mermaid", "DK", "A small bronze statue from 1913 based on a fairy tale by Hans Christian Andersen.", "", []],
+  ["♨️", "Boiling Lake", "DM", "A flooded volcanic vent where grey water bubbles and steams, one of the largest hot lakes on Earth.", "", []],
+  ["⛪", "Colonial Zone", "DO", "Home to the oldest cathedral in the Americas, finished in 1541.", "", []],
+  ["🎨", "Tassili n'Ajjer", "DZ", "Thousands of ancient rock paintings in the Sahara show giraffes, cattle and people from when the desert was green.", "", []],
+  ["🪨", "Lahemaa National Park", "EE", "A coastal park of bogs, forests and giant boulders left behind by Ice Age glaciers.", "", []],
+  ["✈️", "Fiat Tagliero Building", "ER", "A petrol station from 1938 shaped like an aeroplane, with long concrete 'wings'.", "", []],
+  ["⛪", "Rock Churches of Lalibela", "ET", "Eleven churches carved straight down into solid rock about 800 years ago.", "", []],
+  ["🎅", "Santa Claus Village", "FI", "A village on the Arctic Circle where you can visit Santa's office all year round.", "", []],
+  ["🌺", "Garden of the Sleeping Giant", "FJ", "An orchid garden at the foot of a mountain that looks like a giant lying asleep.", "", []],
+  ["🏛️", "Nan Madol", "FM", "A ruined stone city built on nearly 100 small artificial islands in a lagoon.", "", []],
+  ["🦛", "Loango National Park", "GA", "A park where elephants and buffalo walk on the beach and hippos swim in the ocean waves.", "", []],
+  ["🤿", "Underwater Sculpture Park", "GD", "Statues placed on the seabed that are slowly turning into an artificial coral reef.", "", []],
+  ["⛪", "Gergeti Trinity Church", "GE", "A 14th-century church perched high on a hill below snowy Mount Kazbek.", "", []],
+  ["🏰", "Cape Coast Castle", "GH", "A white seaside castle, now a museum that remembers the history of the slave trade.", "", []],
+  ["🏝️", "Kunta Kinteh Island", "GM", "A small river island with fort ruins, an important place to remember the history of the slave trade.", "", []],
+  ["⛰️", "Fouta Djallon", "GN", "Green highlands called the 'water tower of West Africa' because several big rivers begin there.", "", []],
+  ["🌋", "Pico Basilé", "GQ", "The highest mountain on Bioko Island, a volcano covered in misty cloud forest.", "", []],
+  ["🔺", "Tikal", "GT", "An ancient Mayan city with tall stone pyramids rising above the jungle.", "", []],
+  ["🏝️", "Bijagós Islands", "GW", "A group of 88 islands where hippos swim in the salty sea and sea turtles nest on the beaches.", "", []],
+  ["💧", "Kaieteur Falls", "GY", "A single-drop waterfall about 226 metres tall, around four times higher than Niagara Falls.", "", []],
+  ["🗿", "Copán", "HN", "Mayan ruins with a stairway carved with about 2,000 glyphs, the longest Mayan text ever found.", "", []],
+  ["🏰", "Citadelle Laferrière", "HT", "A huge mountaintop fortress built in the early 1800s, the largest fortress in the Americas.", "", []],
+  ["⛵", "Lake Balaton", "HU", "The largest lake in Central Europe, nicknamed 'the sea' of this landlocked country.", "", []],
+  ["🧂", "Dead Sea", "IL", "The lowest place on land, with water so salty that you float like a cork.", "", ["JO", "PS"]],
+  ["🏛️", "Ziggurat of Ur", "IQ", "A giant stepped temple built about 4,000 years ago by the Sumerians.", "", []],
+  ["🏛️", "Persepolis", "IR", "The grand ceremonial city of the ancient Persian kings, built about 2,500 years ago.", "", []],
+  ["💧", "Dunn's River Falls", "JM", "A waterfall you can climb like a giant staircase, right next to the beach.", "", []],
+  ["🦓", "Maasai Mara", "KE", "Every year more than a million wildebeest and zebras cross its rivers in the Great Migration.", "", []],
+  ["🏞️", "Issyk-Kul", "KG", "One of the largest mountain lakes in the world; it is slightly salty and never freezes.", "", []],
+  ["🐠", "Phoenix Islands Protected Area", "KI", "One of the largest ocean reserves on Earth, about the size of California, full of coral reefs and sharks.", "", []],
+  ["🌋", "Mount Karthala", "KM", "An active volcano with one of the largest volcanic craters in the world.", "", []],
+  ["🏰", "Brimstone Hill Fortress", "KN", "A huge fort built on a volcanic hill in the 1700s, nicknamed the 'Gibraltar of the West Indies'.", "", []],
+  ["🌋", "Mount Paektu", "KP", "A volcano with a deep crater lake called Heaven Lake, on the border with China.", "", ["CN"]],
+  ["🏯", "Gyeongbokgung Palace", "KR", "A royal palace first built in 1395, where guards in colourful costumes still change shifts.", "", []],
+  ["🏝️", "Failaka Island", "KW", "An island in the Gulf with the ruins of a temple built by ancient Greeks over 2,000 years ago.", "", []],
+  ["🚀", "Baikonur Cosmodrome", "KZ", "The world's first spaceport, where Yuri Gagarin blasted off in 1961 to become the first person in space.", "", []],
+  ["💧", "Kuang Si Falls", "LA", "A waterfall flowing into turquoise pools, next to a rescue centre for moon bears.", "", []],
+  ["🌲", "Cedars of God", "LB", "One of the last forests of ancient cedar trees, a tree so important it appears on the national flag.", "", []],
+  ["⛰️", "The Pitons", "LC", "Two steep volcanic peaks rising straight up from the sea, shown on the country's flag.", "", []],
+  ["🏰", "Gutenberg Castle", "LI", "A castle on a rocky hill overlooking the Rhine valley, in one of the world's smallest countries.", "", []],
+  ["🦛", "Sapo National Park", "LR", "A rainforest park that is home to pygmy hippos and chimpanzees.", "", []],
+  ["💧", "Maletsunyane Falls", "LS", "A waterfall that plunges about 190 metres in a single drop, home to one of the world's longest abseils.", "", []],
+  ["🏰", "Trakai Island Castle", "LT", "A red-brick castle on an island in a lake, reached by a wooden bridge.", "", []],
+  ["🕳️", "Bock Casemates", "LU", "About 17 km of tunnels carved into a cliff that once sheltered soldiers and thousands of people in wartime.", "", []],
+  ["🏰", "Turaida Castle", "LV", "A red-brick castle from the 1200s overlooking a forested river valley.", "", []],
+  ["🏛️", "Leptis Magna", "LY", "One of the best-preserved ancient Roman cities in the world, beside the Mediterranean Sea.", "", []],
+  ["🔵", "Chefchaouen", "MA", "A mountain town where almost every wall, door and staircase is painted blue.", "", []],
+  ["🐠", "Oceanographic Museum", "MC", "A museum built into a cliff above the sea, once run by the famous ocean explorer Jacques Cousteau.", "", []],
+  ["⛪", "Orheiul Vechi", "MD", "A monastery carved into a limestone cliff high above a looping river.", "", []],
+  ["⛵", "Bay of Kotor", "ME", "A winding bay surrounded by steep mountains, often called Europe's southernmost fjord.", "", []],
+  ["👙", "Bikini Atoll", "MH", "A ring of coral islands where nuclear bombs were tested in the 1940s and 1950s; the swimsuit was named after it.", "", []],
+  ["🏞️", "Lake Ohrid", "MK", "One of the oldest and deepest lakes in Europe, possibly more than a million years old, shared with Albania.", "", ["AL"]],
+  ["🕌", "Great Mosque of Djenné", "ML", "The largest mud-brick building in the world; the whole town re-plasters it every year in a festival.", "", []],
+  ["🐎", "Genghis Khan Equestrian Statue", "MN", "A 40-metre steel statue of a great ruler on horseback; you can climb up to the horse's head.", "", []],
+  ["👁️", "Eye of the Sahara", "MR", "Giant rings in the desert about 40 km wide, so big they are easiest to see from space.", "", []],
+  ["🪨", "Ġgantija Temples", "MT", "Stone temples over 5,000 years old, older than Stonehenge and the pyramids of Giza.", "", []],
+  ["🌈", "Seven Coloured Earths", "MU", "Sand dunes in seven colours, including red, purple and blue, that stay separate even after rain.", "", []],
+  ["🦈", "Ithaa Undersea Restaurant", "MV", "A restaurant under the sea with glass walls, so diners can watch sharks and fish swim past.", "", []],
+  ["⛰️", "Mount Mulanje", "MW", "A huge granite mountain rising out of the plains, nicknamed the 'island in the sky'.", "", []],
+  ["🏝️", "Bazaruto Archipelago", "MZ", "Islands with giant sand dunes and clear water, home to rare sea cows called dugongs.", "", []],
+  ["🏜️", "Sossusvlei", "NA", "Some of the tallest sand dunes in the world, glowing red and orange at sunrise.", "", []],
+  ["🕌", "Grand Mosque of Agadez", "NE", "Its 27-metre minaret, studded with wooden poles, is the tallest mud-brick minaret in the world.", "", []],
+  ["🪨", "Zuma Rock", "NG", "A giant rock about 725 metres high, with markings that look like a human face.", "", []],
+  ["🌋", "Ometepe Island", "NI", "An island made by two volcanoes, rising out of a huge freshwater lake.", "", []],
+  ["🌬️", "Windmills of Kinderdijk", "NL", "Nineteen windmills from the 1700s that pumped water away to keep the low land dry.", "", []],
+  ["🏖️", "Anibare Bay", "NR", "A white-sand bay on an island country of only about 21 square kilometres.", "", []],
+  ["🏞️", "Milford Sound", "NZ", "A fjord with cliffs rising straight out of the water and waterfalls pouring down them.", "", []],
+  ["🏜️", "Wahiba Sands", "OM", "A sea of orange sand dunes, some over 100 metres tall, where Bedouin families live.", "", []],
+  ["🚢", "Miraflores Locks", "PA", "Giant gates that raise and lower ships so they can travel between the Atlantic and Pacific oceans.", "", []],
+  ["🥾", "Kokoda Track", "PG", "A tough 96 km jungle path over the mountains, where an important battle was fought in World War II.", "", []],
+  ["🏔️", "K2", "PK", "The second-highest mountain in the world, and one of the hardest to climb, on the border with China.", "", ["CN"]],
+  ["🧂", "Wieliczka Salt Mine", "PL", "An old salt mine with an underground chapel where even the chandeliers are carved from salt.", "", []],
+  ["⛪", "Church of the Nativity", "PS", "One of the oldest churches still in use, built over the place where Jesus is said to have been born.", "", []],
+  ["🏰", "Belém Tower", "PT", "A stone fort from the 1500s that guarded the river mouth during the Age of Discovery.", "", []],
+  ["🪼", "Jellyfish Lake", "PW", "A lake where millions of golden jellyfish swim, and their sting is too weak to hurt people.", "", []],
+  ["⚡", "Itaipú Dam", "PY", "One of the biggest hydroelectric dams in the world, shared with Brazil.", "", ["BR"]],
+  ["🏛️", "Museum of Islamic Art", "QA", "A museum shaped like a geometric fortress, built on its own island in the bay.", "", []],
+  ["🏰", "Bran Castle", "RO", "A castle on a rocky cliff, famous as 'Dracula's Castle'.", "", []],
+  ["🏰", "Golubac Fortress", "RS", "A fairy-tale fortress with nine towers guarding the Danube River.", "", []],
+  ["🦍", "Volcanoes National Park", "RW", "Misty volcanoes where families of mountain gorillas live in the bamboo forests.", "", []],
+  ["🏜️", "Hegra", "SA", "More than 100 giant tombs carved into sandstone rocks about 2,000 years ago.", "", []],
+  ["🤿", "Marovo Lagoon", "SB", "One of the largest saltwater lagoons in the world, ringed by a double barrier reef.", "", []],
+  ["🌴", "Vallée de Mai", "SC", "A forest of coco de mer palms, which grow the biggest seed of any plant on Earth.", "", []],
+  ["🔺", "Pyramids of Meroë", "SD", "About 200 steep, pointy pyramids, more than there are in Egypt!", "", []],
+  ["🧊", "Icehotel", "SE", "A hotel rebuilt from ice and snow every winter; even the beds are made of ice.", "", []],
+  ["🌳", "Gardens by the Bay", "SG", "A futuristic garden with giant metal 'Supertrees' that light up at night.", "", []],
+  ["🏞️", "Lake Bled", "SI", "An alpine lake with a tiny island and a church you can reach only by boat.", "", []],
+  ["🏰", "Spiš Castle", "SK", "One of the largest castles in Central Europe, its ruins covering a whole hilltop.", "", []],
+  ["🐒", "Tacugama Chimpanzee Sanctuary", "SL", "A safe home in the rainforest for rescued chimpanzees.", "", []],
+  ["🏰", "Guaita Tower", "SM", "The oldest of three towers on the cliffs of Mount Titano, first built about 1,000 years ago.", "", []],
+  ["💗", "Lake Retba", "SN", "The 'Pink Lake', a very salty lake that turns bright pink because of tiny algae.", "", []],
+  ["🎨", "Laas Geel", "SO", "Caves with brightly painted cows and people, made around 5,000 years ago.", "", []],
+  ["⛪", "St. Peter and Paul Cathedral", "SR", "One of the largest wooden buildings in the Americas.", "", []],
+  ["🦌", "Boma National Park", "SS", "Home to one of the biggest animal migrations on Earth, with hundreds of thousands of antelope.", "", []],
+  ["⛰️", "Pico Cão Grande", "ST", "A giant needle of volcanic rock sticking up about 300 metres above the rainforest.", "", []],
+  ["🌋", "Joya de Cerén", "SV", "A Mayan farming village buried by volcanic ash 1,400 years ago, called the 'Pompeii of the Americas'.", "", []],
+  ["🏰", "Krak des Chevaliers", "SY", "One of the best-preserved castles from the time of the Crusades.", "", []],
+  ["💧", "Mantenga Falls", "SZ", "A waterfall beside a cultural village where visitors see traditional beehive huts and dancing.", "", []],
+  ["🪨", "Ennedi Plateau", "TD", "Giant natural stone arches in the Sahara, where a few desert crocodiles still survive in a hidden pool.", "", []],
+  ["🏠", "Koutammakou", "TG", "A land of mud tower-houses called takienta, built by the Batammariba people.", "", ["BJ"]],
+  ["🛕", "Grand Palace", "TH", "A dazzling palace with golden spires, home to the famous Emerald Buddha.", "", []],
+  ["🏞️", "Iskanderkul", "TJ", "A turquoise mountain lake said to be named after Alexander the Great.", "", []],
+  ["🗿", "Cristo Rei", "TL", "A 27-metre statue of Jesus standing on a globe, on a hilltop above the sea.", "", []],
+  ["🔥", "Darvaza Gas Crater", "TM", "The 'Door to Hell', a huge crater that has been on fire since 1971.", "", []],
+  ["🏟️", "Amphitheatre of El Jem", "TN", "A Roman arena almost as big as the Colosseum, built about 1,800 years ago.", "", []],
+  ["🗿", "Ha'amonga 'a Maui", "TO", "A giant stone gateway about 800 years old, made of three huge slabs of coral rock.", "", []],
+  ["⚫", "Pitch Lake", "TT", "The largest natural lake of asphalt in the world; you can walk on parts of it.", "", []],
+  ["🏝️", "Te Namo Lagoon", "TV", "A huge lagoon ringed by tiny coral islands, in a country whose highest point is less than 5 metres above sea level.", "", []],
+  ["🏞️", "Taroko Gorge", "TW", "A marble canyon with cliffs hundreds of metres high, carved by a rushing river.", "", []],
+  ["💚", "Tunnel of Love", "UA", "A railway track through a forest where the trees form a perfect green tunnel.", "", []],
+  ["🌊", "Source of the Nile", "UG", "The place at Jinja where the Nile River flows out of Lake Victoria on its long journey north.", "", []],
+  ["✋", "The Hand", "UY", "Giant concrete fingers rising out of the sand of a beach, as if a giant were climbing out.", "", []],
+  ["🕌", "Registan", "UZ", "A grand square in Samarkand, surrounded by three old schools covered in blue tiles.", "", []],
+  ["⛪", "St. Peter's Basilica", "VA", "One of the largest churches in the world, with a giant dome designed by Michelangelo.", "", []],
+  ["🐢", "Tobago Cays", "VC", "Tiny islands and a coral reef where you can swim with sea turtles.", "", []],
+  ["🌋", "Mount Yasur", "VU", "One of the most accessible active volcanoes on Earth; visitors can peek into its glowing crater.", "", []],
+  ["🌊", "To Sua Ocean Trench", "WS", "A giant swimming hole 30 metres deep, reached by climbing down a long wooden ladder.", "", []],
+  ["⛪", "Gračanica Monastery", "XK", "A monastery from 1321, famous for the beautiful paintings that cover its inside walls.", "", []],
+  ["🌳", "Dragon's Blood Trees", "YE", "Umbrella-shaped trees on Socotra island with red sap, found nowhere else on Earth.", "", []],
+  ["🧱", "Great Enclosure", "ZW", "Giant stone walls built without any mortar about 700 years ago by a powerful trading kingdom.", "", []]
+];
 
 /* Island countries for the neighbours game: [what surrounds it, a fact to tell it apart] */
 const ISLANDS = {
@@ -2841,12 +2997,9 @@ const cnt = o => Object.keys(o).length;
 const cap1 = s => s[0].toUpperCase() + s.slice(1);
 
 const ANIMAL_C = new Set(ANIMALS.filter(a => a[3] === "c").map(a => a[2]));
-const GENERIC_LM = /^(Coral atolls|Over 300|Sahara sand|Swimming|Sunken|A beach|Alpine hiking|Glowing|Deep blue)/;
-const lmLeaks = (c, l) => leaks(c, l) || (c.cap && stem(l).includes(stem(c.cap)));
-const GEN_LM = GEO.flatMap(c => c.lm
-  .filter(l => !GENERIC_LM.test(l) && !lmLeaks(c, l) && !LANDMARKS.some(x => stem(l).includes(stem(x[1])) || stem(x[1]).includes(stem(l))))
-  .map(l => ["📍", l, c.id, `A famous place to visit in ${c.sr === "Caribbean" ? "the Caribbean" : regionName(c)}.`, "", [], true]));
-const LM_C = new Set([...LANDMARKS.filter(x => !x[4]).map(x => x[2]), ...GEN_LM.map(x => x[2])]);
+const LM_ALL = LANDMARKS.concat(LM_MORE);
+const LM_EASY = LM_ALL.filter(x => x[4] || EASY.has(x[2]) || LANDMARKS.includes(x));
+const LM_C = new Set(LM_ALL.filter(x => !x[4]).map(x => x[2]));
 const nbEligible = c => c.a >= 2000 && (c.b.length > 0 || !!ISLANDS[c.id]);
 
 const CAT_LABEL = { cities: "Big city", flags: "Flag", capitals: "Capital city", shapes: "Country shape", clues: "Mystery clues", languages: "Language", animals: "Animal", maphunt: "Find it on the map", cappin: "Capital on the map", landmarks: "Landmark", neighbours: "Neighbours" };
@@ -3092,7 +3245,7 @@ function onRoundEnd(stars) {
 }
 
 /* ================= landmarks & neighbours questions ================= */
-const lmPool = () => S.level === "easy" ? LANDMARKS : LANDMARKS.concat(GEN_LM);
+const lmPool = () => S.level === "easy" ? LM_EASY : LM_ALL;
 function qLandmark(L) {
   const [emoji, name, ans, fact, kind, ex = [], gen] = L;
   let options, answer, cid = null;
@@ -4834,7 +4987,7 @@ if (window.history && history.pushState) {
 }
 
 /* ================= check for updates ================= */
-const APP_VERSION = "atlas-v29";
+const APP_VERSION = "atlas-v30";
 const verNum = v => +((String(v).match(/(\d+)\s*$/) || [0, 0])[1]);
 async function remoteVersion() {
   const res = await fetch("sw.js?check=" + Date.now(), { cache: "no-store" });
