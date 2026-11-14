@@ -672,17 +672,22 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
 /* ---------- Leaderboard ---------- */
 #s-board .topbar .seg { flex: none; }
 .lbpanel { flex: 0 1 auto; min-height: 0; overflow-y: auto; }
-.lbrow { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 6px 6px; border-top: 2px solid var(--line); }
+.lbrow { display: grid; grid-template-columns: 24px auto minmax(0, 1fr) auto; gap: 8px; align-items: center; padding: 6px 6px; border-top: 2px solid var(--line); }
 .lbrow:first-child { border-top: 0; }
 .lbrow .rk { font-family: var(--display); font-size: 1.15rem; text-align: center; }
-.lbrow .ini { font-family: var(--display); font-size: 1.35rem; letter-spacing: .22em; line-height: 1.1; }
+.lbrow .ini { font-family: var(--display); font-size: 1rem; letter-spacing: .03em; line-height: 1.1; white-space: nowrap; }
+.lbrow .ach { font-size: .78rem; font-weight: 800; line-height: 1.15; }
+.lbrow .ach .tm { display: block; font-family: var(--display); font-size: .9rem; margin-top: 1px; }
+.lbrow.lbhead { font-size: .66rem; font-weight: 900; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-soft); padding-top: 0; padding-bottom: 2px; }
+.lbrow.lbhead > span { font-family: var(--body); font-size: .62rem; letter-spacing: .03em; }
+.lbrow.lbhead + .lbrow { border-top: 0; }
 .lbrow .ini small { display: block; font-family: var(--body); font-size: .68rem; letter-spacing: 0; color: var(--ink-soft); font-weight: 800; }
-.lbrow .sc { font-family: var(--display); font-size: 1.2rem; }
+.lbrow .sc { font-family: var(--display); font-size: 1.1rem; text-align: right; }
 .lbrow.me { background: var(--gold-soft); border-radius: 10px; }
 .lbbest { margin-top: 6px; padding-top: 8px; border-top: 2px solid var(--line); font-weight: 900; font-size: .88rem; display: flex; justify-content: space-between; align-items: center; }
 .empty { margin: 8px 0; text-align: center; color: var(--ink-soft); }
 .lbnote { margin: 0; font-size: .76rem; color: var(--ink-soft); text-align: center; flex: none; }
-.iniinput { font-family: var(--display); font-size: 2.6rem; text-align: center; letter-spacing: .35em; width: 100%; padding: 6px 0 6px .35em; border: var(--ol); border-radius: 16px; text-transform: uppercase; color: var(--ink); background: #F2F8FF; }
+.iniinput { font-family: var(--display); font-size: 2.2rem; text-align: center; letter-spacing: .14em; width: 100%; padding: 6px 0 6px .14em; border: var(--ol); border-radius: 16px; text-transform: uppercase; color: var(--ink); background: #F2F8FF; }
 
 /* ---------- Short screens ---------- */
 @media (max-height: 620px) {
@@ -1404,7 +1409,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
   <div class="modal">
     <h2 style="font-size:1.7rem">🏆 New high score!</h2>
     <p id="ini-text"></p>
-    <input id="ini-input" class="iniinput" maxlength="3" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Your initials" placeholder="ABC">
+    <input id="ini-input" class="iniinput" maxlength="6" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Your name tag" placeholder="ABC123">
     <div class="cc-actions"><button class="btn alt" id="ini-skip">Skip</button><button class="btn" id="ini-save">Save</button></div>
   </div>
 </div>
@@ -2014,7 +2019,7 @@ function hopRuleText(pz) {
   return pz.most ? `<b>Scenic route!</b> Visit as <b>many</b> countries as you can, never the same one twice. ${rule}` : rule;
 }
 function startHop() {
-  sfx("go"); H.on = false;
+  sfx("go"); H.on = false; clockStart();
   const used = new Set(), list = [];
   for (let k = 0; k < HOP.n; k++) { const pz = hopMake(S.level, used); if (pz) { list.push(pz); used.add(pz.s); used.add(pz.e); } }
   Object.assign(HOP, { on: true, i: 0, score: 0, list, perfect: 0, done: false, results: [] });
@@ -2147,7 +2152,7 @@ function hopFinish() {
   const max = HOP.list.length * 300, sc = HOP.score;
   const stars = sc >= max * .8 ? 3 : sc >= max * .55 ? 2 : sc >= max * .3 ? 1 : 0;
   const key = bestKey("hop"), prev = BEST[key], isBest = !prev || sc > prev.score;
-  BEST[key] = { score: Math.max(sc, prev ? prev.score : 0), stars: Math.max(stars, prev ? prev.stars : 0) }; noteStars(key, stars); LS.set("best", BEST);
+  BEST[key] = { score: Math.max(sc, prev ? prev.score : 0), stars: Math.max(stars, prev ? prev.stars : 0), lb: prev && prev.lb }; noteStars(key, stars); LS.set("best", BEST);
   P.rounds++; P.total += sc; award("first"); if (S.level === "hard" && stars === 3) award("expert"); checkAll();
   sfx("fanfare"); if (stars === 3) confetti();
   showInfo(`<div class="acres"><h2>Trip complete!</h2><div class="bigstars">${[0, 1, 2].map(i => `<span class="stars">${i < stars ? "★" : '<span class="off">★</span>'}</span>`).join("")}</div>
@@ -2155,6 +2160,7 @@ function hopFinish() {
     <div class="cc-actions"><button class="btn alt" id="hop-more">More games</button><button class="btn" id="hop-again">Play again</button></div>`);
   $("#hop-again").onclick = () => { $("#info").hidden = true; startHop(); };
   $("#hop-more").onclick = () => { $("#info").hidden = true; goHome(); };
+  lbNote("hop", S.level, sc, `${HOP.perfect}/${HOP.list.length} perfect routes`, clockStop());
   const rk = lbRank("hop", S.level, sc);
   if (rk) { G.mode = "hop"; G.score = sc; setTimeout(() => askInitials(rk), 900); }
 }
@@ -2214,7 +2220,7 @@ function pzMake(level) {
   return null;
 }
 function startPuzzle() {
-  sfx("go"); H.on = false;
+  sfx("go"); H.on = false; clockStart();
   const list = []; const seen = new Set();
   for (let t = 0; list.length < PZ.n && t < 30; t++) { const p = pzMake(S.level); if (p && !p.set.some(id => seen.has(id))) { list.push(p); p.set.forEach(id => seen.add(id)); } }
   Object.assign(PZ, { on: true, i: 0, score: 0, list, results: [] });
@@ -2326,7 +2332,7 @@ function pzFinish() {
   PZ.on = false;
   const max = PZ.list.length * 400, sc = PZ.score, stars = sc >= max * .75 ? 3 : sc >= max * .5 ? 2 : sc >= max * .25 ? 1 : 0;
   const key = bestKey("puzzle"), prev = BEST[key], isBest = !prev || sc > prev.score;
-  BEST[key] = { score: Math.max(sc, prev ? prev.score : 0), stars: Math.max(stars, prev ? prev.stars : 0) }; noteStars(key, stars); LS.set("best", BEST);
+  BEST[key] = { score: Math.max(sc, prev ? prev.score : 0), stars: Math.max(stars, prev ? prev.stars : 0), lb: prev && prev.lb }; noteStars(key, stars); LS.set("best", BEST);
   P.rounds++; P.total += sc; award("first"); if (S.level === "hard" && stars === 3) award("expert"); checkAll();
   sfx("fanfare"); if (stars === 3) confetti();
   showInfo(`<div class="acres"><h2>Puzzles complete!</h2><div class="bigstars">${[0, 1, 2].map(i => `<span class="stars">${i < stars ? "★" : '<span class="off">★</span>'}</span>`).join("")}</div>
@@ -2334,6 +2340,7 @@ function pzFinish() {
     <div class="cc-actions"><button class="btn alt" id="pz-more">More games</button><button class="btn" id="pz-again">Play again</button></div>`);
   $("#pz-again").onclick = () => { $("#info").hidden = true; startPuzzle(); };
   $("#pz-more").onclick = () => { $("#info").hidden = true; goHome(); };
+  lbNote("puzzle", S.level, sc, `${PZ.results.filter(r => r.perfect).length}/${PZ.list.length} perfect puzzles`, clockStop());
   const rk = lbRank("puzzle", S.level, sc);
   if (rk) { G.mode = "puzzle"; G.score = sc; setTimeout(() => askInitials(rk), 900); }
 }
@@ -2429,7 +2436,7 @@ function frFinish() {
   const n = FR.order.length, sc = FR.right, perfect = FR.wrong === 0 && sc === n, secs = Math.round(FR.t + (performance.now() - FR.t0) / 1000);
   const stars = sc >= n - 5 ? 3 : sc >= n * .8 ? 2 : sc >= n / 2 ? 1 : 0;
   const key = bestKey("flagrun", FR.lv), prev = BEST[key];
-  BEST[key] = { score: Math.max(sc, prev ? prev.score : 0), stars: Math.max(stars, prev ? prev.stars : 0) }; noteStars(key, stars); LS.set("best", BEST);
+  BEST[key] = { score: Math.max(sc, prev ? prev.score : 0), stars: Math.max(stars, prev ? prev.stars : 0), lb: prev && prev.lb }; noteStars(key, stars); LS.set("best", BEST);
   P.seen.flagrun = 1; P.rounds++; P.total += sc * 10;
   if (perfect) { P.frPerfect = P.frPerfect || {}; P.frPerfect[FR.lv] = Date.now(); }
   saveP(); checkAll();
@@ -2443,6 +2450,7 @@ function frFinish() {
     <div class="cc-actions"><button class="btn alt" id="fr-more">More games</button><button class="btn" id="fr-again">Run again</button></div>`);
   $("#fr-again").onclick = () => { $("#info").hidden = true; startFlagRun(); };
   $("#fr-more").onclick = () => { $("#info").hidden = true; goHome(); };
+  lbNote("flagrun", FR.lv, sc, `${sc}/${n} flags`, secs);
   const rk = lbRank("flagrun", FR.lv, sc);
   if (rk) { G.mode = "flagrun"; G.score = sc; setTimeout(() => askInitials(rk), 900); }
 }
@@ -3282,6 +3290,24 @@ function qNeighbours(c) {
 }
 
 /* ================= leaderboard ================= */
+// Play clock: counts only while a game is on screen (not paused, not behind a pop-up, app visible).
+const CLOCK = { on: false, ms: 0, last: 0 };
+function clockStart() { CLOCK.on = true; CLOCK.ms = 0; CLOCK.last = performance.now(); }
+function clockTick() {
+  const now = performance.now(), hid = id => { const e = document.getElementById(id); return !e || e.hidden; };
+  if (CLOCK.on && !document.hidden && hid("pause") && hid("info") && hid("confirm") && hid("countdown")) CLOCK.ms += Math.min(now - CLOCK.last, 1000);
+  CLOCK.last = now;
+}
+setInterval(clockTick, 200);
+function clockStop() { clockTick(); CLOCK.on = false; return Math.round(CLOCK.ms / 1000); }
+const fmtSecs = s => { if (!(s >= 0)) return "—"; s = Math.round(s); const h = Math.floor(s / 3600), m = Math.floor(s / 60) % 60, x = String(s % 60).padStart(2, "0"); return h ? `${h}:${String(m).padStart(2, "0")}:${x}` : `${m}:${x}`; };
+const INI_MAX = 6, iniClean = v => Array.from(String(v || "").toUpperCase().replace(/[^\x21-\x7E]/g, "")).slice(0, INI_MAX).join("");
+// Remember what this round achieved, for the leaderboard (and keep the best one for the online board).
+function lbNote(mode, lv, score, ach, secs) {
+  G.lbAch = ach; G.lbSecs = secs;
+  const key = bestKey(mode, lv), b = BEST[key] || (BEST[key] = { score: 0, stars: 0 });
+  if (score > 0 && (!b.lb || score > b.lb.s)) { b.lb = { _lb: 1, s: score, a: ach, t: secs, d: Date.now() }; LS.set("best", BEST); }
+}
 const lbKey = (m, lv) => m + "_" + lv;
 const lbList = (m, lv) => LB[lbKey(m, lv)] || [];
 function lbRank(m, lv, s) {
@@ -3291,16 +3317,16 @@ function lbRank(m, lv, s) {
 }
 function askInitials(rank) {
   const lvName = S.level === "easy" ? "Explorer" : "World Expert";
-  $("#ini-text").textContent = `You're number ${rank} on the ${MODES[G.mode].name} leaderboard (${lvName}). Type your initials:`;
+  $("#ini-text").textContent = `You're number ${rank} on the ${MODES[G.mode].name} leaderboard (${lvName}). Type a name tag (up to 6 letters, numbers or symbols):`;
   const inp = $("#ini-input"); inp.value = P.ini || "";
   $("#ini").hidden = false; setTimeout(() => { try { inp.focus(); inp.select(); } catch (e) {} }, 60);
   const save = () => {
-    const v = inp.value.toUpperCase().replace(/[^A-Z]/g, "").slice(0, 3);
+    const v = iniClean(inp.value);
     if (!v) { inp.focus(); return; }
     const r = lbRank(G.mode, S.level, G.score) - 1;
     if (r >= 0) {
       const l = lbList(G.mode, S.level).slice();
-      l.splice(r, 0, { i: v, s: G.score, d: Date.now() });
+      l.splice(r, 0, { i: v, s: G.score, d: Date.now(), a: G.lbAch || "", t: G.lbSecs });
       LB[lbKey(G.mode, S.level)] = l.slice(0, 10); LS.set("board", LB);
     }
     P.ini = v; saveP(); $("#ini").hidden = true; sfx("fanfare"); award("board");
@@ -3308,7 +3334,7 @@ function askInitials(rank) {
   $("#ini-save").onclick = save;
   $("#ini-skip").onclick = () => { $("#ini").hidden = true; };
   inp.onkeydown = e => { if (e.key === "Enter") save(); };
-  inp.oninput = () => { inp.value = inp.value.toUpperCase().replace(/[^A-Z]/g, "").slice(0, 3); };
+  inp.oninput = () => { const v = iniClean(inp.value); if (v !== inp.value) inp.value = v; };
 }
 let lbMode = "flags", lbLv = null;
 let lbScope = "device";
@@ -3322,7 +3348,8 @@ function renderBoard() {
   $("#lb-games").querySelectorAll("button").forEach(b => b.onclick = () => { lbMode = b.dataset.k; renderBoard(); sfx("tap"); });
   const on = $("#lb-games").querySelector('[aria-pressed="true"]'); if (on) on.scrollIntoView({ block: "nearest", inline: "center" });
   const b = BEST[bestKey(lbMode, lbLv)], key = bestKey(lbMode, lbLv), me = (() => { try { return plMe(); } catch (e) { return null; } })();
-  const rows = (l, mine) => l.map((e, i) => `<div class="lbrow${mine(e) ? " me" : ""}"><span class="rk">${["🥇", "🥈", "🥉"][i] || i + 1}</span><span class="ini">${esc(e.i)}<small>${e.d ? new Date(e.d).toLocaleDateString() : ""}</small></span><span class="sc num">${e.s.toLocaleString()}</span></div>`).join("");
+  const rows = (l, mine) => `<div class="lbrow lbhead"><span class="rk">#</span><span>Player</span><span>Achievement · time</span><span class="sc">Score</span></div>` +
+    l.map((e, i) => `<div class="lbrow${mine(e) ? " me" : ""}"><span class="rk">${["🥇", "🥈", "🥉"][i] || i + 1}</span><span class="ini">${esc(e.i)}<small>${e.d ? new Date(e.d).toLocaleDateString() : ""}</small></span><span class="ach">${e.a ? esc(e.a) : "—"}<small class="tm num">⏱ ${e.t >= 0 ? fmtSecs(e.t) : "—"}</small></span><span class="sc num">${e.s.toLocaleString()}</span></div>`).join("");
   const foot = `<div class="lbbest"><span>Your best stars</span><span class="stars">${starStr(b ? b.stars : 0)}</span></div>`;
   if (lbScope === "device") {
     const l = lbList(lbMode, lbLv);
@@ -3772,7 +3799,7 @@ function acFinish(title) {
   const stars = NTA.cont ? (n >= of ? 3 : n >= of * .7 ? 2 : n >= of * .4 ? 1 : 0) : (n >= 150 ? 3 : n >= 100 ? 2 : n >= 50 ? 1 : 0);
   const key = bestKey("allc"), prev = BEST[key];
   const isBest = !prev || n > prev.score;
-  BEST[key] = { score: Math.max(n, prev ? prev.score : 0), stars: Math.max(stars, prev ? prev.stars : 0) }; noteStars(key, stars);
+  BEST[key] = { score: Math.max(n, prev ? prev.score : 0), stars: Math.max(stars, prev ? prev.stars : 0), lb: prev && prev.lb }; noteStars(key, stars);
   LS.set("best", BEST);
   P.seen.allc = 1;
   if (NTA.cont) {
@@ -3799,6 +3826,7 @@ function acFinish(title) {
   $("#ac-menu").onclick = () => { $("#info").hidden = true; acExit(); };
   // Leaderboard points: 10 per country named, plus a bonus for every second left if you named them all.
   const pts = n * 10 + (n >= of ? Math.round(Math.max(0, NTA.left)) : 0);
+  lbNote("allc", S.level, pts, `${n}/${of} countries`, Math.round(used));
   const rk = lbRank("allc", S.level, pts);
   if (rk) { G.mode = "allc"; G.score = pts; setTimeout(() => askInitials(rk), 900); }
 }
@@ -3998,7 +4026,7 @@ function startGame(mode, count) {
   if (H.on) { H.teams.forEach(t => { t.score = 0; t.right = 0; }); H.cur = H.seq && H.seq.length ? H.seq[0] : 0; }
   $("#app").classList.toggle("h2h", H.on); $("#app").classList.toggle("h2h-show", H.on && H.style === "show");
   $("#sh-teams").hidden = true; $("#ini").hidden = true;
-  G.mode = mode; G.qs = buildRound(mode, count || S.qcount); G.i = 0; G.score = 0; G.right = 0; G.streak = 0; G.bestStreak = 0; G.results = []; G.paused = false;
+  clockStart(); G.mode = mode; G.qs = buildRound(mode, count || S.qcount); G.i = 0; G.score = 0; G.right = 0; G.streak = 0; G.bestStreak = 0; G.results = []; G.paused = false;
   $("#app").classList.remove("paused");
   $("#g-mode").textContent = MODES[mode].name;
   $("#g-score").textContent = "0";
@@ -4265,8 +4293,9 @@ function endGame() {
   const stars = pct >= .9 ? 3 : pct >= .6 ? 2 : pct >= .3 ? 1 : 0;
   const key = bestKey(G.mode), prev = BEST[key];
   const isBest = !prev || G.score > prev.score;
-  BEST[key] = { score: Math.max(G.score, prev ? prev.score : 0), stars: Math.max(stars, prev ? prev.stars : 0) }; noteStars(key, stars);
+  BEST[key] = { score: Math.max(G.score, prev ? prev.score : 0), stars: Math.max(stars, prev ? prev.stars : 0), lb: prev && prev.lb }; noteStars(key, stars);
   LS.set("best", BEST);
+  lbNote(G.mode, S.level, G.score, `${G.right}/${n} correct`, clockStop());
   const lbr = lbRank(G.mode, S.level, G.score);
   onRoundEnd(stars);
   if (lbr) setTimeout(() => { if (!$("#s-results").hidden) askInitials(lbr); }, 1300);
@@ -4654,6 +4683,7 @@ async function cloudPut(p, data) {
    higher numbers and scores, every stamp, trophy and award earned on either. */
 function mergeData(a, b) {
   if (a == null) return b; if (b == null) return a;
+  if (a && b && a._lb && b._lb) return (b.s || 0) > (a.s || 0) ? b : a;
   if (typeof a === "number" && typeof b === "number") return Math.max(a, b);
   if (typeof a === "boolean" && typeof b === "boolean") return a || b;
   if (typeof a === "string" && typeof b === "string") return a || b;
@@ -4678,14 +4708,17 @@ const boardUrl = key => `https://firestore.googleapis.com/v1/projects/${encodeUR
 async function cloudBoardPost() {
   const me = plMe(); if (!me || !CL.cfg || !navigator.onLine) return;
   const posted = LS.get("lbposted_" + me.uid, {});
-  const ini = (P.ini || me.name.replace(/[^A-Za-z]/g, "").slice(0, 3)).toUpperCase() || "???";
+  const ini = iniClean(P.ini || me.name) || "???";
   for (const [key, b] of Object.entries(BEST)) {
-    const [m] = key.split("_"); if (!MODES[m] || !(b.score > 0) || (posted[key] || 0) >= b.score) continue;
+    const [m] = key.split("_"), lb = b.lb || {}, sc = lb.s || b.score;
+    if (!MODES[m] || !(sc > 0) || (posted[key] || 0) >= sc) continue;
     try {
       const tok = await idToken(me);
-      const r = await fetch(`${boardUrl(key)}/players/${me.uid}`, { method: "PATCH", headers: { Authorization: "Bearer " + tok, "Content-Type": "application/json" },
-        body: JSON.stringify({ fields: { ini: { stringValue: ini }, score: { integerValue: String(b.score) }, at: { integerValue: String(Date.now()) } } }) });
-      if (r.ok) { posted[key] = b.score; LS.set("lbposted_" + me.uid, posted); }
+      const put = fields => fetch(`${boardUrl(key)}/players/${me.uid}`, { method: "PATCH", headers: { Authorization: "Bearer " + tok, "Content-Type": "application/json" }, body: JSON.stringify({ fields }) });
+      const base = { score: { integerValue: String(sc) }, at: { integerValue: String(lb.d || Date.now()) } };
+      let r = await put(Object.assign({ ini: { stringValue: ini } }, base, lb.a ? { ach: { stringValue: String(lb.a).slice(0, 40) } } : {}, lb.t >= 0 ? { secs: { integerValue: String(lb.t) } } : {}));
+      if (r.status === 403) r = await put(Object.assign({ ini: { stringValue: ini.slice(0, 3) } }, base));   // older Firestore rules
+      if (r.ok) { posted[key] = sc; LS.set("lbposted_" + me.uid, posted); }
     } catch (e) { return; }
   }
 }
@@ -4697,7 +4730,7 @@ async function cloudBoardTop(key) {
   const r = await fetch(`${boardUrl(key)}:runQuery`, { method: "POST", headers, body: JSON.stringify(body) });
   if (!r.ok) throw new Error(r.status === 403 ? "rules" : "net");
   const j = await r.json();
-  return boardCache[key] = j.filter(x => x.document).map(x => { const f = x.document.fields || {}; return { i: (f.ini && f.ini.stringValue) || "???", s: +((f.score && f.score.integerValue) || 0), d: +((f.at && f.at.integerValue) || 0), uid: x.document.name.split("/").pop() }; });
+  return boardCache[key] = j.filter(x => x.document).map(x => { const f = x.document.fields || {}; return { i: (f.ini && f.ini.stringValue) || "???", s: +((f.score && f.score.integerValue) || 0), d: +((f.at && f.at.integerValue) || 0), a: (f.ach && f.ach.stringValue) || "", t: f.secs ? +f.secs.integerValue : -1, uid: x.document.name.split("/").pop() }; });
 }
 
 function cloudDirty() { if (CL.quiet || !CL.active) return; clearTimeout(CL.timer); CL.timer = setTimeout(cloudSync, 4000); }
@@ -4987,7 +5020,7 @@ if (window.history && history.pushState) {
 }
 
 /* ================= check for updates ================= */
-const APP_VERSION = "atlas-v30";
+const APP_VERSION = "atlas-v31";
 const verNum = v => +((String(v).match(/(\d+)\s*$/) || [0, 0])[1]);
 async function remoteVersion() {
   const res = await fetch("sw.js?check=" + Date.now(), { cache: "no-store" });
