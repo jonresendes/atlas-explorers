@@ -1122,6 +1122,54 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
 .whoinstall { min-height: 44px; padding: 6px 18px; font-size: 1rem; }
 .helpmore { margin: 10px 0; font-weight: 800; }
 .helpmore summary { cursor: pointer; color: var(--ink-soft); }
+/* ---------- Globe View (inside World Map) ---------- */
+#s-map [hidden] { display: none !important; }
+.mxview { flex: none; display: flex; gap: 6px; }
+.mxview button { flex: 1; }
+.mxglobe { flex: 1 1 auto; min-height: 240px; background: #050b18; }
+.mxglobe .agv-root, .mxglobe.agv-root { width: 100%; height: 100%; }
+/* ---------- Quick Call ---------- */
+#s-qc { gap: clamp(5px, 1vh, 10px); }
+.qcbox { flex: 1 1 auto; min-height: 0; }
+.qcsvg { animation: none; }
+.qcsvg .cty, .qcsvg .mk, .qcsvg .cty:hover, .qcsvg .mk:hover { fill: #F6F1E1; stroke: #8E9CB3; stroke-width: .7px; vector-effect: non-scaling-stroke; cursor: default; transition: none; }
+.qcsvg .mk, .qcsvg .mk:hover { stroke: var(--ink); stroke-width: 1.2px; }
+.qcsvg .land { fill: #DDE4EC; stroke: #B9C6D6; }
+.qcsvg .tgt, .qcsvg .tgt:hover { fill: #FF9A2E !important; stroke: var(--ink); stroke-width: 2.4px; animation: qcglow .7s ease-in-out infinite alternate; }
+@keyframes qcglow { to { fill: #FFC93C; } }
+.qcsvg .ok, .qcsvg .ok:hover { fill: var(--mint) !important; stroke: var(--ink); stroke-width: 2.4px; }
+.qcsvg .no, .qcsvg .no:hover { fill: var(--coral) !important; stroke: var(--ink); stroke-width: 2.4px; }
+.qcsvg .qcring { fill: none; stroke: var(--ink); stroke-width: 3px; vector-effect: non-scaling-stroke; pointer-events: none; transform-box: fill-box; transform-origin: center; animation: qcring .9s ease-in-out infinite alternate; }
+.qcsvg .qcring.still { animation: none; }
+@keyframes qcring { from { transform: scale(.82); } to { transform: scale(1.18); } }
+.qcsvg .qclbl { fill: #44566F; font-weight: 800; font-family: var(--body); }
+.qcsvg .qclbl.imp { fill: var(--ink); font-weight: 900; }
+.qcsvg .qcname.ok { fill: #0B6B43; } .qcsvg .qcname.no { fill: #A32417; }
+.qcverdict { position: absolute; left: 50%; top: 10px; width: clamp(72px, 17vh, 116px); aspect-ratio: 1; margin: 0; transform: translateX(-50%); border-radius: 50%; border: 4px solid var(--ink); box-shadow: 0 6px 0 var(--shadow); display: grid; place-items: center; z-index: 3; pointer-events: none; animation: qcpop .32s cubic-bezier(.3, 1.6, .6, 1); opacity: .96; }
+.qcverdict[hidden] { display: none; }
+.qcverdict.ok { background: #1FB877; } .qcverdict.no { background: #F0503C; }
+.qcverdict svg { width: 68%; height: 68%; fill: none; stroke: #fff; stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; }
+@keyframes qcpop { from { transform: translateX(-50%) scale(.3); opacity: 0; } }
+.qcfeed { flex: none; min-height: 1.7em; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px; text-align: center; font-family: var(--display); font-size: clamp(1.02rem, 2.6vh, 1.3rem); line-height: 1.2; }
+.qcfeed b { font-weight: 400; }
+.qcfeed.ok { color: #0B6B43; } .qcfeed.no { color: #A32417; }
+.qcfeed .soft { color: var(--ink-soft); }
+.qcfeed .pts { background: var(--sun); color: var(--ink); border: 2px solid var(--ink); border-radius: 99px; padding: 0 9px; font-size: .86em; }
+.qcbar { flex: none; display: grid; }
+.qcmic { display: flex; align-items: center; gap: 10px; min-height: 46px; padding: 6px 14px; background: var(--paper); border: var(--ol); border-radius: 14px; box-shadow: 0 3px 0 var(--shadow); font-weight: 800; color: var(--ink-soft); min-width: 0; }
+.qcmic .dot { flex: none; width: 30px; height: 30px; border-radius: 50%; background: #C9D3DF; border: 2px solid var(--ink); display: grid; place-items: center; }
+.qcmic .dot svg { width: 16px; height: 16px; fill: none; stroke: var(--ink); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.qcmic.live .dot { background: var(--mint); animation: qcmic 1s ease-in-out infinite alternate; }
+@keyframes qcmic { to { box-shadow: 0 0 0 7px rgba(34, 195, 132, .28); } }
+.qcmic.live { color: var(--ink); }
+.qcheard { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#s-qc .acinput { display: none; }
+#s-qc.typing .acinput { display: block; }
+#s-qc.typing .qcmic { display: none; }
+.qcsetup .qcnote { background: #FFF1D6; border: 2px solid var(--ink); border-radius: 12px; padding: 6px 10px; color: var(--ink); }
+.qcsetup .qcsmall { font-size: .82rem; }
+.cc-actions.three { grid-template-columns: auto 1fr 1.4fr; }
+@media (prefers-reduced-motion: reduce) { .qcsvg .tgt, .qcsvg .qcring, .qcmic.live .dot, .qcverdict { animation: none; } }
 </style>
 
 </head>
@@ -1226,7 +1274,9 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
       <h2 id="mx-title">World Map</h2>
       <button class="iconbtn" id="mx-search" aria-label="Search all countries"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg></button>
     </div>
+    <div class="seg mxview" id="mx-view" hidden></div>
     <div class="chips" id="mx-chips"></div>
+    <div class="mapbox mxglobe" id="mx-globe" hidden></div>
     <div class="mxmain">
       <div class="mapbox" id="mx-map"></div>
       <div class="panel mxside" id="mx-side"></div>
@@ -1311,6 +1361,27 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
     <div class="opts frchoices" id="fr-opts"></div>
     <div class="frtype"><div class="frfeed" id="fr-feed" aria-live="polite"></div>
       <div class="acbar"><input id="fr-input" class="acinput" type="text" autocomplete="off" autocorrect="off" autocapitalize="words" spellcheck="false" enterkeyhint="done" placeholder="Which country is this?" aria-label="Type the country"><button class="btn ghost" id="fr-skip">I don't know</button></div></div>
+  </section>
+
+  <!-- QUICK CALL -->
+  <section class="screen" id="s-qc" hidden>
+    <div class="hud">
+      <button class="iconbtn" id="qc-pause" aria-label="Pause"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1.5"/><rect x="14" y="5" width="4" height="14" rx="1.5"/></svg></button>
+      <div class="mid"><div class="mode">Quick Call</div><div class="qn num" id="qc-qn">Country 1 of 10</div></div>
+      <div class="scorebox"><small>Score</small><b class="num" id="qc-score">0</b></div>
+    </div>
+    <div class="progress" id="qc-progress"></div>
+    <div class="timerwrap">
+      <div class="timerbar" id="qc-timerbar"><i id="qc-timerfill"></i></div>
+      <span class="streak" id="qc-streak" hidden></span>
+      <span class="timenum num" id="qc-timenum">6</span>
+    </div>
+    <div class="mapbox qcbox" id="qc-map"></div>
+    <div class="qcfeed" id="qc-feed" aria-live="polite"></div>
+    <div class="qcbar">
+      <div class="qcmic" id="qc-mic"><span class="dot"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span><span class="qcheard" id="qc-heard"></span></div>
+      <input id="qc-input" class="acinput" type="text" autocomplete="off" autocorrect="off" autocapitalize="words" spellcheck="false" enterkeyhint="done" placeholder="Type the country…" aria-label="Type the country's name">
+    </div>
   </section>
 
   <!-- PLAYERS -->
@@ -1627,6 +1698,7 @@ const ICON = {
   flagrun: `<svg viewBox="0 0 48 48" class="ico"><path d="M10 6v38" stroke-width="3"/><path d="M10 8c8-4 14 4 26 0v16c-12 4-18-4-26 0z" fill="#FF6B57"/><path d="M10 16c8-4 14 4 26 0" stroke="#fff" stroke-width="3"/><path d="M2 30h6M4 36h5M2 42h6" stroke-width="2.4"/><text x="41" y="44" text-anchor="end" font-size="11" font-family="Lilita One" fill="#14305E" stroke="none">197</text></svg>`,
   hop: `<svg viewBox="0 0 48 48" class="ico"><path d="M4 10h14l3 9-6 6H4zM21 19l12-9h11v14l-10 4zM15 25l6-6 13 9-3 13H8z" fill="#BDF0A0"/><path d="M10 17q8 2 13 9t14 7" stroke="#FF6B57" stroke-width="3" stroke-dasharray="3 4"/><circle cx="10" cy="17" r="4" fill="#3FB6EC"/><path d="M37 26c-4 0-6 3-6 5 0 4 6 10 6 10s6-6 6-10c0-2-2-5-6-5z" fill="#FF6B57"/><circle cx="37" cy="31" r="2" fill="#fff"/></svg>`,
   puzzle: `<svg viewBox="0 0 48 48" class="ico"><path d="M6 8h14v5a4 4 0 1 0 8 0V8h14v14h-5a4 4 0 1 0 0 8h5v12H28v-5a4 4 0 1 0-8 0v5H6V30h5a4 4 0 1 0 0-8H6z" fill="#FFC93C"/><path d="M24 8v12M24 30v12M6 26h14M28 26h14" stroke-width="1.6" stroke-dasharray="2 3"/></svg>`,
+  quick: `<svg viewBox="0 0 48 48" class="ico"><path d="M4 20l9-9 9 4 5 9-6 10-11 2-6-8z" fill="#FFC93C"/><rect x="30" y="6" width="10" height="18" rx="5" fill="#FF6B57"/><path d="M26 19a9 9 0 0 0 18 0M35 28v6M30 34h10"/><path d="M27 41l4 3 8-8" stroke="#22C384" stroke-width="3.5"/></svg>`,
   h2h: `<svg viewBox="0 0 48 48" class="ico"><circle cx="15" cy="15" r="7" fill="#FF6B57"/><circle cx="33" cy="15" r="7" fill="#3FB6EC"/><path d="M4 40c0-8 5-13 11-13s11 5 11 13zM22 40c0-8 5-13 11-13s11 5 11 13z" fill="#FFC93C"/></svg>`,
   map: `<svg viewBox="0 0 48 48" class="ico"><circle cx="24" cy="24" r="17" fill="#3FB6EC"/><path d="M12 17c5-3 8 1 9 5s-3 6 1 9 6 1 6 5M29 10c2 3 6 2 7 5s-3 5 0 7 5 0 6 3" stroke="#74CC45" stroke-width="5"/><circle cx="24" cy="24" r="17"/></svg>`
 };
@@ -1647,12 +1719,13 @@ const MODES = {
   flagrun:   { name: "Flag Marathon",   c: "#FF9A2E", blurb: "All 197 flags in one run. Can you get every one right?" },
   hop:       { name: "Border Hop",      c: "#7ED957", blurb: "Cross borders from one country to another, following the rules." },
   puzzle:    { name: "Map Puzzle",      c: "#FFC93C", blurb: "Drag country shapes into their places on the map." },
+  quick:     { name: "Quick Call",      c: "#FF9A2E", blurb: "A country lights up. Say its name out loud before the clock runs out!" },
   allc:      { name: "Name Them All",   c: "#FFB3A1", blurb: "Type every country you can before time runs out." },
   mix:       { name: "World Tour",      c: "#5B79D6", blurb: "A surprise mix of all eleven games." }
 };
 const MODE_KEYS = ["flags", "capitals", "shapes", "clues", "languages", "animals", "maphunt", "cappin", "landmarks", "neighbours", "cities"];
 const ALL_TILES = [...MODE_KEYS, "mix"];
-const MENU_TILES = [...MODE_KEYS, "flagrun", "hop", "puzzle", "allc", "mix"];
+const MENU_TILES = [...MODE_KEYS, "flagrun", "hop", "puzzle", "quick", "allc", "mix"];
 const MAX_STARS = MENU_TILES.length * 3 * 2;
 const bestKey = (m, lv = S.level) => m + "_" + lv;
 const starStr = n => [0, 1, 2].map(i => i < n ? "★" : `<span class="off">★</span>`).join("");
@@ -1674,7 +1747,7 @@ function renderMenu() {
    drawn as a different travel object: train tickets, road signs, boarding passes, postcards. */
 const CATS = [
   { k: "train", n: "Flag & Fact Express", sub: "Flags, capitals, shapes and mystery clues", c: "#FF6B57", obj: "ticket", games: ["flags", "capitals", "shapes", "clues", "flagrun"] },
-  { k: "van", n: "Map Road Trip", sub: "Maps, borders, routes and puzzles", c: "#22C384", obj: "sign", games: ["maphunt", "cappin", "neighbours", "hop", "puzzle"] },
+  { k: "van", n: "Map Road Trip", sub: "Maps, borders, routes, puzzles and voice", c: "#22C384", obj: "sign", games: ["maphunt", "cappin", "neighbours", "hop", "puzzle", "quick"] },
   { k: "plane", n: "Culture Flight", sub: "Languages, animals, landmarks and cities", c: "#3FB6EC", obj: "pass", games: ["languages", "animals", "landmarks", "cities"] },
   { k: "boat", n: "Grand Voyage", sub: "Big challenges and the World Tour", c: "#7FD0F5", obj: "postcard", games: ["allc", "mix", "h2h"] }
 ];
@@ -1859,6 +1932,7 @@ function gamePreview(k) {
     case "puzzle": { const e = MAPS.SA.c.find(x => x[0] === "BR"), sh = mainShape(e[1]);
       return miniMap("SA", { BR: "#FFFFFF", AR: "#C9D3DF", BO: "#C9D3DF", CO: "#C9D3DF", PE: "#C9D3DF", VE: "#C9D3DF", PY: "#C9D3DF", UY: "#C9D3DF", CL: "#C9D3DF", EC: "#C9D3DF", GY: "#C9D3DF", SR: "#C9D3DF" },
         `<path d="${sh.d}" transform="translate(${sh.w * .18} ${-sh.h * .04}) rotate(-8 ${sh.cx} ${sh.cy}) scale(.86)" transform-origin="${sh.cx} ${sh.cy}" fill="#FFC93C" stroke="#14305E" stroke-width="${MAPS.SA.w / 120}" stroke-linejoin="round"/>`, ["PE", "BO", "BR", "PY", "CO"]); }
+    case "quick": return miniMap("SA", { BO: "#FF9A2E" }, `<g transform="translate(${mcenter("SA", "BO")[0] + 150} ${mcenter("SA", "BO")[1] - 95}) scale(${MAPS.SA.w / 190})"><circle r="20" fill="#1FB877" stroke="#14305E" stroke-width="3"/><path d="M-9 1l6 7 12-14" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>`, ["BO", "PE", "PY", "BR", "CL"]);
     case "allc": return `<svg viewBox="0 0 160 100"><rect x="8" y="10" width="144" height="26" rx="8" fill="#fff" stroke="#14305E" stroke-width="3.5"/><text x="18" y="29" font-size="16" font-family="Lilita One" fill="#14305E">Fra|</text>${[["Peru", "#8FDB6E"], ["Chad", "#FFC93C"], ["Japan", "#7FD0F5"], ["Fiji", "#FF8FB1"]].map(([t, c], i) => `<rect x="${8 + (i % 2) * 74}" y="${46 + Math.floor(i / 2) * 26}" width="68" height="20" rx="10" fill="${c}" stroke="#14305E" stroke-width="2.5"/><text x="${42 + (i % 2) * 74}" y="${61 + Math.floor(i / 2) * 26}" text-anchor="middle" font-size="13" font-family="Lilita One" fill="#14305E">${t} ✓</text>`).join("")}</svg>`;
     case "mix": return `<span class="pv-mix">${["flags", "shapes", "maphunt", "languages"].map(m => `<span>${ICON[m]}</span>`).join("")}</span>`;
     case "h2h": return `<svg viewBox="0 0 160 100">${[["Red", "#FF6B57", 320], ["Blue", "#3FB6EC", 250]].map(([n, c, sc], i) => `<rect x="10" y="${12 + i * 42}" width="140" height="34" rx="12" fill="${c}" stroke="#14305E" stroke-width="3.5"/><text x="24" y="${35 + i * 42}" font-size="17" font-family="Lilita One" fill="#14305E">${n}</text><text x="138" y="${35 + i * 42}" text-anchor="end" font-size="17" font-family="Lilita One" fill="#14305E">${sc}</text>`).join("")}</svg>`;
@@ -4039,6 +4113,35 @@ function labelsClose(svg, a, b) {
   return Math.abs(p[1] - q[1]) < 30 * k && Math.abs(p[0] - q[0]) < 140 * k;
 }
 
+/* ================= Globe View: the 3D globe inside the World Map screen =================
+   The globe's own files (globe-view.css, dist/, data/, textures/) sit next to this page on the website.
+   They are only downloaded when a player first switches to the globe. Where they aren't there, the switch stays hidden. */
+const GV = { on: false, api: null, loading: null, avail: false };
+try { fetch("dist/globe-view.js", { method: "HEAD" }).then(r => { GV.avail = !!r.ok; if (GV.avail && !$("#s-map").hidden) gvSwitch(); }).catch(() => {}); } catch (e) {}
+function gvSwitch() {
+  const el = $("#mx-view"); el.hidden = !GV.avail; if (!GV.avail) return;
+  seg(el, ["flat", "globe"], ["🗺️ Flat map", "🌍 3D globe"], GV.on ? "globe" : "flat", v => gvShow(v === "globe"));
+}
+function gvLoad() {
+  if (GV.loading) return GV.loading;
+  return GV.loading = new Promise((res, rej) => {
+    const l = document.createElement("link"); l.rel = "stylesheet"; l.href = "globe-view.css"; document.head.appendChild(l);
+    const sc = document.createElement("script"); sc.src = "dist/globe-view.js"; sc.onload = res; sc.onerror = () => rej(new Error("load")); document.head.appendChild(sc);
+  }).then(() => window.AtlasGlobe.create($("#mx-globe"), { basePath: "./", layer: "satellite", onReady: api => { GV.api = GV.api || api; } }))
+    .then(api => { if (api && api.pause) GV.api = api; return GV.api; });
+}
+function gvShow(on) {
+  GV.on = !!on && GV.avail;
+  $("#mx-chips").hidden = GV.on; $("#s-map .mxmain").hidden = GV.on; $("#mx-globe").hidden = !GV.on;
+  $("#mx-title").textContent = GV.on ? "Globe View" : EX.map === "WORLD" ? "World Map" : CONT[EX.map].n;
+  gvSwitch();
+  if (GV.on) gvLoad().then(api => { if (!api) return; try { if (GV.on && !$("#s-map").hidden) { api.resume(); api.resize(); } else api.pause(); } catch (e) {} })
+    .catch(() => { GV.loading = null; if (GV.on) { gvShow(false); toast("🌍", "The globe couldn't load", "Check your connection and try again."); } });
+  else if (GV.api) { try { GV.api.pause(); } catch (e) {} }
+}
+/* The globe only draws while it is on screen */
+function gvScreen(id) { if (!GV.api) return; try { if (GV.on && id === "s-map") { GV.api.resume(); GV.api.resize(); } else GV.api.pause(); } catch (e) {} }
+
 /* ================= game state ================= */
 const G = { mode: null, qs: [], i: 0, score: 0, right: 0, streak: 0, bestStreak: 0, paused: false, locked: false, results: [], clueIdx: 0, active: false, timeTotal: 0, timeLeft: 0, raf: 0, last: 0, tickSec: 0, onTimeUp: null };
 let returnTo = "s-menu";
@@ -4046,6 +4149,7 @@ let returnTo = "s-menu";
 function show(id) {
   document.querySelectorAll(".screen").forEach(s => s.hidden = s.id !== id);
   const s = document.getElementById(id); if (s) s.scrollTop = 0;
+  gvScreen(id);
 }
 function startGame(mode, count) {
   sfx("tap");
@@ -4454,7 +4558,8 @@ function renderExplorer() {
   const chips = [["WORLD", "World"], ...CONT_KEYS.map(k => [k, CONT[k].n])];
   $("#mx-chips").innerHTML = chips.map(([k, n]) => `<button data-k="${k}" aria-pressed="${k === EX.map}">${n}</button>`).join("");
   $("#mx-chips").querySelectorAll("button").forEach(b => b.onclick = () => { EX.map = b.dataset.k; EX.sel = null; renderExplorer(); sfx("tap"); });
-  $("#mx-title").textContent = EX.map === "WORLD" ? "World Map" : CONT[EX.map].n;
+  $("#mx-title").textContent = GV.on ? "Globe View" : EX.map === "WORLD" ? "World Map" : CONT[EX.map].n;
+  gvSwitch();
   const box = $("#mx-map");
   box.innerHTML = EX.map === "WORLD" ? worldSVG() : mapSVG(EX.map, "explore");
   const svg = box.querySelector("svg");
@@ -4503,6 +4608,519 @@ function selectCountry(id) {
   if (WIDE.matches) renderSide(); else { renderSide(); openDetail(id, true); }
 }
 
+/* ================= Quick Call: say the lit-up country's name out loud =================
+   One country lights up inside its region of the map. Name it before the clock runs out.
+   Explorer: 6 seconds, and the countries around it are named. World Expert: 3 seconds, no names.
+   The player answers by voice (or by typing where the microphone isn't available, with 4 extra seconds). */
+const QC_TIME = { easy: 6, hard: 3 }, QC_COUNT = { easy: 10, hard: 20 }, QC_TYPE_EXTRA = 4;
+const QC = { on: false, lv: "easy", voice: false, list: [], i: 0, score: 0, right: 0, streak: 0, best: 0, results: [], cur: null, prev: null,
+  phase: "idle", left: 0, total: 0, raf: 0, last: 0, tick: 0, skip: "", text: "", heardAt: 0, hitLeft: null, wait: 0, graceEnd: 0, to: 0, used: new Set(), near: new Set() };
+
+/* ---- the microphone: Claude's dictation where the game runs inside Claude, the browser's own speech recognition elsewhere ---- */
+const QV = { kind: null, d: null, SR: null, rec: null, want: false, live: false, partial: "", denied: false, gone: false, checking: null, done: false, dead: "", err: "" };
+function qvInit() {
+  if (QV.checking) return QV.checking;
+  return QV.checking = (async () => {
+    try {
+      if (window.claude && typeof window.claude.use === "function") {
+        const d = await window.claude.use("dictation");
+        if (d) {
+          QV.kind = "claude"; QV.d = d;
+          d.onPartial(e => { QV.partial = (e && e.text) || ""; if (QV.partial) qcHear(QV.partial, false); });
+          d.onFinal(e => { QV.partial = ""; qcHear((e && e.text) || "", true); });
+          d.onState(e => qvState(e.state, e.reason));
+        }
+      }
+    } catch (e) {}
+    if (!QV.kind) { const SR = window.SpeechRecognition || window.webkitSpeechRecognition; if (SR) { QV.kind = "web"; QV.SR = SR; } }
+    QV.done = true;
+  })();
+}
+function qvState(state, reason) {
+  QV.live = state === "listening";
+  if (state === "idle") {
+    if (reason === "not_granted") QV.denied = true;
+    if (reason === "unavailable") QV.gone = true;
+    if (QV.want) { QV.want = false; qcMicLost(reason); }
+  }
+  qcMicUI();
+}
+/* Must be called straight from a tap or key press. Resolves true once the microphone is listening. */
+function qvStart() {
+  QV.err = "";
+  if (QV.kind === "claude") {
+    QV.want = true;
+    let p; try { p = QV.d.start({ language: "en" }); } catch (e) { p = Promise.reject(e); }
+    return Promise.resolve(p).then(() => { QV.live = true; return true; }, err => {
+      QV.want = false; const code = (err && err.code) || "upstream_error";
+      if (code === "not_granted") QV.denied = true;
+      if (code === "unavailable") QV.gone = true;
+      QV.err = code; return false;
+    });
+  }
+  if (QV.kind === "web") return new Promise(res => {
+    let settled = false; const fin = ok => { if (!settled) { settled = true; res(ok); } };
+    try {
+      if (QV.rec) { try { QV.rec.onend = null; QV.rec.abort(); } catch (e) {} }
+      const r = QV.rec = new QV.SR(); r.continuous = true; r.interimResults = true; r.lang = "en-US";
+      QV.want = true; QV.dead = "";
+      r.onstart = () => { const first = !settled; fin(true); if (first) qvState("listening"); };
+      r.onresult = e => {
+        let interim = "";
+        for (let i = e.resultIndex; i < e.results.length; i++) {
+          const R = e.results[i];
+          if (R.isFinal) { QV.partial = ""; qcHear(R[0].transcript, true); } else interim += R[0].transcript;
+        }
+        if (interim) { QV.partial = interim; qcHear(interim, false); }
+      };
+      r.onerror = e => {
+        if (e.error === "no-speech" || e.error === "aborted") return;
+        if (e.error === "not-allowed" || e.error === "service-not-allowed") { QV.denied = true; QV.dead = "not_granted"; } else QV.dead = "upstream_error";
+      };
+      r.onend = () => {
+        if (QV.want && !QV.dead && settled) { try { r.start(); return; } catch (e) { QV.dead = "upstream_error"; } }   // the browser stops after a silence: keep listening
+        const why = QV.dead || "stopped"; QV.err = QV.dead; fin(false);
+        qvState("idle", why);
+      };
+      r.start();
+    } catch (e) { QV.want = false; QV.err = "upstream_error"; fin(false); }
+  });
+  return Promise.resolve(false);
+}
+function qvStop() {
+  QV.want = false; QV.partial = "";
+  try { if (QV.kind === "claude") { const p = QV.d.stop(); if (p && p.catch) p.catch(() => {}); } else if (QV.rec) QV.rec.stop(); } catch (e) {}
+}
+const qvCan = () => !!QV.kind && !QV.denied && !QV.gone;
+
+/* ---- matching what was said (or typed) to a country ---- */
+/* Words the microphone often hears in place of a country's name. They only ever count towards the country being asked. */
+const QC_SAID_SRC = {
+  TD: ["chat", "chad", "chadd"], ML: ["molly", "marley", "mollie", "mahli"], TG: ["to go", "toga", "tow go"], BJ: ["been in", "ben in", "bennin", "beneen", "ben een", "benign"],
+  NE: ["nijer", "nee jair", "knee jair", "nijair", "ni jair"], CL: ["chilly", "chili", "chilli", "chee lay"], HU: ["hungry"], GR: ["grease"], IR: ["i ran", "iron", "e ron", "e ran"],
+  IQ: ["a rock", "i rack", "e rock", "i rock", "e rack", "a rack"], LA: ["louse", "allows", "lous", "laus"], PE: ["per roo", "peroo", "pay roo"], KE: ["ken ya", "keenya", "kenia"],
+  GH: ["gonna", "garner", "ganna", "gana"], OM: ["oh man", "o man", "omen", "oh mon"], YE: ["yeah men", "yeah man", "yaman"], HT: ["hate e", "hey t", "hay tee", "hi t", "hady"],
+  FJ: ["fee gee", "fiji islands", "fiji's", "feejee"], CZ: ["check ya", "check republic", "check", "chequia", "czech republic", "checkia", "check yeah"], SC: ["say shells", "say shell", "seashells", "sea shells"],
+  KI: ["kiribas", "kiribass", "kitty bass", "kiri bass", "kiri bati", "kiribass"], KG: ["kurdistan", "kirghistan", "kergistan", "curgistan", "kirgizstan", "kyrgystan", "kirgistan", "cure gistan"],
+  LS: ["lesutu", "le soto", "lesoto", "less so too", "le sutu", "lasutu", "lesuto"], SZ: ["swatini", "e swatini", "as watini", "es watini", "eswatini", "a swatini", "s watini"],
+  PW: ["palao", "pulao", "pa lao", "pillow", "pah lao", "belau"], NR: ["now roo", "na ru", "naru", "nah roo", "now ru"], TV: ["two valu", "to value", "too valu", "to valu", "two value"],
+  BT: ["baton", "button", "boo tan", "butane", "bhutan's", "boutan"], MM: ["me and mar", "mian mar", "my anmar", "me anmar", "mianmar", "my and mar"], UY: ["your a guy", "you're a guy", "uru guay", "you are a guy", "uruguay's", "oo roo gwai"],
+  PY: ["pair a guy", "para guay", "parrot guy", "para gwai"], CI: ["coat de voir", "cote d ivoire", "cote divoire", "coat d ivoire", "code d ivoire", "coat divoire", "cote devoir", "coat devoir", "ivory coast"],
+  TL: ["team or less tay", "timor less tay", "timor leste", "teamor leste", "t more leste", "east timor", "timor"], ST: ["south to may", "sow tomay", "sao tome", "saw to may", "sao tomay", "south tome", "sal tome"],
+  CV: ["cape verd", "cape bird", "cabo verde", "cape vert", "cape third", "kabo verde"], DJ: ["jabooty", "ja booty", "jibouti", "d jibouti", "jibooty", "the booty", "ji booty", "jibuti"],
+  ER: ["air atrea", "era trea", "eritrea's", "erie trea", "air a tray a", "eritria", "aritrea"], GA: ["gab on", "gabone", "gab own", "ga bon", "gabbon"], RW: ["ruanda", "rawanda", "ro wanda", "ruwanda", "r wanda"],
+  BI: ["brundi", "burundy", "boo roondi", "barundi"], MR: ["more attania", "moritania", "mauretania"], MU: ["more ishes", "marishes", "moritius", "more itious", "mauritious"], BN: ["brew nigh", "bruni", "brunai", "brew nye", "brunei darussalam"],
+  WS: ["some oa", "summer", "sa moa"], TO: ["tonka", "tongue a", "tong a"], VU: ["van watu", "vanawatu", "van a watu", "vanua tu", "van u atu", "van a 2", "vanuatoo"], AZ: ["azer by john", "as a by john", "azerbajan", "azer baijan", "azerbijan"],
+  LI: ["lichtenstein", "lick ten stein", "liechtenstein's", "lichten stein", "licktenstein"], LU: ["luxemburg", "lux and burg", "lux em burg"], MD: ["mold over", "moldavia", "mole dova", "mold ova"],
+  BY: ["bella roose", "bela roose", "bella russ", "bella ruse", "bellarus", "bell a roos", "belorussia", "byelorussia"], UA: ["you crane", "u crane", "the ukraine", "you crain"], IL: ["is real", "isreal", "is rail"], CY: ["cypress", "sigh press"],
+  TN: ["two nesia", "tunesia", "to nesia", "tune asia", "tunisha"], GY: ["guy anna", "guy ana", "gayana", "guiana", "guy on a"], SR: ["sir name", "surinam", "sir in arm", "surname", "sir in am", "sura nam"], BZ: ["believes", "bell ease", "believe", "beliz"],
+  TH: ["tie land", "tai land", "thigh land"], VN: ["viet nam", "vietnam's", "v at nam"], NO: ["no way", "nor way"], FI: ["fin land", "thin land"], IS: ["ice land"], NZ: ["new zeeland", "new zealand's", "news eland", "new sealand"],
+  QA: ["cutter", "guitar", "kuh tar", "cut are", "catarrh", "cat are", "gutter", "kutta", "cutta", "qatar's", "katar", "kotter", "cotter", "ka tar"], KW: ["q8", "koo wait", "cue wait", "q wait", "queue wait"],
+  BH: ["bah rain", "bar rain", "bahrein", "baron", "bar rein"], JO: ["jordon", "jor dan"], LB: ["lebenon", "leben on", "lebanese"], SY: ["cereal", "siria", "serial", "sirya"],
+  UZ: ["us beckistan", "uz beckistan", "ooze beckistan", "uzbekistan's", "who's beckistan", "use beckistan"], TM: ["turk menistan", "turkmenia", "turk many stan", "turkministan"], TJ: ["ta jikistan", "to jikistan", "tajik stan", "tajikstan", "tejikistan"],
+  KZ: ["kazakstan", "kazak stan", "kaza stan", "khazakstan", "cossack stan", "kazaksthan"], AF: ["afganistan", "afghan istan", "f ghanistan"], PK: ["pack istan", "pakisthan", "paki stan"], LK: ["sri lanka's", "shri lanka", "sree lanka", "ceylon", "sri lonka", "shrilanka", "three lanka"],
+  NP: ["the paul", "nay paul", "ne paul", "nipaul", "napal"], BD: ["bangla desh", "bangladash", "bungle a dash", "bangladish"], KH: ["camp bodia", "kampuchea", "cam bodia"], MY: ["malay sia", "my lasia", "malasia", "ma lazia"], SG: ["sing a pour", "sing a poor", "sing apore"],
+  ID: ["indo nesia", "indonisia", "in donesia"], PH: ["phillipines", "philipines", "fill a peens", "the philippines", "philippine", "phillippines", "filipines", "philippine islands"], PG: ["papa new guinea", "papua new guinea's", "pop wa new guinea", "papua new guinea", "poppa new guinea", "papa new ginny", "papua new ginny"],
+  SB: ["solomon island", "the solomons", "solomons", "salomon islands"], MH: ["marshall island", "the marshalls", "martial islands", "marshal islands"], FM: ["micro nesia", "my cronesia", "micronesia's", "federated states of micronesia"],
+  MG: ["mada gascar", "madagasgar", "mad at gas car", "madagaskar"], MZ: ["mozam beak", "mozam bique", "moe zambique", "mosambique", "mozambic"], ZW: ["zim bob way", "zimbabway", "zim bab way", "zimbobway", "sim bob way"], ZM: ["zam bia", "sam bia", "zambia's"],
+  MW: ["ma la we", "malawy", "mallow we", "muh la wee", "mala wee"], TZ: ["tan zania", "tanzanea", "tans a nia", "tan za nee a", "tanzaniya"], UG: ["you ganda", "u ganda", "you gander", "ooganda", "yuganda"], SO: ["so malia", "some alia", "somolia"],
+  ET: ["e theopia", "ethiopa", "e t opia", "ithiopia", "utopia"], SD: ["sue dan", "sudan's", "soo dan", "pseudan", "the sudan"], SS: ["south sue dan", "south sudan's", "south soo dan", "southern sudan"], LY: ["libby a", "lybia", "libya's", "livia", "lidia"], DZ: ["al jiria", "algiers", "al geria", "algerian", "al jeria"],
+  MA: ["more rocco", "moroco", "marocco", "ma rocko", "more rocko", "morrocco"], EG: ["e gypt", "eejipt", "egypt's"], SN: ["sene gal", "cynical", "sennegal", "send a gal", "senna gall"], GM: ["gamma", "the gambia", "gam bia", "gambya", "gamebia"], GN: ["ginny", "guinea conakry", "gini", "guinny", "ghinny", "ginnie", "gimme"],
+  GW: ["guinea bissau", "ginny bissau", "guinea be sow", "guinea bisau", "ginny be sow", "guinea bisso", "guinea bizau", "ginny bisso"], GQ: ["equatorial ginny", "equatorial guinea", "equatorial gini", "equator guinea", "equitorial guinea", "equatorial ginnie"], SL: ["sierra leon", "sara leone", "sierra leone's", "see era leone", "sierra lyon", "siera leone"],
+  LR: ["lie beria", "library a", "liberya", "lai beria"], BF: ["burkina", "burkina fasso", "bikini faso", "burkina fazo", "bur keena faso", "berkina faso", "brookina faso"], NG: ["nye jeria", "nigerya", "ni jeria", "nigeria's"], CM: ["cameroun", "camera on", "camaroon", "cameroons", "cam a roon"], CF: ["central africa", "central african republic", "c a r", "central african", "the central african republic"],
+  CD: ["democratic republic of congo", "d r c", "dr congo", "d r congo", "democratic congo", "congo kinshasa", "the drc", "democratic republic of the congo", "zaire", "congo democratic republic", "big congo"], CG: ["republic of congo", "congo brazzaville", "republic of the congo", "the congo", "congo republic", "little congo"],
+  AO: ["an gola", "and gola", "angora", "an goalie"], NA: ["nam ibia", "na mibia", "namibya", "nah mibia"], BW: ["bots wana", "botswanna", "bought swana", "bot swana", "botswana's"], ZA: ["south africa's", "southafrica", "r s a", "south african", "republic of south africa"], KM: ["comoros islands", "comoro", "come or us", "camaros", "cameras", "comoro islands", "komoros", "the comoros", "comorose"],
+  MV: ["mal deeves", "mall dives", "maldive", "the maldives", "mold eves", "maldive islands", "mall deeves", "moldives"], AE: ["u a e", "united arab emirate", "emirates", "the emirates", "the uae", "arab emirates", "the united arab emirates"], SA: ["saudi", "saudia arabia", "sowdy arabia", "saw the arabia", "saudi arabia's", "sawdi arabia", "soddy arabia"],
+  TR: ["turkiye", "turkey's", "turkia", "tur key", "turkiya", "turquia"], GE: ["georgia's", "jorja", "george a"], AM: ["are menia", "arminia", "ar meenia", "r menia"], RU: ["rush a", "russia's", "russian federation", "rusha", "rushia"], EE: ["a stonia", "estonya", "east tonia", "s tonia", "as tonia"], LV: ["lat via", "latvea", "lat vee a", "lad via"], LT: ["lithu ania", "lithuenia", "lith u ania", "lithuwania", "little ania"],
+  PL: ["pole and", "pollund", "poland's", "po land"], SK: ["slow vakia", "slovak republic", "slo vakia", "slovak", "slovaquia"], SI: ["slow venia", "slo venia", "slovenija", "sloveniya"], HR: ["crow asia", "crow atia", "croatia's", "cro asia", "kroatia", "crow a sha"], BA: ["bosnia", "bosnia herzegovina", "bosnia and herzegovina", "bosnia hertzegovina", "bosnia and hertzegovina", "bosnia herzegovinia", "bosnia and herzegovinia", "boz nia"],
+  RS: ["sir bia", "servia", "serbya", "sur bia"], ME: ["monte negro", "montinegro", "mount a negro", "monta negro", "mountain negro"], MK: ["north macedonia", "macedonia", "north mass a donia", "northern macedonia", "mass a donia", "masadonia"], AL: ["al bania", "albanya", "all bania", "albany a", "al baynia"], XK: ["kosova", "coast of oh", "cosovo", "ko sovo", "cost of oh", "kossovo"],
+  BG: ["bull garia", "bulgarya", "bul garia", "bolgaria"], RO: ["roumania", "row mania", "rumania", "ro mania", "roe mania"], AT: ["aw stria", "ostria", "awstria", "au stria"], CH: ["switzer land", "swiss", "swizerland", "switserland", "sweets a land"], DE: ["jer many", "germany's", "germ any", "deutschland"], NL: ["nether lands", "the netherlands", "neverlands", "holland", "netherland", "never land", "the nether lands"],
+  BE: ["bell gium", "beljum", "bell jum", "belgum", "bel gium"], FR: ["franz", "frantz", "france's", "frons"], ES: ["spane", "spain's", "span", "espana", "s pain"], PT: ["port a gull", "portugul", "port you gal", "portugese", "porch a gull", "portu gal"], IT: ["it alee", "italy's", "it ally", "italia", "it a lee"], MT: ["malt a", "mall ta", "malta's", "molta", "moulta"],
+  GB: ["u k", "united kingdom", "the uk", "great britain", "britain", "the united kingdom", "england", "brittain"], IE: ["ire land", "eye r land", "ireland's", "eyerland", "republic of ireland", "ayerland"], DK: ["den mark", "denmark's", "then mark", "dane mark"], SE: ["sweeden", "sweet in", "swedin", "sweden's", "sweet an"],
+  US: ["u s a", "u s", "the united states", "the usa", "the us", "america", "united states of america", "the states", "united states", "the united states of america"], CA: ["can a da", "canada's", "kanada", "can of the"], MX: ["mex ico", "mexico's", "meh hee co", "mejico", "mexicoe"], GT: ["guata mala", "watermala", "guatamala", "what a mala", "guate mala", "gwatemala"],
+  SV: ["el salvador's", "salvador", "al salvador", "el salvadore", "l salvador", "else alvador", "elsalvador"], HN: ["hon duras", "on duras", "honduras's", "hondurus", "hond uras"], NI: ["nick a ragua", "nicaragwa", "nicker agua", "nic aragua", "nica ragua", "knicker agua"], CR: ["costa reeka", "coast a rica", "costarica", "kosta rica", "costa rico"],
+  PA: ["pan a ma", "panama's", "pan ama", "panamah"], CU: ["cube a", "cuba's", "q ba", "kyuba", "koo ba"], JM: ["jam aica", "jamaca", "ja maker", "jamaica's", "ja make a", "jamayka"], DO: ["dominican", "the dominican republic", "dominican republic's", "dominican rep", "the dominican", "dr"], BS: ["bahamas", "the bahamas", "bahama", "ba ha mas", "bahama islands", "bohamas"],
+  BB: ["bar bados", "barbadoes", "bar baydos", "barbados's", "barbaydos"], TT: ["trinidad", "trinidad and tobago", "trinidad tobago", "trinidad and to bay go", "trinidad and tabago", "trinidad in tobago", "trinidad and to bago"], LC: ["saint lucia", "st lucia", "saint loosha", "saint lucy", "saint lou sha", "saint lusha", "santa lucia"],
+  VC: ["saint vincent", "st vincent", "saint vincent and the grenadines", "saint vincent and grenadines", "saint vincent in the grenadines", "saint vincent and the grenadine"], KN: ["saint kitts", "st kitts", "saint kitts and nevis", "saint kits and nevis", "saint kits", "saint kitts in nevis", "saint kitts and nevus", "saint kitts and neevis"],
+  AG: ["antigua", "antigua and barbuda", "anti gwa", "antigua barbuda", "an tigua", "antiga", "antigua in barbuda", "antigua and bar buda", "anteega", "anteega and barbuda"], GD: ["grenade a", "gra nada", "granada", "grenader", "gren ada", "gruh nay da"], DM: ["dom in eeka", "domineeka", "dominika", "dominique a", "dom a neeka"],
+  CO: ["columbia", "colombia's", "kolumbia", "co lombia", "collumbia"], VE: ["venezwela", "venice wayla", "venezuala", "ven as wayla", "venazuela", "venezuela's", "venis wayla"], EC: ["ecua door", "equador", "eck wador", "ecuador's", "ecuadore", "equa door", "ekwador"], BO: ["bolivea", "bo livia", "bolivia's", "believe ya", "olivia", "bowl ivia"], AR: ["argen tina", "argentine", "argentena", "our gentina", "are gentina", "the argentine"],
+  BR: ["bra zil", "brasil", "brazil's", "brazeel", "brizzle", "brazill"], AU: ["aus tralia", "ostralia", "australia's", "straya", "awstralia", "oz"], JP: ["ja pan", "japan's", "jah pan", "nippon"], CN: ["china's", "chyna", "chi na", "peoples republic of china", "the peoples republic of china", "mainland china"], KR: ["south korea's", "south career", "south koria", "republic of korea", "south korean", "s korea", "south correa", "southkorea"],
+  KP: ["north korea's", "north career", "north koria", "north korean", "n korea", "north correa", "northkorea"], MN: ["mon golia", "mongolea", "mongolia's", "mungolia", "mon goalie a"], IN: ["indya", "india's", "in dia", "indea", "bharat"], TW: ["tie wan", "tai wan", "taiwan's", "thai one", "tie one", "republic of china", "chinese taipei"], VA: ["vatican", "the vatican", "vatican city", "holy see", "the holy see", "vatican state", "vatican city state", "that again city"],
+  SM: ["san marino's", "san moreno", "san marina", "sam marino", "san mareeno", "sand marino", "sanmarino"], MC: ["monica", "mon aco", "monaco's", "monocco", "monako", "mona co"], AD: ["and aura", "and ora", "andora", "an dora", "and dora", "andorra's", "undoora"], PS: ["palestine's", "pal a stein", "palestinian territories", "state of palestine", "palastine", "palace tine", "palestinian territory", "west bank"]
+};
+const QC_SAID = new Map();
+Object.entries(QC_SAID_SRC).forEach(([id, arr]) => { if (BY_ID.has(id)) arr.forEach(s => { const k = acNorm(s); if (k && !AC_MAP.has(k) && !QC_SAID.has(k)) QC_SAID.set(k, id); }); });
+const QC_KEYS = new Map(GEO.map(c => [c.id, []]));
+AC_KEYS.forEach(([k, id]) => { if (QC_KEYS.has(id)) QC_KEYS.get(id).push(k); });
+/* Countries whose name is the start of another's (Niger and Nigeria, Guinea and Guinea-Bissau): wait a beat before accepting them. */
+const QC_AMBIG = new Set();
+AC_KEYS.forEach(([k, id]) => { if (k.length >= 4 && AC_KEYS.some(([k2, id2]) => id2 !== id && k2.length > k.length && k2.startsWith(k))) QC_AMBIG.add(id); });
+function qcLev(a, b, max) {
+  if (Math.abs(a.length - b.length) > max) return max + 1;
+  let prev = Array.from({ length: b.length + 1 }, (_, i) => i);
+  for (let i = 1; i <= a.length; i++) {
+    const cur = [i]; let low = i;
+    for (let j = 1; j <= b.length; j++) { cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)); if (cur[j] < low) low = cur[j]; }
+    if (low > max) return max + 1;
+    prev = cur;
+  }
+  return prev[b.length];
+}
+const qcNear = (k, id) => (QC_KEYS.get(id) || []).some(t => { if (t.length < 5) return false; const max = t.length >= 9 ? 2 : 1; return qcLev(k, t, max) <= max; });
+const qcWords = text => String(text).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/&/g, " and ").replace(/[^a-z0-9]+/g, " ").trim().split(" ").filter(Boolean).slice(-14);
+/* Did these words name the country asked for? And if not, which other country did they name? */
+function qcMatch(text, id) {
+  const w = qcWords(text), found = [];
+  for (let i = 0; i < w.length; i++) for (let n = 1; n <= 7 && i + n <= w.length; n++) {
+    const k = acNorm(w.slice(i, i + n).join(" "));
+    if (!k) continue;
+    let hit = AC_MAP.get(k);
+    if (!hit && QC_SAID.get(k) === id) hit = id;
+    if (!hit && k.length >= 5 && qcNear(k, id)) hit = id;
+    if (hit) found.push({ i, n, id: hit, k });
+  }
+  // "South Sudan" is not "Sudan": a name inside a longer country name doesn't count
+  const top = found.filter(a => !found.some(b => b.id !== a.id && b.n > a.n && b.i <= a.i && b.i + b.n >= a.i + a.n));
+  const ok = top.some(a => a.id === id);
+  let other = null;
+  if (!ok) top.forEach(a => { if (a.k.length >= 4 || a.k === "uk" || a.k === "usa" || a.k === "uae") other = a.id; });
+  return { ok, other };
+}
+
+/* ---- the game ---- */
+const qcSecs = () => QC_TIME[QC.lv] + (QC.voice ? 0 : QC_TYPE_EXTRA);
+function startQuick() {
+  sfx("tap"); H.on = false; qvInit();
+  const lv = S.level, t = QC_TIME[lv];
+  const body = () => {
+    const can = qvCan(), wait = !QV.done;
+    const why = QV.denied ? "The microphone is switched off for this game, so you'll type the names instead."
+      : !can && !wait ? "Voice answers work in Chrome and Edge, and in the Claude desktop app. Here you'll type the names instead." : "";
+    showInfo(`<div class="acsetup qcsetup"><h2>Quick Call</h2>
+      <p>One country lights up on the map. <b>Say its name out loud</b> before the clock runs out!</p>
+      <p>${lv === "easy" ? `<b>Explorer:</b> ${QC_COUNT[lv]} countries, ${t} seconds each, and the countries around each one are named.` : `<b>World Expert:</b> ${QC_COUNT[lv]} countries, only ${t} seconds each, and no names on the map.`} It's one long run: the next country lights up straight away.</p>
+      ${why ? `<p class="qcnote">${why}</p>` : ""}${QC.note ? `<p class="qcnote">${QC.note}</p>` : ""}
+      <p class="qcsmall">Typing gives you ${QC_TYPE_EXTRA} extra seconds for each country.</p>
+      <div class="cc-actions${can || wait ? " three" : ""}"><button class="btn ghost" id="info-close">Back</button>
+        ${can || wait ? `<button class="btn alt" id="qc-type">⌨️ Type</button><button class="btn" id="qc-voice"${wait ? " disabled" : ""}>${wait ? "Checking the mic…" : "🎤 Use my voice"}</button>` : `<button class="btn" id="qc-type">Start!</button>`}</div></div>`);
+    QC.note = "";
+    $("#qc-type").onclick = () => { QC.intro = false; $("#info").hidden = true; qcBegin(false); };
+    const v = $("#qc-voice"); if (v) v.onclick = () => qcVoiceTap(v, ok => { if (ok) { QC.intro = false; $("#info").hidden = true; qcBegin(true); } else body(); });
+    const c = $("#info-close"); c.onclick = () => { QC.intro = false; $("#info").hidden = true; };
+  };
+  QC.intro = true; QC.note = ""; body();
+  if (!QV.done) qvInit().then(() => { if (QC.intro && !$("#info").hidden && $(".qcsetup")) body(); });
+}
+/* A tap on a "use my voice" button: turn the microphone on, then carry on. */
+function qcVoiceTap(btn, then) {
+  const p = qvStart();   // straight from the tap, before anything else
+  btn.disabled = true; btn.textContent = "Waiting for the mic…";
+  p.then(ok => {
+    if (!ok) QC.note = QV.err === "dismissed" ? "The microphone question was closed. Tap “Use my voice” to try again, or type instead."
+      : QV.denied ? "" : QV.gone ? "Voice answers aren't available here. You can type the names instead."
+      : QV.err === "rate_limited" ? "The microphone is busy right now. Try again in a moment, or type instead." : "The microphone didn't turn on. Try again, or type instead.";
+    then(ok);
+  });
+}
+function qcPick(avoid) {
+  const pool = GEO.filter(c => (QC.lv === "hard" || EASY.has(c.id)) && !QC.used.has(c.id) && c.id !== avoid && MAPS.WC.lp[c.id]);
+  const c = pool.length ? pick(pool) : pick(GEO.filter(x => x.id !== avoid));
+  QC.used.add(c.id); return c.id;
+}
+function qcBegin(voice) {
+  sfx("go"); H.on = false; clockStart();
+  const n = QC_COUNT[S.level] || 10;
+  Object.assign(QC, { flow: false, on: true, lv: S.level, voice, i: 0, score: 0, right: 0, streak: 0, best: 0, results: [], cur: null, prev: null, phase: "idle", used: new Set(), list: [] });
+  for (let k = 0; k < n; k++) QC.list.push(qcPick(QC.list[k - 1]));
+  const W = MAPS.WC;
+  $("#qc-map").innerHTML = `<svg class="map qcsvg" viewBox="0 0 ${W.w} ${W.h}" preserveAspectRatio="xMidYMid slice" data-map="WC" data-w="${W.w}" data-h="${W.h}">
+    <path class="land" d="${W.land}"/>
+    <g>${W.c.map(([id, d]) => `<path class="cty" data-id="${id}" d="${d}"/>`).join("")}</g>
+    <g class="leaders"></g>
+    <g>${W.m.map(([id, x, y]) => `<circle class="mk" data-id="${id}" data-x0="${x}" data-y0="${y}" cx="${x}" cy="${y}" r="6"/>`).join("")}</g>
+    <g class="fx"></g></svg><div class="qcverdict" id="qc-verdict" hidden></div>`;
+  $("#s-qc").classList.toggle("typing", !voice);
+  $("#qc-input").value = ""; $("#qc-input").disabled = true;
+  $("#qc-score").textContent = "0"; $("#qc-feed").innerHTML = ""; $("#qc-heard").textContent = "";
+  show("s-qc"); qcProgress(); qcMicUI(); qcDrawTimer(1, qcSecs());
+  $("#qc-qn").textContent = `Country 1 of ${QC.list.length}`;
+  QC.phase = "count";
+  countdown(() => { if (QC.on && QC.phase === "count") qcLoad(); });
+}
+function qcProgress() {
+  $("#qc-progress").innerHTML = QC.list.map((id, k) => `<i class="${k < QC.results.length ? (QC.results[k].ok ? "ok" : "no") : k === QC.i ? "now" : ""}"></i>`).join("");
+  const el = $("#qc-streak"); if (QC.streak >= 2) { el.hidden = false; el.textContent = `${QC.streak} in a row!`; } else el.hidden = true;
+}
+function qcPos(svg, id) {
+  const mk = svg.querySelector(`.mk[data-id="${id}"]`); if (mk) return [+mk.getAttribute("cx"), +mk.getAttribute("cy"), 0];
+  return MAPS.WC.lp[id] || [0, 0, 0];
+}
+/* The country's own outline box (its main land), or a small box round its dot */
+function qcBox(id) {
+  const W = MAPS.WC, lp = W.lp[id] || [0, 0, 1], e = W.c.find(x => x[0] === id);
+  const mk = W.m.find(x => x[0] === id);
+  if (mk) return { x0: mk[1] - 5, y0: mk[2] - 5, x1: mk[1] + 5, y1: mk[2] + 5 };   // tiny countries are shown as a dot
+  let b = null;
+  try { if (e) { const sh = mainShape(e[1]); if (sh.w > 0 && sh.h > 0 && sh.w < 560) b = { x0: sh.x0, y0: sh.y0, x1: sh.x1, y1: sh.y1 }; } } catch (err) {}
+  if (!b) { const r = Math.max(6, Math.min(240, (lp[2] || 1) * .9)); b = { x0: lp[0] - r, y0: lp[1] - r * .6, x1: lp[0] + r, y1: lp[1] + r * .6 }; }
+  else if (Math.hypot(lp[0] - (b.x0 + b.x1) / 2, lp[1] - (b.y0 + b.y1) / 2) < 300) b = { x0: Math.min(b.x0, lp[0]), y0: Math.min(b.y0, lp[1]), x1: Math.max(b.x1, lp[0]), y1: Math.max(b.y1, lp[1]) };
+  return b;
+}
+/* Frame the map on the country's region: the country itself, its neighbours and the nearest few others. */
+function qcRegion(id) {
+  const c = BY_ID.get(id), lp = MAPS.WC.lp, b = qcBox(id), cx = (b.x0 + b.x1) / 2, cy = (b.y0 + b.y1) / 2;
+  const span = Math.max(b.x1 - b.x0, b.y1 - b.y0), reach = Math.max(240, span * 1.6);
+  const dist = o => Math.hypot(lp[o][0] - cx, lp[o][1] - cy);
+  const nb = c.b.map(n => BY_NAME.get(n)).filter(o => o && lp[o.id]).map(o => o.id);
+  const close = GEO.map(o => o.id).filter(o => o !== id && lp[o]).sort((p, q) => dist(p) - dist(q)).slice(0, 4).filter(o => dist(o) < 230);
+  const near = new Set([...nb, ...close]);
+  let x0 = b.x0, y0 = b.y0, x1 = b.x1, y1 = b.y1;
+  near.forEach(o => { if (dist(o) > reach) return; x0 = Math.min(x0, lp[o][0]); x1 = Math.max(x1, lp[o][0]); y0 = Math.min(y0, lp[o][1]); y1 = Math.max(y1, lp[o][1]); });
+  return { near, x0, y0, x1, y1, b };
+}
+function qcFrame(svg, id) {
+  const W = MAPS.WC, R = qcRegion(id), r = $("#qc-map").getBoundingClientRect(), ratio = r.width && r.height ? r.width / r.height : 1.4;
+  let w = Math.max((R.x1 - R.x0) * 1.5, (R.y1 - R.y0) * 1.5 * ratio, 120, 120 * ratio);
+  w = Math.min(w, 1000, W.w, W.h * ratio);
+  const h = w / ratio;
+  // if the whole region can't fit, stay centred on the country itself
+  const fits = (R.x1 - R.x0) <= w && (R.y1 - R.y0) <= h;
+  const mx = fits ? (R.x0 + R.x1) / 2 : (R.b.x0 + R.b.x1) / 2, my = fits ? (R.y0 + R.y1) / 2 : (R.b.y0 + R.b.y1) / 2;
+  const x = Math.min(W.w - w, Math.max(0, mx - w / 2)), y = Math.min(W.h - h, Math.max(0, my - h / 2));
+  svg.setAttribute("viewBox", `${x.toFixed(1)} ${y.toFixed(1)} ${w.toFixed(1)} ${h.toFixed(1)}`);
+  scaleMarkers(svg);
+  QC.near = R.near; QC.box = R.b;
+}
+/* Names of the countries around the lit-up one (Explorer only), and the ring that points it out */
+function qcDecor(reveal) {
+  const svg = $("#qc-map svg"); if (!svg) return;
+  const id = QC.cur, s = svgScale(svg), vb = svg.viewBox.baseVal, b = QC.box, [tx, ty] = qcPos(svg, id);
+  const isDot = !!svg.querySelector(`.mk[data-id="${id}"]`), span = Math.max(b.x1 - b.x0, b.y1 - b.y0);
+  let html = "";
+  const tr = isDot ? 13 / s : Math.max(span * .62, 15 / s);
+  if (isDot || span * s < 46) html += `<circle class="qcring${reveal ? " still" : ""}" cx="${tx.toFixed(1)}" cy="${ty.toFixed(1)}" r="${tr.toFixed(1)}"/>`;
+  const placed = [];
+  { const hw = isDot ? 12 / s : Math.max(10 / s, Math.min((b.x1 - b.x0) / 2, 60 / s)), hh = isDot ? 12 / s : Math.max(10 / s, Math.min((b.y1 - b.y0) / 2, 40 / s));
+    const ox = isDot ? tx : (b.x0 + b.x1) / 2, oy = isDot ? ty : (b.y0 + b.y1) / 2; placed.push([ox - hw, oy - hh, ox + hw, oy + hh]); }
+  if (reveal) {
+    const px = 17, fs = px / s, name = BY_ID.get(id).n, w = name.length * px * .62 / s;
+    let lx = Math.min(vb.x + vb.width - w / 2 - 6 / s, Math.max(vb.x + w / 2 + 6 / s, tx)), ly = isDot ? ty - 20 / s : ty;
+    ly = Math.min(vb.y + vb.height - fs, Math.max(vb.y + fs * 1.4, ly));
+    html += `<text class="lbl qcname ${reveal}" x="${lx.toFixed(1)}" y="${(ly + fs * .36).toFixed(1)}" style="font-size:${fs.toFixed(2)}px;stroke-width:${(4.5 / s).toFixed(2)}px">${esc(name)}</text>`;
+    placed.push([lx - w / 2, ly - fs * .7, lx + w / 2, ly + fs * .7]);
+  }
+  if (QC.lv === "easy") {
+    const items = GEO.map(c => c.id).filter(o => o !== id).map(o => { const [x, y, sz] = qcPos(svg, o); return { id: o, x, y, sz, imp: QC.near.has(o), name: BY_ID.get(o).n }; })
+      .filter(it => it.x >= vb.x && it.x <= vb.x + vb.width && it.y >= vb.y && it.y <= vb.y + vb.height)
+      .sort((p, q) => (q.imp - p.imp) || (q.sz - p.sz));
+    for (const it of items) {
+      const px = it.imp ? 12.5 : Math.max(8.5, Math.min(12, it.sz * s * .22)), fs = px / s;
+      if (!it.imp && it.sz && it.sz * s < 7) continue;
+      const w = it.name.length * px * .6 / s + 6 / s, h = px * 1.2 / s, gap = 10 / s;
+      const tries = it.sz ? [[0, 0], [0, -h * .9], [0, h * .9], [0, -h * 1.8], [0, h * 1.8]] : [[0, -gap - h / 2], [0, gap + h / 2], [w / 2 + gap, 0], [-w / 2 - gap, 0]];
+      let spot = null;
+      for (const [dx, dy] of tries) {
+        const cx = Math.min(vb.x + vb.width - w / 2, Math.max(vb.x + w / 2, it.x + dx)), cy = it.y + dy, r = [cx - w / 2, cy - h / 2, cx + w / 2, cy + h / 2];
+        if (cy - h / 2 < vb.y || cy + h / 2 > vb.y + vb.height) continue;
+        if (!placed.some(q => r[0] < q[2] && r[2] > q[0] && r[1] < q[3] && r[3] > q[1])) { spot = [cx, cy, r]; break; }
+      }
+      if (!spot) continue;
+      placed.push(spot[2]);
+      html += `<text class="lbl qclbl${it.imp ? " imp" : ""}" x="${spot[0].toFixed(1)}" y="${(spot[1] + fs * .36).toFixed(1)}" style="font-size:${fs.toFixed(2)}px;stroke-width:${(3 / s).toFixed(2)}px">${esc(it.name)}</text>`;
+    }
+  }
+  svg.querySelector(".fx").innerHTML = html;
+}
+function qcDrawTimer(r, secs) {
+  $("#qc-timerfill").style.transform = `scaleX(${Math.max(0, r)})`;
+  $("#qc-timerbar").classList.toggle("low", r < .34);
+  $("#qc-timenum").textContent = Math.max(0, Math.ceil(secs));
+}
+function qcFeed(html, cls) { const f = $("#qc-feed"); f.className = "qcfeed" + (cls ? " " + cls : ""); f.innerHTML = html; }
+function qcMicUI() {
+  const el = $("#qc-mic"); if (!el) return;
+  el.classList.toggle("live", QV.live && QC.on && QC.voice);
+  if (QC.on && QC.voice && !QC.text) $("#qc-heard").textContent = QV.live ? "Listening… say the country's name" : "Microphone is off";
+}
+/* Move the map to the next country's region, then light the country up and start the clock. */
+function qcLoad() {
+  clearTimeout(QC.to); clearTimeout(QC.wait); cancelAnimationFrame(QC.raf);
+  const svg = $("#qc-map svg"), id = QC.cur = QC.list[QC.i];
+  QC.phase = "ready"; QC.text = ""; QC.heardAt = 0; QC.hitLeft = null;
+  $("#qc-qn").textContent = `Country ${QC.i + 1} of ${QC.list.length}`;
+  if (!QC.flow) $("#qc-verdict").hidden = true;
+  svg.querySelectorAll(".tgt,.ok,.no").forEach(el => el.classList.remove("tgt", "ok", "no"));
+  svg.querySelector(".fx").innerHTML = "";
+  qcFrame(svg, id); restartAnim(svg);
+  qcProgress(); qcDrawTimer(1, qcSecs());
+  if (!QC.flow) qcFeed(`<span class="soft">Get ready…</span>`);
+  const inp = $("#qc-input"); inp.value = ""; inp.disabled = QC.voice;
+  if (!QC.voice) setTimeout(() => { try { inp.focus({ preventScroll: true }); } catch (e) {} }, 40);
+  qcMicUI();
+  QC.to = setTimeout(qcGo, QC.flow ? 60 : 650);   // mid-run the next country lights up straight away
+}
+function qcGo() {
+  if (!QC.on || QC.phase !== "ready") return;
+  const svg = $("#qc-map svg"), id = QC.cur;
+  svg.querySelectorAll(`[data-id="${id}"]`).forEach(el => el.classList.add("tgt"));
+  qcDecor(false);
+  QC.total = QC.left = qcSecs(); QC.tick = Math.ceil(QC.left); QC.last = performance.now();
+  QC.skip = QV.partial || ""; QC.text = ""; QC.heardAt = 0; QC.hitLeft = null;
+  QC.phase = "live"; sfx("clue");
+  if (!QC.flow) qcFeed(QC.voice ? `Which country is lit up? <b>Say it!</b>` : `Which country is lit up? <b>Type it!</b>`);   // mid-run the last answer stays on show instead
+  QC.flow = false;
+  qcMicUI();
+  QC.raf = requestAnimationFrame(qcLoop);
+}
+function qcLoop(now) {
+  if (!QC.on) return;
+  if (QC.phase === "live") {
+    QC.left -= (now - QC.last) / 1000; QC.last = now;
+    if (QC.left <= 0) {
+      QC.left = 0; qcDrawTimer(0, 0);
+      // the microphone runs a moment behind the voice: an answer already on its way still counts
+      if (QC.voice && QV.live) { QC.phase = "grace"; QC.graceEnd = now + (QC.heardAt ? 1200 : 600); }
+      else return qcDone(false, "time");
+    } else {
+      const sN = Math.ceil(QC.left); if (sN < QC.tick) { QC.tick = sN; if (sN <= 3) sfx("tick"); }
+      qcDrawTimer(QC.left / QC.total, QC.left);
+    }
+  } else if (QC.phase === "grace") {
+    if (now >= QC.graceEnd) return qcDone(false, "time");
+  } else return;
+  QC.raf = requestAnimationFrame(qcLoop);
+}
+/* Words from the microphone. A right answer is taken the moment it is heard, even mid-sentence. */
+function qcHear(text, final) {
+  if (!QC.on || !QC.voice || (QC.phase !== "live" && QC.phase !== "grace")) return;
+  text = String(text || "");
+  if (QC.skip) {   // drop anything that was still being said when this country lit up
+    if (text.toLowerCase().startsWith(QC.skip.toLowerCase())) text = text.slice(QC.skip.length); else if (!final) QC.skip = "";
+    if (final) QC.skip = "";
+  }
+  text = text.trim(); if (!text) return;
+  if (!QC.heardAt) QC.heardAt = performance.now();
+  QC.text = text;
+  $("#qc-heard").textContent = "“" + (text.length > 44 ? "…" + text.slice(-42) : text) + "”";
+  const m = qcMatch(text, QC.cur);
+  if (m.ok) {
+    if (QC.hitLeft == null) QC.hitLeft = QC.left;
+    if (QC_AMBIG.has(QC.cur) && !final) {
+      clearTimeout(QC.wait);
+      QC.wait = setTimeout(() => { if (QC.on && (QC.phase === "live" || QC.phase === "grace") && qcMatch(QC.text, QC.cur).ok) qcDone(true); }, 450);
+      return;
+    }
+    return qcDone(true);
+  }
+  clearTimeout(QC.wait); QC.hitLeft = null;
+  if (final && m.other && m.other !== QC.prev) qcDone(false, "said", m.other);
+}
+/* Typing: a name is taken as soon as it matches; Enter with another country's name is a wrong answer. */
+function qcType(submit) {
+  if (!QC.on || QC.voice || QC.phase !== "live") return;
+  const v = acNorm($("#qc-input").value), id = QC.cur; if (!v) return;
+  const hit = AC_MAP.get(v) || (submit && v.length >= 5 && qcNear(v, id) ? id : null);
+  if (hit === id) {
+    const longer = AC_KEYS.some(([k, o]) => o !== id && k.length > v.length && k.startsWith(v));
+    if (!longer || submit) return qcDone(true);
+    if (QC.hitLeft == null) QC.hitLeft = QC.left;
+    clearTimeout(QC.wait); QC.wait = setTimeout(() => { if (QC.on && QC.phase === "live" && AC_MAP.get(acNorm($("#qc-input").value)) === id) qcDone(true); }, 500);
+    return;
+  }
+  clearTimeout(QC.wait); QC.hitLeft = null;
+  if (submit) qcDone(false, "said", hit || null);
+}
+function qcDone(ok, why, other) {
+  if (QC.phase !== "live" && QC.phase !== "grace") return;
+  cancelAnimationFrame(QC.raf); clearTimeout(QC.wait); QC.phase = "done";
+  const id = QC.cur, c = BY_ID.get(id), svg = $("#qc-map svg");
+  const left = ok ? Math.max(0, QC.hitLeft != null ? QC.hitLeft : QC.left) : 0;
+  let pts = 0;
+  if (ok) { QC.right++; QC.streak++; QC.best = Math.max(QC.best, QC.streak); pts = 100 + Math.round(left / QC.total * 100) + (QC.streak >= 3 ? Math.min(QC.streak - 2, 5) * 20 : 0); QC.score += pts; }
+  else QC.streak = 0;
+  QC.results.push({ id, ok, pts, secs: ok ? +(QC.total - left).toFixed(1) : null, said: other || null, why: why || "" });
+  P.seen.quick = 1; if (ok) { P.cat.quick = (P.cat.quick || 0) + 1; P.cc[id] = (P.cc[id] || 0) + 1; }
+  svg.querySelectorAll(`[data-id="${id}"]`).forEach(el => { el.classList.remove("tgt"); el.classList.add(ok ? "ok" : "no"); });
+  qcDecor(ok ? "ok" : "no");
+  const v = $("#qc-verdict"); v.className = "qcverdict " + (ok ? "ok" : "no");
+  v.innerHTML = ok ? `<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M16 34l11 11 22-25"/></svg>` : `<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M19 19l26 26M45 19L19 45"/></svg>`;
+  v.hidden = false; restartAnim(v);
+  if (ok) { sfx("right"); qcFeed(`${flagImg(c, "fsm")}<b>${esc(c.n)}</b> · ${(QC.total - left).toFixed(1)} seconds <span class="pts">+${pts}</span>`, "ok"); }
+  else {
+    sfx("wrong"); buzz(60);
+    const o = other && BY_ID.get(other);
+    qcFeed(`${why === "time" ? "Time's up!" : o ? `Not ${esc(o.n)}.` : "Not quite."} It's ${flagImg(c, "fsm")}<b>${esc(c.n)}</b>`, "no");
+  }
+  $("#qc-score").textContent = QC.score.toLocaleString();
+  $("#qc-input").disabled = true;
+  QC.prev = id; QC.i++; qcProgress();
+  // One long run: the next country comes up at once, while the check or X and the answer stay on show a moment longer.
+  const last = QC.i >= QC.list.length;
+  clearTimeout(QC.vt); QC.vt = setTimeout(() => { $("#qc-verdict").hidden = true; }, last ? 1200 : ok ? 1100 : 1500);
+  QC.flow = !last;
+  QC.to = setTimeout(() => { if (!QC.on || QC.phase !== "done") return; if (!last) qcLoad(); else qcFinish(); }, last ? 1200 : 350);
+}
+function qcFinish() {
+  QC.on = false; QC.phase = "idle"; qvStop(); qcMicUI();
+  const n = QC.list.length, sc = QC.score, right = QC.right;
+  const stars = right >= n * .9 ? 3 : right >= n * .6 ? 2 : right >= n * .3 ? 1 : 0;
+  const key = bestKey("quick", QC.lv), prev = BEST[key], isBest = !prev || sc > prev.score;
+  BEST[key] = { score: Math.max(sc, prev ? prev.score : 0), stars: Math.max(stars, prev ? prev.stars : 0), lb: prev && prev.lb }; noteStars(key, stars); LS.set("best", BEST);
+  P.rounds++; P.total += sc; award("first"); if (QC.lv === "hard" && stars === 3) award("expert"); saveP(); checkAll();
+  sfx("fanfare"); if (stars === 3) confetti();
+  const fast = QC.results.filter(r => r.ok).map(r => r.secs), avg = fast.length ? (fast.reduce((a, b) => a + b, 0) / fast.length).toFixed(1) : null;
+  const missed = QC.results.filter(r => !r.ok);
+  const voice = QC.voice;
+  showInfo(`<div class="acres"><h2>${right === n ? "Perfect call!" : stars >= 2 ? "Sharp eyes!" : "Round over!"}</h2>
+    <div class="bigstars">${[0, 1, 2].map(i => `<span class="stars">${i < stars ? "★" : '<span class="off">★</span>'}</span>`).join("")}</div>
+    <div class="bigscore num">${sc.toLocaleString()}</div>
+    <p>${right} of ${n} right${avg ? ` · ${avg} seconds on average` : ""}${isBest && sc ? " · New best!" : ""}</p>
+    ${missed.length ? `<p class="frmissed">${missed.map(r => `<span>${flagImg(BY_ID.get(r.id), "fsm")} ${esc(BY_ID.get(r.id).n)}</span>`).join("")}</p>` : ""}</div>
+    <div class="cc-actions"><button class="btn alt" id="qc-more">More games</button><button class="btn" id="qc-again">Play again</button></div>`);
+  $("#qc-more").onclick = () => { $("#info").hidden = true; goHome(); };
+  $("#qc-again").onclick = () => {
+    const b = $("#qc-again");
+    if (voice && qvCan()) qcVoiceTap(b, ok => { $("#info").hidden = true; if (ok) qcBegin(true); else startQuick(); });
+    else { $("#info").hidden = true; qcBegin(false); }
+  };
+  lbNote("quick", QC.lv, sc, `${right}/${n} named${voice ? " by voice" : ""}`, clockStop());
+  const rk = lbRank("quick", QC.lv, sc);
+  if (rk) { G.mode = "quick"; G.score = sc; setTimeout(() => askInitials(rk), 900); }
+}
+/* Pausing stops the clock and the microphone. The country on screen is swapped for a new one, so a pause can't buy thinking time. */
+function qcPause(lost) {
+  if (!QC.on) return goHome();
+  if (QC.phase === "paused" || QC.phase === "count") return;
+  if (QC.phase === "done" && QC.i >= QC.list.length) return;   // the round is over: the results are on their way
+  const mid = QC.phase === "live" || QC.phase === "grace" || QC.phase === "ready";
+  clearTimeout(QC.to); clearTimeout(QC.wait); cancelAnimationFrame(QC.raf);
+  QC.phase = "paused"; QC.flow = false; clearTimeout(QC.vt); $("#qc-verdict").hidden = true;
+  if (!lost) qvStop();
+  const svg = $("#qc-map svg"); if (svg && mid) { svg.querySelectorAll(".tgt").forEach(el => el.classList.remove("tgt")); svg.querySelector(".fx").innerHTML = ""; }
+  qcFeed(""); qcMicUI();
+  const can = QC.voice && qvCan();
+  const msg = lost ? (QV.denied ? "The microphone was switched off." : lost === "hidden" ? "The microphone stops when the game is out of sight." : lost === "viewer_stopped" ? "You stopped the microphone." : "The microphone stopped listening.") : "";
+  showInfo(`<h2>${lost ? "Microphone off" : "Paused"}</h2>${msg ? `<p>${msg}</p>` : ""}
+    <p>Country ${Math.min(QC.i + 1, QC.list.length)} of ${QC.list.length} · ${QC.score.toLocaleString()} points${mid ? "<br>You'll get a new country when you come back." : ""}</p>
+    ${can ? `<button class="btn" id="qc-resume">🎤 ${lost ? "Turn it back on" : "Resume"}</button>${lost ? `<button class="btn alt" id="qc-totype">⌨️ Type instead</button>` : ""}` : `<button class="btn" id="qc-totype">${QC.voice ? "⌨️ Carry on by typing" : "Resume"}</button>`}
+    <button class="btn danger" id="qc-quit">Quit to games</button>`);
+  const back = () => {
+    $("#info").hidden = true;
+    if (mid) { QC.used.delete(QC.list[QC.i]); QC.list[QC.i] = qcPick(QC.prev); }
+    $("#s-qc").classList.toggle("typing", !QC.voice);
+    qcLoad();
+  };
+  const r = $("#qc-resume"); if (r) r.onclick = () => qcVoiceTap(r, ok => { if (ok) back(); else { toast("🎤", "The microphone didn't turn on", "You can carry on by typing."); r.disabled = false; r.textContent = "🎤 Try again"; if (!qvCan()) { QC.voice = false; back(); } } });
+  const t = $("#qc-totype"); if (t) t.onclick = () => { QC.voice = false; qvStop(); back(); };
+  $("#qc-quit").onclick = () => { $("#info").hidden = true; QC.on = false; QC.phase = "idle"; qvStop(); goHome(); };
+}
+function qcMicLost(reason) {
+  if (!QC.on || !QC.voice || QC.phase === "paused" || QC.phase === "idle") return;
+  if (QC.phase === "count") { $("#countdown").hidden = true; QC.phase = "ready"; }
+  if (!$("#info").hidden) $("#info").hidden = true;
+  qcPause(reason || "upstream_error");
+}
+
 /* ================= wiring ================= */
 document.querySelectorAll(".ticket button").forEach(b => b.onclick = () => { S.level = b.dataset.level; saveS(); sfx("tap"); renderMenu(); });
 $("#cases").addEventListener("click", e => { const b = e.target.closest(".veh"); if (!b) return; sfx("tap"); openCat(b.dataset.cat); });
@@ -4510,6 +5128,10 @@ $("#hop-pause").onclick = () => { sfx("tap"); hopPause(); };
 $("#hop-undo").onclick = hopUndo;
 $("#hop-show").onclick = () => { if (HOP.solved) return; sfx("tap"); confirmBox("Show a route?", "You won't get points for this trip.", "Show me", () => { HOP.route = HOP.pz.opt.slice(); hopSolved(true); }); $("#c-no").textContent = "Keep trying"; };
 $("#pz-pause").onclick = () => { sfx("tap"); pzPause(); };
+$("#qc-pause").onclick = () => { sfx("tap"); qcPause(); };
+$("#qc-input").addEventListener("input", () => qcType());
+$("#qc-input").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); qcType(true); } });
+qvInit();
 $("#pz-show").onclick = () => { sfx("tap"); confirmBox("Show the answer?", "You won't get points for this puzzle.", "Show me", pzShow); $("#c-no").textContent = "Keep trying"; };
 $("#fr-pause").onclick = () => { sfx("tap"); frPause(); };
 $("#fr-input").addEventListener("input", () => frInput());
@@ -4519,7 +5141,7 @@ $("#cat-back").onclick = () => { sfx("tap"); curCat = null; renderMenu(); show("
 $("#cat-games").addEventListener("click", e => {
   const b = e.target.closest(".gobj"); if (!b) return; H.on = false;
   const m = b.dataset.mode;
-  if (m === "allc") startAllc(); else if (m === "flagrun") startFlagRun(); else if (m === "h2h") openPage("s-h2h", "s-cat"); else if (m === "hop") startHop(); else if (m === "puzzle") startPuzzle(); else startGame(m);
+  if (m === "allc") startAllc(); else if (m === "flagrun") startFlagRun(); else if (m === "h2h") openPage("s-h2h", "s-cat"); else if (m === "hop") startHop(); else if (m === "puzzle") startPuzzle(); else if (m === "quick") startQuick(); else startGame(m);
 });
 $("#ac-input").addEventListener("input", acInput);
 $("#ac-input").addEventListener("keydown", e => { if (e.key === "Enter") { const id = AC_MAP.get(acNorm(e.target.value)); if (id && !NTA.found[id]) acAccept(id); } });
@@ -4586,6 +5208,7 @@ $("#r-menu").onclick = () => { sfx("tap"); goHome(); };
 document.addEventListener("visibilitychange", () => {
   if (document.hidden && G.active && !G.locked) pause();
   if (document.hidden && NTA.on && !NTA.done && !NTA.paused && !$("#s-allc").hidden) acPause();
+  if (document.hidden && QC.on && !$("#s-qc").hidden && $("#info").hidden && $("#countdown").hidden) qcPause();
 });
 document.addEventListener("keydown", e => {
   if (e.target && e.target.tagName === "INPUT" && e.key !== "Escape") return;
@@ -5001,6 +5624,7 @@ function appBack() {
   if (vis("#s-allc")) { if (NTA.done) acExit(); else acPause(); return; }
   if (vis("#s-hop")) { hopPause(); return; }
   if (vis("#s-pz")) { pzPause(); return; }
+  if (vis("#s-qc")) { qcPause(); return; }
   if (vis("#s-fr")) { frPause(); return; }
   if (vis("#s-map")) { if (EX.map !== "WORLD") { EX.map = "WORLD"; EX.sel = null; renderExplorer(); sfx("tap"); } else { sfx("tap"); renderMenu(); show("s-menu"); } return; }
   if (vis("#s-h2hres")) { $("#hr-menu").click(); return; }
@@ -5049,7 +5673,7 @@ if (window.history && history.pushState) {
 }
 
 /* ================= check for updates ================= */
-const APP_VERSION = "atlas-v33";
+const APP_VERSION = "atlas-v35";
 const verNum = v => +((String(v).match(/(\d+)\s*$/) || [0, 0])[1]);
 async function remoteVersion() {
   const res = await fetch("sw.js?check=" + Date.now(), { cache: "no-store" });
