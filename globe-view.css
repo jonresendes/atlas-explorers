@@ -1,0 +1,119 @@
+/* Atlas Explorers — Globe View styles.
+   Change the variables below to match the game's look. */
+.agv-root {
+  --agv-bg-satellite: radial-gradient(ellipse at 50% 40%, #10213f 0%, #050b18 70%);
+  --agv-bg-lowpoly: radial-gradient(ellipse at 50% 40%, #2b4f8f 0%, #14254a 75%);
+  --agv-panel-bg: rgba(12, 22, 44, 0.78);
+  --agv-panel-border: rgba(255, 255, 255, 0.16);
+  --agv-text: #f2f6ff;
+  --agv-muted: #a9b8d6;
+  --agv-accent: #ffe45c;
+  --agv-accent-text: #1a2238;
+  --agv-font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  position: relative;
+  overflow: hidden;
+  background: var(--agv-bg-satellite);
+  color: var(--agv-text);
+  font-family: var(--agv-font);
+  font-size: 14px;
+  line-height: 1.35;
+}
+.agv-root[data-layer="lowpoly"] { background: var(--agv-bg-lowpoly); }
+
+.agv-stage { position: absolute; inset: 0; }
+.agv-stage canvas { display: block; outline: none; }
+.agv-stage canvas.clickable { cursor: pointer; }
+
+.agv-panel,
+.agv-card {
+  position: absolute;
+  z-index: 2;
+  background: var(--agv-panel-bg);
+  border: 1px solid var(--agv-panel-border);
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.agv-panel {
+  top: 12px;
+  left: 12px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.agv-group {
+  display: flex;
+  gap: 4px;
+  padding: 3px;
+  margin-bottom: 4px;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.08);
+}
+.agv-seg {
+  flex: 1;
+  min-height: 34px;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--agv-text);
+  font: inherit;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.agv-seg:hover { background: rgba(255, 255, 255, 0.1); }
+.agv-seg.is-on { background: var(--agv-accent); color: var(--agv-accent-text); }
+.agv-seg:focus-visible,
+.agv-close:focus-visible { outline: 2px solid var(--agv-accent); outline-offset: 2px; }
+
+.agv-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 28px;
+  padding: 0 4px;
+  cursor: pointer;
+  user-select: none;
+}
+.agv-check input { width: 16px; height: 16px; margin: 0; accent-color: var(--agv-accent); }
+
+.agv-card {
+  left: 12px;
+  bottom: 12px;
+  min-width: 210px;
+  max-width: min(300px, calc(100% - 24px));
+  padding: 12px 14px;
+}
+.agv-card[hidden] { display: none; }
+.agv-name { margin: 0 24px 8px 0; font-size: 18px; font-weight: 700; }
+.agv-row { display: flex; justify-content: space-between; gap: 16px; padding: 2px 0; }
+.agv-row span { color: var(--agv-muted); }
+.agv-row b { font-weight: 600; text-align: right; }
+.agv-close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--agv-muted);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+.agv-close:hover { background: rgba(255, 255, 255, 0.1); color: var(--agv-text); }
+
+.agv-tip {
+  padding: 4px 9px;
+  border-radius: 6px;
+  background: rgba(12, 22, 44, 0.92);
+  color: #fff;
+  font: 600 13px/1.3 var(--agv-font, system-ui, sans-serif);
+  white-space: nowrap;
+}
