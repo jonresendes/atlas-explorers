@@ -117,6 +117,48 @@ img { max-width: 100%; }
 })();
 </script>
 <meta name="referrer" content="no-referrer">
+<script>
+/* Security: where the game is hosted on its own site (or packaged as an app), only its own files and its Firebase
+   cloud may run or be contacted, and other sites can't show the game inside their own pages. */
+(function () {
+  var h = location.hostname;
+  if (/claude|anthropic/i.test(h) || location.protocol === "file:") return;
+  var m = document.createElement("meta"); m.httpEquiv = "Content-Security-Policy";
+  m.content = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; media-src 'self' data: blob:; worker-src 'self' blob:; " +
+    "connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com; object-src 'none'; base-uri 'none'; form-action 'none'";
+  document.head.appendChild(m);
+  try { if (window.top !== window.self) window.top.location = window.self.location.href; } catch (e) { document.documentElement.style.display = "none"; }
+})();
+</script>
+<meta name="referrer" content="no-referrer">
+<script>
+/* Security: where the game is hosted on its own site (or packaged as an app), only its own files and its Firebase
+   cloud may run or be contacted, and other sites can't show the game inside their own pages. */
+(function () {
+  var h = location.hostname;
+  if (/claude|anthropic/i.test(h) || location.protocol === "file:") return;
+  var m = document.createElement("meta"); m.httpEquiv = "Content-Security-Policy";
+  m.content = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; media-src 'self' data: blob:; worker-src 'self' blob:; " +
+    "connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com; object-src 'none'; base-uri 'none'; form-action 'none'";
+  document.head.appendChild(m);
+  try { if (window.top !== window.self) window.top.location = window.self.location.href; } catch (e) { document.documentElement.style.display = "none"; }
+})();
+</script>
+<meta name="referrer" content="no-referrer">
+<script>
+/* Security: where the game is hosted on its own site (or packaged as an app), only its own files and its Firebase
+   cloud may run or be contacted, and other sites can't show the game inside their own pages. */
+(function () {
+  var h = location.hostname;
+  if (/claude|anthropic/i.test(h) || location.protocol === "file:") return;
+  var m = document.createElement("meta"); m.httpEquiv = "Content-Security-Policy";
+  m.content = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; media-src 'self' data: blob:; worker-src 'self' blob:; " +
+    "connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com; object-src 'none'; base-uri 'none'; form-action 'none'";
+  document.head.appendChild(m);
+  try { if (window.top !== window.self) window.top.location = window.self.location.href; } catch (e) { document.documentElement.style.display = "none"; }
+})();
+</script>
+<meta name="referrer" content="no-referrer">
 <title>Atlas Explorers</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
@@ -1558,6 +1600,30 @@ input, select, textarea { background: #FFF9EC; color: var(--ink); border-color: 
 .mxview button { background: rgba(0,0,0,.25); color: var(--cream-2); border-color: var(--brass); }
 .mxview button[aria-pressed="true"] { background: linear-gradient(#F4D27A, #C99A45); color: var(--navy-deep); }
 #s-results .medal::after { width: 42px; height: 42px; right: 10px; top: 10px; }
+
+/* the brass game icons in lists (How to play, stamps, badges) */
+.dot.gdot { background: none !important; border: 0 !important; border-radius: 9px; width: 40px; height: 40px; box-shadow: none; }
+.dot.gdot .gico { width: 100%; height: 100%; display: block; filter: drop-shadow(0 2px 3px rgba(60,40,10,.35)); }
+.howto .item { grid-template-columns: 44px 1fr; }
+.checks li .dot.gdot, .brow .dot.gdot { width: 34px; height: 34px; }
+
+/* Head-to-Head teams */
+.teamrow { padding: 2px 4px 2px 6px; }
+.teamrow .tcol { width: 26px; height: 26px; border-radius: 50%; background: var(--tc); border: 2px solid var(--ink); box-shadow: inset 0 -3px 0 rgba(0,0,0,.2); flex: none; }
+.teamrow .tedit { flex: none; width: 26px; height: 26px; border-radius: 8px; font-weight: 900; color: var(--ink); background: rgba(122,86,34,.14); }
+.tnote { margin: 6px 2px 0; font-size: .74rem; font-weight: 800; color: var(--ink-soft); }
+.teamed h3 { margin: 12px 0 6px; font-size: 1rem; }
+.tprev { display: flex; justify-content: center; margin: 4px 0; }
+.tideas { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; max-height: 22vh; overflow-y: auto; }
+.tideas button { padding: 5px 10px; border-radius: 99px; background: #FBF3E1; border: 1.5px solid var(--brass); font-weight: 800; font-size: .8rem; color: var(--ink); }
+.tcols { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+.tcols button { aspect-ratio: 1; border-radius: 50%; background: var(--tc); border: 2.5px solid var(--ink); box-shadow: inset 0 -4px 0 rgba(0,0,0,.2); position: relative; }
+.tcols button[aria-pressed="true"] { outline: 3px solid var(--gold); outline-offset: 2px; }
+.tcols button.taken::after { content: ""; position: absolute; inset: 30%; border-radius: 50%; background: rgba(255,255,255,.55); }
+
+@media (max-width: 520px) { .teamrows { grid-template-columns: 1fr; } }
+
+@media (max-height: 520px) { .checks li .dot.gdot, .brow .dot.gdot { width: 24px; height: 24px; } }
 </style>
 
 </head>
@@ -3950,7 +4016,7 @@ function showInfo(html) {
 function stampInfo(id) {
   const c = BY_ID.get(id), cats = catsFor(c), d = cats.filter(m => done(c, m)).length; sfx("tap");
   showInfo(`<div class="cc-head">${flagImg(c)}<div><h2>${esc(c.n)}</h2><small>${P.stamp[id] ? "Passport stamp earned!" : `${d} of ${cats.length} done for the stamp`}</small></div></div>
-    <ul class="checks">${cats.map(m => `<li class="${done(c, m) ? "ok" : ""}"><span class="dot" style="--c:${MODES[m].c}">${ICON[m]}</span>${CAT_LABEL[m]}<small>${MODES[m].name}</small><b>${done(c, m) ? "✓" : ""}</b></li>`).join("")}</ul>
+    <ul class="checks">${cats.map(m => `<li class="${done(c, m) ? "ok" : ""}"><span class="dot gdot">${gameIcon(m, "gico")}</span>${CAT_LABEL[m]}<small>${MODES[m].name}</small><b>${done(c, m) ? "✓" : ""}</b></li>`).join("")}</ul>
     <div class="cc-actions"><button class="btn alt" id="info-card">Country card</button><button class="btn" id="info-close">Close</button></div>`);
   $("#info-card").onclick = () => { $("#info").hidden = true; openDetail(id); };
 }
@@ -3965,7 +4031,7 @@ const medalSVG = col => `<svg viewBox="0 0 40 48"><path d="M10 1h8l4 14h-8zM30 1
 function badgesHTML() {
   return `<div class="awhead"><div><h3>Badges</h3><p>Earn bronze (10), silver (50) and gold (150) right answers in every game.</p></div></div>${BADGE_KEYS.map(m => {
     const n = P.cat[m] || 0;
-    return `<div class="brow"><span class="dot" style="--c:${MODES[m].c}">${ICON[m]}</span><div><b>${BADGE_NAMES[m]}</b><small>${MODES[m].name} · ${n} right</small></div><div class="medals">${TIERS.map(([t, goal, col]) => `<span class="medal-b${n >= goal ? "" : " off"}" title="${cap1(t)}">${medalSVG(col)}${goal}</span>`).join("")}</div></div>`;
+    return `<div class="brow"><span class="dot gdot">${gameIcon(m, "gico")}</span><div><b>${BADGE_NAMES[m]}</b><small>${MODES[m].name} · ${n} right</small></div><div class="medals">${TIERS.map(([t, goal, col]) => `<span class="medal-b${n >= goal ? "" : " off"}" title="${cap1(t)}">${medalSVG(col)}${goal}</span>`).join("")}</div></div>`;
   }).join("")}${specialHTML()}`;
 }
 function awardsHTML() {
@@ -3992,10 +4058,15 @@ function gemInfo(id) {
 }
 
 /* ================= Head-to-Head ================= */
-const TEAM_PRESETS = [["Red Rockets", "#FF6B57"], ["Blue Whales", "#3FB6EC"], ["Green Geckos", "#22C384"], ["Gold Eagles", "#FFC93C"], ["Purple Pandas", "#B9A2FF"], ["Orange Otters", "#FF9A2E"]];
+const TEAM_PRESETS = [["Red Rockets", "#D9673A"], ["Blue Whales", "#3C78C8"], ["Green Geckos", "#1FA37A"], ["Gold Eagles", "#E3B04B"], ["Purple Pandas", "#8A63B8"], ["Orange Otters", "#E8893A"]];
+// Colours and name ideas teams can choose from
+const TEAM_COLOURS = [["Terracotta", "#D9673A"], ["Ocean", "#3C78C8"], ["Emerald", "#1FA37A"], ["Gold", "#E3B04B"], ["Plum", "#8A63B8"], ["Orange", "#E8893A"], ["Rose", "#C8577E"], ["Teal", "#2BA6A0"], ["Crimson", "#B8312F"], ["Lime", "#7FB547"], ["Sky", "#5FB4E6"], ["Slate", "#7A8AA3"]];
+const TEAM_NAME_IDEAS = ["Red Rockets", "Blue Whales", "Green Geckos", "Gold Eagles", "Purple Pandas", "Orange Otters", "Globe Trotters", "Map Masters", "Compass Crew", "Flag Flyers", "Polar Bears", "Desert Foxes", "Jungle Jaguars", "Island Hoppers", "Mountain Goats", "Ocean Explorers", "Capital Kids", "Border Bandits"];
+const teamCol = i => { const c = (H.cols || [])[i]; return TEAM_COLOURS.some(x => x[1] === c) ? c : TEAM_PRESETS[i][1]; };
+const teamName = i => { const n = String((H.names || [])[i] || "").trim().slice(0, 16); return n && !badWord(n) ? n : TEAM_PRESETS[i][0]; };
 const H = Object.assign({ on: false, block: 1, seq: [], style: "turns", n: 2, names: TEAM_PRESETS.map(t => t[0]), mode: "mix", per: 5, total: 10, teams: [], cur: 0, count: 10 },
   LS.get("h2h", {}), { on: false, teams: [], cur: 0 });
-const saveH = () => LS.set("h2h", { style: H.style, n: H.n, names: H.names, mode: H.mode, per: H.per, total: H.total, block: H.block });
+const saveH = () => LS.set("h2h", { style: H.style, n: H.n, names: H.names, cols: H.cols, mode: H.mode, per: H.per, total: H.total, block: H.block });
 
 function renderH2HSetup() {
   const lens = H.style === "turns" ? [3, 5, 8, 10] : [10, 15, 20];
@@ -4007,13 +4078,16 @@ function renderH2HSetup() {
         <button data-s="show" aria-pressed="${H.style === "show"}"><span class="em">📺</span><b>Quiz show</b><small>Everyone watches one big screen and calls out answers. The host reveals and gives points.</small></button>
       </div></div>
     <div class="h2hsec"><div class="rowx"><h3>Teams</h3><span class="stepper"><button id="h2h-minus" aria-label="Fewer teams">−</button><b class="num">${H.n}</b><button id="h2h-plus" aria-label="More teams">+</button></span></div>
-      <div class="teamrows">${Array.from({ length: H.n }, (_, i) => `<label class="teamrow" style="--tc:${TEAM_PRESETS[i][1]}"><i></i><input id="h2h-name-${i}" maxlength="16" value="${esc(H.names[i] || TEAM_PRESETS[i][0])}" aria-label="Team ${i + 1} name"></label>`).join("")}</div></div>
+      <div class="teamrows">${Array.from({ length: H.n }, (_, i) => `<div class="teamrow" style="--tc:${teamCol(i)}"><button type="button" class="tcol" data-team="${i}" aria-label="Choose team ${i + 1}'s colour and name"></button><input id="h2h-name-${i}" maxlength="16" list="h2h-ideas" value="${esc(teamName(i))}" aria-label="Team ${i + 1} name"><button type="button" class="tedit" data-team="${i}" aria-label="Pick a name for team ${i + 1}">▾</button></div>`).join("")}</div>
+      <datalist id="h2h-ideas">${TEAM_NAME_IDEAS.map(n => `<option value="${esc(n)}">`).join("")}</datalist>
+      <p class="tnote">Tap a team's colour dot or ▾ to choose its colour and a name, or type your own.</p></div>
     <div class="h2hsec"><h3>Which game?</h3>
       <div class="gamechips">${ALL_TILES.map(k => `<button data-k="${k}" aria-pressed="${k === H.mode}">${MODES[k].name}</button>`).join("")}</div></div>
     <div class="h2hsec"><div class="rowx"><h3>${H.style === "turns" ? "Questions per team" : "Questions"}</h3><div class="seg" id="h2h-len"></div></div>
       ${H.style === "turns" ? `<div class="rowx"><h3>Questions in a row<small class="subh">before passing the device</small></h3><div class="seg" id="h2h-block"></div></div>` : ""}
       <div class="rowx"><h3>Level</h3><div class="seg" id="h2h-level"></div></div></div>`;
-  const keepNames = () => { for (let i = 0; i < H.n; i++) { const el = $("#h2h-name-" + i); if (el) H.names[i] = el.value.trim() || TEAM_PRESETS[i][0]; } };
+  const keepNames = () => { for (let i = 0; i < H.n; i++) { const el = $("#h2h-name-" + i); if (el) { const v = el.value.trim().slice(0, 16); H.names[i] = v && !badWord(v) ? v : TEAM_PRESETS[i][0]; } } saveH(); };
+  $("#h2h-body").querySelectorAll("[data-team]").forEach(b => b.onclick = () => { keepNames(); sfx("tap"); teamEditor(+b.dataset.team); });
   $("#h2h-body").querySelectorAll(".stylepick button").forEach(b => b.onclick = () => { keepNames(); H.style = b.dataset.s; sfx("tap"); renderH2HSetup(); });
   $("#h2h-minus").onclick = () => { keepNames(); H.n = Math.max(2, H.n - 1); sfx("tap"); renderH2HSetup(); };
   $("#h2h-plus").onclick = () => { keepNames(); H.n = Math.min(6, H.n + 1); sfx("tap"); renderH2HSetup(); };
@@ -4023,10 +4097,40 @@ function renderH2HSetup() {
   seg($("#h2h-level"), ["easy", "hard"], ["Explorer", "Expert"], S.level, v => { keepNames(); S.level = v; saveS(); renderH2HSetup(); });
   H._keep = keepNames;
 }
+/* Choose one team's colour and name */
+function teamEditor(i) {
+  let col = teamCol(i), name = teamName(i);
+  const taken = new Set(Array.from({ length: H.n }, (_, k) => k !== i ? teamCol(k) : null).filter(Boolean));
+  showInfo(`<div class="teamed"><h2>Team ${i + 1}</h2>
+    <div class="tprev" id="te-prev"></div>
+    <h3>Team name</h3><input class="ppsearch" id="te-name" maxlength="16" value="${esc(name)}" autocomplete="off" aria-label="Team name">
+    <div class="tideas">${TEAM_NAME_IDEAS.map(n => `<button type="button" data-n="${esc(n)}">${esc(n)}</button>`).join("")}</div>
+    <h3>Team colour</h3><div class="tcols">${TEAM_COLOURS.map(([n, c]) => `<button type="button" data-c="${c}" style="--tc:${c}" aria-label="${n}${taken.has(c) ? " (another team has this)" : ""}" class="${taken.has(c) ? "taken" : ""}"></button>`).join("")}</div>
+    <p class="plmsg" id="te-msg"></p>
+    <div class="cc-actions"><button class="btn ghost" id="te-cancel" type="button">Cancel</button><button class="btn" id="te-save" type="button">Save team</button></div></div>`);
+  const prev = () => {
+    $("#te-prev").innerHTML = `<span class="tchip on" style="--tc:${col}"><i></i>${esc(name || TEAM_PRESETS[i][0])}<b class="num">0</b></span>`;
+    $("#info-in").querySelectorAll("[data-c]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.c === col)));
+  };
+  $("#te-name").oninput = () => { name = $("#te-name").value.trim(); prev(); };
+  $("#info-in").querySelectorAll("[data-n]").forEach(b => b.onclick = () => { name = b.dataset.n; $("#te-name").value = name; sfx("tap"); prev(); });
+  $("#info-in").querySelectorAll("[data-c]").forEach(b => b.onclick = () => { col = b.dataset.c; sfx("tap"); prev(); });
+  $("#te-cancel").onclick = () => { $("#info").hidden = true; };
+  $("#te-save").onclick = () => {
+    const n = $("#te-name").value.trim().slice(0, 16);
+    if (n && badWord(n)) { $("#te-msg").textContent = "Please pick a different team name."; return; }
+    H.names[i] = n || TEAM_PRESETS[i][0];
+    H.cols = Array.from({ length: 6 }, (_, k) => (H.cols || [])[k] || TEAM_PRESETS[k][1]); H.cols[i] = col;
+    // two teams can't share a colour: swap with whoever had it
+    for (let k = 0; k < H.n; k++) if (k !== i && teamCol(k) === col) H.cols[k] = TEAM_COLOURS.map(x => x[1]).find(c => c !== col && !Array.from({ length: H.n }, (_, j) => teamCol(j)).includes(c));
+    saveH(); sfx("unlock"); $("#info").hidden = true; renderH2HSetup();
+  };
+  prev();
+}
 function startH2H() {
   if (H._keep) H._keep();
   H.on = true;
-  H.teams = Array.from({ length: H.n }, (_, i) => ({ name: H.names[i] || TEAM_PRESETS[i][0], c: TEAM_PRESETS[i][1], score: 0, right: 0 }));
+  H.teams = Array.from({ length: H.n }, (_, i) => ({ name: teamName(i), c: teamCol(i), score: 0, right: 0 }));
   H.count = H.style === "turns" ? H.n * H.per : H.total;
   // Turn order: each team answers `block` questions in a row (0 = all of theirs), then passes.
   H.seq = [];
@@ -4981,12 +5085,10 @@ function goBack() {
   curCat = null; renderMenu(); show("s-menu");
 }
 function renderHowto() {
-  const items = MENU_TILES.map(k => [MODES[k].c, ICON[k], MODES[k].name, MODES[k].blurb]);
-  items.push(["#7FD0F5", ICON.map, "World Map", "Explore every country: flags, capitals and places to see."]);
-  items.push(["#FFC93C", ICON.flags, "Trophy Room", "Your passport stamps, trophies, badges, awards and gems."]);
-  items.push(["#FF8A6B", ICON.mix, "Head-to-Head", "Play against friends: take turns on one device, or run a quiz show on a big screen."]);
-  $("#howto").innerHTML = items.map(([c, ic, n, t]) =>
-    `<div class="item"><span class="dot" style="--c:${c}">${ic}</span><h3>${n}</h3><p>${t}</p></div>`).join("");
+  const items = MENU_TILES.filter(k => GAME_ICONS[k]).map(k => [gameIcon(k, "gico"), MODES[k].name, MODES[k].blurb]);
+  items.push([gameIcon("h2h", "gico"), "Head-to-Head", "Play against friends: take turns on one device, or run a quiz show on a big screen."]);
+  $("#howto").innerHTML = items.map(([ic, n, t]) =>
+    `<div class="item"><span class="dot gdot">${ic}</span><h3>${n}</h3><p>${t}</p></div>`).join("");
 }
 
 
@@ -6435,7 +6537,7 @@ if (window.history && history.pushState) {
 }
 
 /* ================= check for updates ================= */
-const APP_VERSION = "atlas-v41";
+const APP_VERSION = "atlas-v42";
 const verNum = v => +((String(v).match(/(\d+)\s*$/) || [0, 0])[1]);
 async function remoteVersion() {
   const res = await fetch("sw.js?check=" + Date.now(), { cache: "no-store" });
