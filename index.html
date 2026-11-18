@@ -19,6 +19,48 @@ body { margin: 0; }
 img { max-width: 100%; }
 [hidden] { display: none !important; }
 </style>
+<script>
+/* Security: where the game is hosted on its own site (or packaged as an app), only its own files and its Firebase
+   cloud may run or be contacted, and other sites can't show the game inside their own pages. */
+(function () {
+  var h = location.hostname;
+  if (/claude|anthropic/i.test(h) || location.protocol === "file:") return;
+  var m = document.createElement("meta"); m.httpEquiv = "Content-Security-Policy";
+  m.content = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; media-src 'self' data: blob:; worker-src 'self' blob:; " +
+    "connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com; object-src 'none'; base-uri 'none'; form-action 'none'";
+  document.head.appendChild(m);
+  try { if (window.top !== window.self) window.top.location = window.self.location.href; } catch (e) { document.documentElement.style.display = "none"; }
+})();
+</script>
+<meta name="referrer" content="no-referrer">
+<script>
+/* Security: where the game is hosted on its own site (or packaged as an app), only its own files and its Firebase
+   cloud may run or be contacted, and other sites can't show the game inside their own pages. */
+(function () {
+  var h = location.hostname;
+  if (/claude|anthropic/i.test(h) || location.protocol === "file:") return;
+  var m = document.createElement("meta"); m.httpEquiv = "Content-Security-Policy";
+  m.content = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; media-src 'self' data: blob:; worker-src 'self' blob:; " +
+    "connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com; object-src 'none'; base-uri 'none'; form-action 'none'";
+  document.head.appendChild(m);
+  try { if (window.top !== window.self) window.top.location = window.self.location.href; } catch (e) { document.documentElement.style.display = "none"; }
+})();
+</script>
+<meta name="referrer" content="no-referrer">
+<script>
+/* Security: where the game is hosted on its own site (or packaged as an app), only its own files and its Firebase
+   cloud may run or be contacted, and other sites can't show the game inside their own pages. */
+(function () {
+  var h = location.hostname;
+  if (/claude|anthropic/i.test(h) || location.protocol === "file:") return;
+  var m = document.createElement("meta"); m.httpEquiv = "Content-Security-Policy";
+  m.content = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; media-src 'self' data: blob:; worker-src 'self' blob:; " +
+    "connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com; object-src 'none'; base-uri 'none'; form-action 'none'";
+  document.head.appendChild(m);
+  try { if (window.top !== window.self) window.top.location = window.self.location.href; } catch (e) { document.documentElement.style.display = "none"; }
+})();
+</script>
+<meta name="referrer" content="no-referrer">
 <title>Atlas Explorers</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
@@ -837,6 +879,39 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
 .plcard b { display: block; font-size: 1.05rem; overflow-wrap: anywhere; }
 .plcard small { color: var(--ink-soft); font-weight: 800; font-size: .76rem; }
 .plcard .tag { font-weight: 900; font-size: .78rem; color: #12955F; }
+.plcard .plbtns { display: flex; gap: 6px; }
+.privacy { text-align: left; }
+.privacy h2 { text-align: center; }
+.privacy h3 { margin: 12px 0 4px; font-size: 1rem; }
+.privacy ul { margin: 0; padding-left: 18px; }
+.privacy p, .privacy .note { text-align: left; }
+.privacy .cc-actions { justify-content: center; }
+.privacy li, .privacy p { font-size: .88rem; line-height: 1.35; margin: 3px 0; }
+.privacy .prow { margin: 6px 0 10px; padding: 0; border: 0; }
+.privacy .btn.danger { width: 100%; }
+.pgate .pgq { font-size: 1.05rem; margin: 10px 0; }
+.plcard .ppbtn { font-size: 1rem; }
+.plpass { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 8px 10px; border: 2px solid var(--line); border-radius: 12px; background: #F2F8FF; }
+.plpassl { font-weight: 900; }
+.plpassc { display: flex; align-items: center; gap: 7px; flex: 1; min-width: 0; font-weight: 800; }
+.plpassc span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.plpassc img { flex: none; width: 30px; border-radius: 3px; border: 1.5px solid var(--ink); }
+.plpass .btn { min-height: 0; padding: 6px 12px; font-size: .95rem; }
+.plsw { width: 22px; height: 28px; border-radius: 3px 6px 6px 3px; background: var(--cov); border: 2px solid var(--ink); flex: none; }
+.ppedit h2 { margin-bottom: 6px; }
+.ppedit h3 { margin: 12px 0 6px; font-size: 1rem; }
+.ppprev { display: flex; justify-content: center; }
+.ppprev .pp { width: 160px; pointer-events: none; }
+.ppprev .pp .pn { font-size: clamp(.85rem, 14cqi, 1.5rem); }
+.ppcovers { display: grid; grid-template-columns: repeat(auto-fill, minmax(34px, 1fr)); gap: 8px; }
+.ppcov { aspect-ratio: 1; border-radius: 8px; background: var(--cov); border: 2.5px solid var(--ink); box-shadow: inset 4px 0 0 rgba(0,0,0,.25); }
+.ppcov[aria-pressed="true"] { outline: 3px solid var(--gold); outline-offset: 2px; }
+.ppsearch { width: 100%; padding: 9px 12px; border: 2px solid var(--line); border-radius: 12px; font: 800 1rem var(--body); }
+.ppflags { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 6px; max-height: 32vh; overflow-y: auto; margin-top: 8px; padding: 2px; }
+.ppflag { display: grid; justify-items: center; gap: 3px; padding: 6px 4px; border: 2px solid var(--line); border-radius: 10px; background: var(--paper); font-size: .7rem; font-weight: 800; color: var(--ink); line-height: 1.15; }
+.ppflag img { width: 44px; aspect-ratio: 3/2; object-fit: cover; border-radius: 3px; border: 1.5px solid var(--ink); }
+.ppflag.on { border-color: var(--ink); background: #FFF3C4; box-shadow: 0 0 0 2px var(--gold); }
+.pp.longk .pk b { font-size: clamp(.45rem, 6.5cqi, .66rem); letter-spacing: .04em; }
 .plcard .x { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--line); background: var(--paper); font-weight: 900; color: var(--ink-soft); }
 .pltabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
 .pltabs button { padding: 9px; border-radius: 12px; background: #E8F2FC; font-weight: 900; color: var(--ink); }
@@ -1311,6 +1386,8 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
       <div class="row"><span class="lbl">Questions<span class="sub">Per round</span></span><div class="seg" id="set-qcount"></div></div>
       <div class="row"><span class="lbl">Difficulty</span><div class="seg" id="set-level"></div></div>
       <div class="row" id="pl-row"><span class="lbl">Player<span class="sub" id="pl-sub">Save progress online and play on any device</span></span><button class="btn alt" id="set-player" style="min-height:40px;font-size:1rem;padding:6px 14px;white-space:nowrap">Sign in</button></div>
+      <div class="row" id="pass-row"><span class="lbl">Passport<span class="sub" id="pass-sub">Pick your passport's colour and flag</span></span><button class="btn alt" id="set-pass" style="min-height:40px;font-size:1rem;padding:6px 14px;white-space:nowrap">🛂 Change</button></div>
+      <div class="row"><span class="lbl">Privacy &amp; safety<span class="sub">What's saved, the leaderboard, deleting a player</span></span><button class="btn alt" id="set-privacy" style="min-height:40px;font-size:1rem;padding:6px 14px;white-space:nowrap">Open</button></div>
       <div class="row" id="upd-row" hidden><span class="lbl">Version <span class="num" id="upd-ver"></span><span class="sub" id="upd-status">Get the newest games and fixes</span></span><span class="updbtns"><a class="btn alt" id="upd-gh" target="_blank" rel="noopener" hidden>GitHub</a><button class="btn" id="set-update">Check for updates</button></span></div>
       <div class="row" id="inst-row" hidden><span class="lbl">Install the app<span class="sub" id="inst-sub">Its own icon and window, and it works offline</span></span><button class="btn alt" id="set-install" style="min-height:40px;font-size:1rem;padding:6px 14px;white-space:nowrap">Install</button></div>
       <div class="row"><span class="lbl">How to play<span class="sub">Rules for every game</span></span><button class="btn alt" id="set-howto" style="min-height:40px;font-size:1rem;padding:6px 14px">Open</button></div>
@@ -3419,6 +3496,14 @@ function clockTick() {
 setInterval(clockTick, 200);
 function clockStop() { clockTick(); CLOCK.on = false; return Math.round(CLOCK.ms / 1000); }
 const fmtSecs = s => { if (!(s >= 0)) return "—"; s = Math.round(s); const h = Math.floor(s / 3600), m = Math.floor(s / 60) % 60, x = String(s % 60).padStart(2, "0"); return h ? `${h}:${String(m).padStart(2, "0")}:${x}` : `${m}:${x}`; };
+/* A word filter for player names and leaderboard name tags (they're shown to other players). */
+const BAD_SUB = atob("ZnVjayBzaGl0IGJpdGNoIGN1bnQgbmlnZyB3aG9yZSBzbHV0IHR3YXQgd2FuayBwZW5pcyB2YWdpbmEgcG9ybiBuYXppIGhpdGxlciByZXRhcmQgcGlzcyBjcmFwIGJvbGxvY2sgYm9vYiBkaWxkbyBqaXp6IGJhc3RhcmQgYXNzaG9sZSBmYWdnb3QgcHVzc3kgZnVrIGZjayBwaHVjayBmYWNrIHNodCBidGNoIGF6eg==").split(" "), BAD_EXACT = atob("YXNzIGFyc2UgYW5hbCB0aXQgdGl0cyBzZXggY3VtIGZhZyBra2sgZGljayBjb2NrIHJhcGUgcG9vIHBlZSB3dGYgc3RmdSBmdSB4eHggaG9lIGhvbW8=").split(" ");
+function badWord(s) {
+  const n = String(s || "").toLowerCase().replace(/[0@]/g, "o").replace(/[1!|]/g, "i").replace(/3/g, "e").replace(/[4]/g, "a").replace(/[5$]/g, "s").replace(/7/g, "t").replace(/[^a-z]/g, "");
+  if (!n) return false;
+  const c = n.replace(/(.)\1+/g, "$1"), forms = [n, c];
+  return BAD_EXACT.some(w => forms.includes(w)) || BAD_SUB.some(w => forms.some(f => f.includes(w)) || (w.length >= 5 && c.includes(w.replace(/(.)\1+/g, "$1"))));
+}
 const INI_MAX = 6, iniClean = v => Array.from(String(v || "").toUpperCase().replace(/[^\x21-\x7E]/g, "")).slice(0, INI_MAX).join("");
 // Remember what this round achieved, for the leaderboard (and keep the best one for the online board).
 function lbNote(mode, lv, score, ach, secs) {
@@ -3441,6 +3526,7 @@ function askInitials(rank) {
   const save = () => {
     const v = iniClean(inp.value);
     if (!v) { inp.focus(); return; }
+    if (badWord(v)) { toast("🙈", "Try a different name tag", "That one isn't allowed on the leaderboard."); inp.select(); return; }
     const r = lbRank(G.mode, S.level, G.score) - 1;
     if (r >= 0) {
       const l = lbList(G.mode, S.level).slice();
@@ -4146,6 +4232,8 @@ function labelsClose(svg, a, b) {
    The globe's own files (globe-view.css, dist/, data/, textures/) sit next to this page on the website.
    They are only downloaded when a player first switches to the globe. Where they aren't there, the switch stays hidden. */
 const GV = { on: false, api: null, loading: null, avail: false };
+/* The globe's script is checked against this fingerprint, so a changed or swapped file is never run. */
+const GV_SRI = "sha384-kXChwx3Glgv0eeoVcJzpbXH48iCT2OcdtvIbzeJNfLuu5JWEoYHdQ/oZf4FpPcoN";
 try { fetch("dist/globe-view.js", { method: "HEAD" }).then(r => { GV.avail = !!r.ok; if (GV.avail && !$("#s-map").hidden) gvSwitch(); }).catch(() => {}); } catch (e) {}
 function gvSwitch() {
   const el = $("#mx-view"); el.hidden = !GV.avail; if (!GV.avail) return;
@@ -4155,7 +4243,7 @@ function gvLoad() {
   if (GV.loading) return GV.loading;
   return GV.loading = new Promise((res, rej) => {
     const l = document.createElement("link"); l.rel = "stylesheet"; l.href = "globe-view.css"; document.head.appendChild(l);
-    const sc = document.createElement("script"); sc.src = "dist/globe-view.js"; sc.onload = res; sc.onerror = () => rej(new Error("load")); document.head.appendChild(sc);
+    const sc = document.createElement("script"); sc.src = "dist/globe-view.js"; sc.integrity = GV_SRI; sc.crossOrigin = "anonymous"; sc.onload = res; sc.onerror = () => rej(new Error("load")); document.head.appendChild(sc);
   }).then(() => window.AtlasGlobe.create($("#mx-globe"), { basePath: "./", layer: "satellite", onReady: api => { GV.api = GV.api || api; } }))
     .then(api => { gvOptsButton(); return api; })
     .then(api => { if (api && api.pause) GV.api = api; return GV.api; });
@@ -5283,6 +5371,91 @@ function quizHear(text, final) {
   }
 }
 
+/* ================= Privacy & safety =================
+   Grown-up check before anything leaves the game, an opt-out from the online leaderboard,
+   deleting a player for good, and the credits for the maps and data the game uses. */
+const NUMW = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"];
+function parentGate(then, why) {
+  const a = 6 + Math.floor(Math.random() * 7), b = 6 + Math.floor(Math.random() * 7);
+  showInfo(`<div class="pgate"><h2>Ask a grown-up</h2><p>${esc(why || "This opens a page outside the game.")}</p>
+    <p class="pgq">Grown-ups: what is <b>${NUMW[a]} times ${NUMW[b]}</b>?</p>
+    <input id="pg-in" class="ppsearch" inputmode="numeric" autocomplete="off" aria-label="Answer">
+    <p class="plmsg" id="pg-msg"></p>
+    <div class="cc-actions"><button class="btn ghost" id="pg-no" type="button">Cancel</button><button class="btn" id="pg-ok" type="button">Continue</button></div></div>`);
+  const ok = () => { if (+$("#pg-in").value === a * b) { $("#info").hidden = true; then(); } else { $("#pg-msg").textContent = "That's not right. Ask a grown-up to help."; $("#pg-in").value = ""; } };
+  $("#pg-ok").onclick = ok; $("#pg-in").onkeydown = e => { if (e.key === "Enter") ok(); };
+  $("#pg-no").onclick = () => { $("#info").hidden = true; };
+  setTimeout(() => { try { $("#pg-in").focus(); } catch (e) {} }, 60);
+}
+// Any link that leaves the game goes through the grown-up check first
+document.addEventListener("click", e => {
+  const a = e.target.closest("a[href]"); if (!a) return;
+  let u; try { u = new URL(a.href, location.href); } catch (err) { return; }
+  if (u.origin === location.origin) return;
+  e.preventDefault(); e.stopPropagation();
+  parentGate(() => { try { window.open(u.href, "_blank", "noopener,noreferrer"); } catch (err) {} });
+}, true);
+/* Remove this player's entries from every online leaderboard */
+async function boardsRemove(p) {
+  const tok = await idToken(p), keys = new Set(Object.keys(BEST));
+  Object.keys(MODES).forEach(m => ["easy", "hard"].forEach(l => keys.add(m + "_" + l)));
+  let blocked = 0;
+  await Promise.all([...keys].map(k => fetch(`${boardUrl(k)}/players/${p.uid}`, { method: "DELETE", headers: { Authorization: "Bearer " + tok } })
+    .then(r => { if (r.status === 403) blocked++; }).catch(() => {})));
+  LS.set("lbposted_" + p.uid, {});
+  return !blocked;
+}
+/* Delete a player for good: their leaderboard entries, their saved progress and their sign-in */
+async function plDeleteForever(p) {
+  const okBoards = await boardsRemove(p), tok = await idToken(p);
+  const r = await fetch(docUrl(p.uid), { method: "DELETE", headers: { Authorization: "Bearer " + tok } });
+  if (!r.ok && r.status !== 404) throw new Error("save");
+  const a = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:delete?key=${encodeURIComponent(CL.cfg.apiKey)}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ idToken: tok }) });
+  if (!a.ok) throw new Error("account");
+  CL.players = CL.players.filter(x => x.uid !== p.uid); CL.active = null; CL.token = null; plSave();
+  ["prof_" + p.uid, "lbposted_" + p.uid].forEach(k => { try { localStorage.removeItem("atlasx_" + k); } catch (e) {} LS.set(k, null); });
+  return okBoards;
+}
+function openPrivacy() {
+  const me = plMe();
+  showInfo(`<div class="privacy"><h2>Privacy &amp; safety</h2>
+    <h3>What the game keeps</h3>
+    <ul><li><b>On this device:</b> scores, stars, stamps, badges and settings.</li>
+    <li><b>Online, only for signed-in players:</b> the player name, the password (kept by Google's Firebase sign-in, never by the game), progress, and the chosen passport. Player names aren't email addresses, and no real names, ages or locations are asked for.</li>
+    <li><b>Seen by other players:</b> only the leaderboard name tag (up to 6 characters), the score, what was achieved and how long it took.</li></ul>
+    <h3>What the game never does</h3>
+    <ul><li>No ads, no in-app purchases, no tracking or analytics, no chat between players.</li></ul>
+    <h3>Voice answers</h3>
+    <p>Voice answers are optional. The microphone is only on while a 🎤 is lit. What is said is turned into words by the browser's own speech service (for example Google in Chrome, Apple in Safari), not stored by the game.</p>
+    ${me ? `<h3>${esc(me.name)}'s player</h3>
+    <div class="row prow"><span class="lbl">Show me on the online leaderboard<span class="sub">Others see your name tag and scores</span></span><button class="switch" role="switch" id="pv-lb" aria-checked="${!P.lbHide}" aria-label="Show me on the online leaderboard"></button></div>
+    <button class="btn danger" id="pv-del" type="button">Delete ${esc(me.name)} forever</button>
+    <p class="plmsg" id="pv-msg"></p>` : `<p class="note">Signed-in players can hide themselves from the online leaderboard or delete their player here.</p>`}
+    <h3>Credits</h3>
+    <p class="note">Country shapes: Natural Earth (public domain). Country facts: world-countries by Mohammed Le Doze (ODbL). Satellite imagery: NASA Blue Marble (public domain). 3D globe: three.js and globe.gl (MIT licence). Flags: public-domain designs.</p>
+    <p class="note">© ${new Date().getFullYear()} Atlas Explorers. All rights reserved.</p>
+    <div class="cc-actions"><button class="btn" id="info-close" type="button">Done</button></div></div>`);
+  if (!me) return;
+  const sw = $("#pv-lb");
+  sw.onclick = async () => {
+    P.lbHide = !P.lbHide; saveP(); sw.setAttribute("aria-checked", String(!P.lbHide)); sfx("tap");
+    const msg = $("#pv-msg"); msg.classList.add("ok");
+    if (P.lbHide) {
+      msg.textContent = "Taking you off the online leaderboard…";
+      try { const ok = await boardsRemove(me); msg.textContent = ok ? "Done. Your scores now stay private." : "Hidden from now on. (Old entries can be removed once the Firestore rules are updated.)"; } catch (e) { msg.textContent = "Hidden from now on. Old entries will be removed when you're back online."; }
+    } else { msg.textContent = "You'll appear on the online leaderboard again."; cloudSync(); }
+  };
+  $("#pv-del").onclick = () => parentGate(() => {
+    confirmBox(`Delete ${me.name} forever?`, `This removes ${me.name}'s player, online progress and leaderboard entries everywhere. It can't be undone.`, "Delete forever", async () => {
+      const msg = () => $("#pv-msg");
+      toast("🗑️", `Deleting ${me.name}…`, "One moment");
+      try { await plDeleteForever(me); toast("✅", `${me.name} was deleted`, "Back to the guest passport"); useData(LS.get("prof_guest", null) || { P: freshP(), BEST: {} }); setTimeout(() => location.reload(), 900); }
+      catch (e) { toast("⚠️", "Couldn't delete the player", e.message === "account" ? "Sign in again, then try once more." : "Check the internet connection and try again."); }
+    });
+    $("#c-no").textContent = "Keep player";
+  }, "Deleting a player can't be undone.");
+}
+
 /* ================= wiring ================= */
 document.querySelectorAll(".ticket button").forEach(b => b.onclick = () => { S.level = b.dataset.level; saveS(); sfx("tap"); renderMenu(); });
 $("#cases").addEventListener("click", e => { const b = e.target.closest(".veh"); if (!b) return; sfx("tap"); openCat(b.dataset.cat); });
@@ -5428,7 +5601,7 @@ const plColor = name => PL_COLORS[[...name].reduce((a, ch) => a + ch.charCodeAt(
 const plMe = () => CL.players.find(p => p.uid === CL.active) || null;
 const plSave = () => { LS.set("players", CL.players); LS.set("player", CL.active); ckWrite(); };
 const plEmail = name => name.toLowerCase() + "@players.atlas-explorers.app";   // never emailed; Firebase just needs this shape
-const plValidName = name => /^[A-Za-z0-9_]{3,16}$/.test(name);
+const plValidName = name => /^[A-Za-z0-9_]{3,16}$/.test(name) && !badWord(name);
 
 async function cloudConfig() {
   try {
@@ -5496,6 +5669,7 @@ async function cloudPut(p, data) {
 function mergeData(a, b) {
   if (a == null) return b; if (b == null) return a;
   if (a && b && a._lb && b._lb) return (b.s || 0) > (a.s || 0) ? b : a;
+  if (a && b && a._at && b._at) return b._at > a._at ? b : a;
   if (typeof a === "number" && typeof b === "number") return Math.max(a, b);
   if (typeof a === "boolean" && typeof b === "boolean") return a || b;
   if (typeof a === "string" && typeof b === "string") return a || b;
@@ -5520,7 +5694,8 @@ const boardUrl = key => `https://firestore.googleapis.com/v1/projects/${encodeUR
 async function cloudBoardPost() {
   const me = plMe(); if (!me || !CL.cfg || !navigator.onLine) return;
   const posted = LS.get("lbposted_" + me.uid, {});
-  const ini = iniClean(P.ini || me.name) || "???";
+  if (P.lbHide) return;   // this player chose not to appear on the online leaderboard
+  let ini = iniClean(P.ini || me.name) || "???"; if (badWord(ini)) ini = "???";
   for (const [key, b] of Object.entries(BEST)) {
     // Post the best run that has its achievement and time; an older best (from before times were kept) only if it's higher.
     const [m] = key.split("_"), withT = b.lb && b.lb.a ? b.lb : null, oldS = m === "allc" ? 0 : (b.score || 0);
@@ -5545,7 +5720,7 @@ async function cloudBoardTop(key) {
   const r = await fetch(`${boardUrl(key)}:runQuery`, { method: "POST", headers, body: JSON.stringify(body) });
   if (!r.ok) throw new Error(r.status === 403 ? "rules" : "net");
   const j = await r.json();
-  return boardCache[key] = j.filter(x => x.document).map(x => { const f = x.document.fields || {}; return { i: (f.ini && f.ini.stringValue) || "???", s: +((f.score && f.score.integerValue) || 0), d: +((f.at && f.at.integerValue) || 0), a: (f.ach && f.ach.stringValue) || "", t: f.secs ? +f.secs.integerValue : -1, uid: x.document.name.split("/").pop() }; });
+  return boardCache[key] = j.filter(x => x.document).map(x => { const f = x.document.fields || {}; const ti = iniClean((f.ini && f.ini.stringValue) || ""); return { i: !ti || badWord(ti) ? "???" : ti, s: +((f.score && f.score.integerValue) || 0), d: +((f.at && f.at.integerValue) || 0), a: (f.ach && f.ach.stringValue) || "", t: f.secs ? +f.secs.integerValue : -1, uid: x.document.name.split("/").pop() }; });
 }
 
 function cloudDirty() { if (CL.quiet || !CL.active) return; clearTimeout(CL.timer); CL.timer = setTimeout(cloudSync, 4000); }
@@ -5601,7 +5776,7 @@ function switchPlayer(uid, data, clearGuest) {
 const hasProgress = () => (P.rounds || 0) > 0 || Object.keys(BEST).length > 0;
 
 /* ---- Players page ---- */
-let plTab = "in";
+let plTab = "in", plDraft = null;
 async function renderPlayers() {
   const body = $("#pl-body");
   if (!CL.cfg) await cloudConfig();
@@ -5615,7 +5790,7 @@ async function renderPlayers() {
   const card = p => `<div class="plcard${p.uid === CL.active ? " on" : ""}" data-uid="${p.uid}" role="button" tabindex="0" style="--c:${plColor(p.name)}">
       <span class="av">${esc(p.name[0].toUpperCase())}</span>
       <span><b>${esc(p.name)}</b><small>${p.uid === CL.active ? `<span class="tag">Playing now</span> · <span id="pl-state">${esc(plStateText())}</span>` : "Tap to play as " + esc(p.name)}</small></span>
-      <button class="x" data-forget="${p.uid}" aria-label="Remove ${esc(p.name)} from this device">✕</button></div>`;
+      <span class="plbtns"><button class="x ppbtn" data-pass="${p.uid}" aria-label="Change ${esc(p.name)}'s passport">🛂</button><button class="x" data-forget="${p.uid}" aria-label="Remove ${esc(p.name)} from this device">✕</button></span></div>`;
   body.innerHTML = `
     ${CL.players.length ? `<h3>Players on this device</h3><div class="pllist">${CL.players.map(card).join("")}
       <div class="plcard${!CL.active ? " on" : ""}" data-uid="" role="button" tabindex="0" style="--c:#8AA0BF"><span class="av">?</span><span><b>Guest</b><small>${!CL.active ? '<span class="tag">Playing now</span> · ' : ""}Saved on this device only</small></span><span></span></div></div>` : ""}
@@ -5624,17 +5799,29 @@ async function renderPlayers() {
     <form class="plform" id="pl-form" autocomplete="off">
       <label>Player name<input id="pl-name" maxlength="16" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="e.g. Ava or Max_7"></label>
       <label>Password<input id="pl-pass" type="password" maxlength="40" placeholder="At least 6 characters"></label>
-      ${plTab === "new" ? `<label>Password again<input id="pl-pass2" type="password" maxlength="40"></label>` : ""}
+      ${plTab === "new" ? `<label>Password again<input id="pl-pass2" type="password" maxlength="40"></label>
+      <div class="plpass"><span class="plpassl">Passport</span><span class="plpassc" id="pl-passc"></span><button class="btn alt" type="button" id="pl-passbtn">🛂 Choose</button></div>` : ""}
       <p class="plmsg" id="pl-msg"></p>
       <button class="btn" type="submit" id="pl-go">${plTab === "new" ? "Create player" : "Sign in"}</button>
     </form>
     <p class="note">${plTab === "new" ? "Pick a name others won't guess, and a password you'll remember. Write them down: there's no way to reset a forgotten password." : "Sign in with the same player name and password on any phone, tablet or computer to carry on where you left off."}</p>`;
   body.querySelectorAll(".pltabs button").forEach(b => b.onclick = () => { plTab = b.dataset.t; sfx("tap"); renderPlayers(); });
+  if (plTab === "new") {
+    if (!plDraft) { const used = new Set(CL.players.map(p => passFor(p).cc)); const free = PASSPORTS.find(x => !used.has(x.cc)) || pick(PASSPORTS); plDraft = { cc: free.cc, cov: free.cov }; }
+    const showDraft = () => { const ps = passMade(plDraft.cc, plDraft.cov); $("#pl-passc").innerHTML = `<i class="plsw" style="--cov:${ps.cov}"></i>${flagImg(BY_ID.get(ps.cc))}<span>${esc(ps.n)}</span>`; };
+    showDraft();
+    $("#pl-passbtn").onclick = () => {
+      sfx("tap");
+      const keep = { name: $("#pl-name").value, p1: $("#pl-pass").value, p2: $("#pl-pass2").value };
+      passEditor("Choose your passport", passMade(plDraft.cc, plDraft.cov), keep.name.trim() || "New player", (cc, cov) => { plDraft = { cc, cov }; showDraft(); });
+    };
+  }
   body.querySelectorAll(".plcard").forEach(c => {
     const go = () => { const uid = c.dataset.uid || null; if (uid === CL.active) return; sfx("tap"); switchPlayer(uid); };
-    c.onclick = e => { if (!e.target.closest("[data-forget]")) go(); };
+    c.onclick = e => { if (!e.target.closest("[data-forget],[data-pass]")) go(); };
     c.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } };
   });
+  body.querySelectorAll("[data-pass]").forEach(b => b.onclick = e => { e.stopPropagation(); sfx("tap"); passEdit(b.dataset.pass || null); });
   body.querySelectorAll("[data-forget]").forEach(b => b.onclick = () => {
     const p = CL.players.find(x => x.uid === b.dataset.forget);
     confirmBox(`Remove ${p.name}?`, `${p.name} is taken off this device only. Their progress stays saved online, and they can sign in again any time.`, "Remove", () => {
@@ -5649,7 +5836,7 @@ async function renderPlayers() {
     e.preventDefault();
     const name = $("#pl-name").value.trim(), pass = $("#pl-pass").value, msg = $("#pl-msg");
     msg.classList.remove("ok");
-    if (!plValidName(name)) { msg.textContent = "Use 3 to 16 letters or numbers (no spaces)."; return; }
+    if (!plValidName(name)) { msg.textContent = badWord(name) ? "Please pick a different player name." : "Use 3 to 16 letters or numbers (no spaces)."; return; }
     if (pass.length < 6) { msg.textContent = "The password needs at least 6 characters."; return; }
     if (plTab === "new" && pass !== $("#pl-pass2").value) { msg.textContent = "The two passwords don't match."; return; }
     if (!navigator.onLine) { msg.textContent = "Connect to the internet to sign in."; return; }
@@ -5657,6 +5844,7 @@ async function renderPlayers() {
     try {
       const j = await authCall(plTab === "new" ? "signUp" : "signInWithPassword", { email: plEmail(name), password: pass, returnSecureToken: true });
       const p = { uid: j.localId, name, refresh: j.refreshToken };
+      const draft = plTab === "new" && plDraft; if (draft) { p.pcc = draft.cc; p.cov = draft.cov; }
       CL.token = j.idToken; CL.tokenFor = p.uid; CL.tokenExp = Date.now() + (+j.expiresIn || 3600) * 1000;
       CL.players = CL.players.filter(x => x.uid !== p.uid).concat(p); plSave();
       msg.textContent = "Loading your progress…";
@@ -5664,7 +5852,8 @@ async function renderPlayers() {
       try { remote = await cloudGet(p); } catch (err) { if (err.message === "rules") throw new Error("Signed in, but the cloud said no. Check the Firestore rules in Firebase."); }
       const cached = LS.get("prof_" + p.uid, null);
       let data = mergeData(cached, remote);
-      const finish = (d, clearGuest) => { sfx("unlock"); cloudPut(p, d).catch(() => {}).finally(() => switchPlayer(p.uid, d, clearGuest)); };
+      const finish = (d, clearGuest) => { sfx("unlock");
+        if (draft) { d = d || { P: freshP(), BEST: {} }; d.P = d.P || freshP(); d.P.pass = { cc: draft.cc, cov: draft.cov, _at: Date.now() }; plDraft = null; } cloudPut(p, d).catch(() => {}).finally(() => switchPlayer(p.uid, d, clearGuest)); };
       if (!CL.active && hasProgress()) {
         // First sign-in on a device that already has guest progress: offer to keep it.
         confirmBox(`Keep this device's progress?`, `Add the stars, stamps and trophies already on this device to ${name}'s player?`, `Yes, add it to ${name}`, () => {
@@ -5682,6 +5871,8 @@ async function renderPlayers() {
   const orig = LS.set;
   LS.set = (k, v) => { orig(k, v); if (k === "progress" || k === "best") cloudDirty(); };
   $("#set-player").onclick = () => { sfx("tap"); openWho(true); };
+  $("#set-pass").onclick = () => { sfx("tap"); passEdit(CL.active || null); };
+  $("#set-privacy").onclick = () => { sfx("tap"); openPrivacy(); };
   $("#pl-row").hidden = !CL.cfg; plStatus();
   const later = () => { if (CL.active) cloudSync(); };
   cloudConfig().then(() => {
@@ -5712,13 +5903,65 @@ const PASSPORTS = [
 ];
 const PASS_GUEST = { cc: "CH", n: "Switzerland", cov: "#B3202E" };
 const PASS_NEW = { cc: "NZ", n: "New Zealand", cov: "#1A1B1F" };
+/* Cover colours a player can pick for their passport */
+const PP_COVERS = ["#1F2F5C", "#1C3A72", "#13525A", "#1E4D36", "#4A5320", "#5E1A2A", "#9E1F2A", "#7C1C1C", "#8A2457", "#4B2366", "#3A2A78", "#5A3A1E", "#9A4A12", "#34404F", "#1A1B1F"];
+const passMade = (cc, cov) => { const c = BY_ID.get(cc) || BY_ID.get("CA"), base = PASSPORTS.find(x => x.cc === c.id); return { cc: c.id, n: c.n, cov: /^#[0-9a-fA-F]{6}$/.test(cov || "") ? cov : (base ? base.cov : "#1F2F5C") }; };
+// The passport someone picked: kept with their progress (so it follows them to other devices) and on this device's list
+function passPicked(uid) {
+  const d = uid === CL.active || (!uid && !CL.active) ? { P } : LS.get("prof_" + (uid || "guest"), null);
+  return d && d.P && d.P.pass && d.P.pass.cc ? d.P.pass : null;
+}
 const passFor = p => {
+  const own = passPicked(p.uid); if (own) return passMade(own.cc, own.cov);
+  if (p.pcc) return passMade(p.pcc, p.cov);
   if (!p.cc) {   // give each player their own country, in the order they joined this device
     const used = new Set(CL.players.map(x => x.cc).filter(Boolean));
     p.cc = (PASSPORTS.find(x => !used.has(x.cc)) || PASSPORTS[CL.players.indexOf(p) % PASSPORTS.length]).cc; plSave();
   }
   return PASSPORTS.find(x => x.cc === p.cc) || PASSPORTS[0];
 };
+const passGuest = () => { const own = passPicked(null); return own ? passMade(own.cc, own.cov) : PASS_GUEST; };
+/* Save a passport choice for a player (uid) or the guest (null) */
+function passSave(uid, cc, cov) {
+  const pick = { cc, cov, _at: Date.now() };
+  if (uid === CL.active || (!uid && !CL.active)) { P.pass = pick; saveP(); }
+  else { const d = LS.get("prof_" + (uid || "guest"), null) || { P: freshP(), BEST: {} }; d.P.pass = pick; LS.set("prof_" + (uid || "guest"), d); }
+  const p = uid && CL.players.find(x => x.uid === uid); if (p) { p.pcc = cc; p.cov = cov; plSave(); }
+}
+/* The passport chooser: cover colour and flag, with a live preview */
+function passEditor(title, start, name, onSave, onCancel) {
+  let cc = start.cc, cov = start.cov, q = "";
+  const flags = () => {
+    const k = acNorm(q), list = GEO.filter(c => !k || acNorm(c.n).includes(k) || (AC_MAP.get(k) === c.id)).sort((a, b) => a.n.localeCompare(b.n));
+    return list.length ? list.map(c => `<button type="button" class="ppflag${c.id === cc ? " on" : ""}" data-cc="${c.id}" aria-pressed="${c.id === cc}">${flagImg(c)}<span>${esc(c.n)}</span></button>`).join("") : `<p class="note">No country matches “${esc(q)}”.</p>`;
+  };
+  showInfo(`<div class="ppedit"><h2>${esc(title)}</h2>
+    <div class="ppprev" id="pp-prev"></div>
+    <h3>Cover colour</h3><div class="ppcovers">${PP_COVERS.map(c => `<button type="button" class="ppcov" data-cov="${c}" style="--cov:${c}" aria-label="Cover colour"></button>`).join("")}</div>
+    <h3>Flag</h3><input class="ppsearch" id="pp-q" type="search" placeholder="Find a country…" autocomplete="off" spellcheck="false" aria-label="Find a country">
+    <div class="ppflags" id="pp-flags"></div>
+    <div class="cc-actions"><button class="btn ghost" id="pp-cancel" type="button">Cancel</button><button class="btn" id="pp-save" type="button">Save passport</button></div></div>`);
+  const prev = () => {
+    const pass = passMade(cc, cov);
+    $("#pp-prev").innerHTML = ppCard("on", pass, pass.n, name, "Your passport", PP_EMBLEM, `tabindex="-1" aria-hidden="true"`);
+    $("#info-in").querySelectorAll(".ppcov").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.cov === cov)));
+  };
+  const drawFlags = () => {
+    $("#pp-flags").innerHTML = flags();
+    $("#pp-flags").querySelectorAll(".ppflag").forEach(b => b.onclick = () => { cc = b.dataset.cc; sfx("tap"); $("#pp-flags").querySelectorAll(".ppflag").forEach(x => { const on = x.dataset.cc === cc; x.classList.toggle("on", on); x.setAttribute("aria-pressed", String(on)); }); prev(); });
+  };
+  $("#info-in").querySelectorAll(".ppcov").forEach(b => b.onclick = () => { cov = b.dataset.cov; sfx("tap"); prev(); });
+  $("#pp-q").oninput = () => { q = $("#pp-q").value; drawFlags(); };
+  $("#pp-cancel").onclick = () => { $("#info").hidden = true; if (onCancel) onCancel(); };
+  $("#pp-save").onclick = () => { sfx("unlock"); $("#info").hidden = true; onSave(cc, cov); };
+  prev(); drawFlags();
+  setTimeout(() => { const on = $("#pp-flags .ppflag.on"); if (on) on.scrollIntoView({ block: "center" }); }, 30);
+}
+/* Change the passport of a player (uid) or the guest (null) */
+function passEdit(uid, then) {
+  const p = uid && CL.players.find(x => x.uid === uid), cur = p ? passFor(p) : passGuest();
+  passEditor(p ? `${p.name}'s passport` : "Guest passport", cur, p ? p.name : "Guest", (cc, cov) => { passSave(uid, cc, cov); if (!$("#s-who").hidden) renderWho(); if (!$("#s-players").hidden) renderPlayers(); plStatus(); if (then) then(); });
+}
 const PP_EMBLEM = `<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="21" fill="none" stroke="#F2C14E" stroke-width="2.6"/><ellipse cx="32" cy="32" rx="9" ry="21" fill="none" stroke="#F2C14E" stroke-width="2"/><path d="M11 32h42M14 22h36M14 42h36" stroke="#F2C14E" stroke-width="2" fill="none"/><circle cx="32" cy="32" r="28.5" fill="none" stroke="#F2C14E" stroke-width="1.2" stroke-dasharray="2 4" opacity=".75"/></svg>`;
 const PP_PLUS = `<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="24" fill="none" stroke="#F2C14E" stroke-width="2.6" stroke-dasharray="5 5"/><path d="M32 20v24M20 32h24" stroke="#F2C14E" stroke-width="4" stroke-linecap="round"/></svg>`;
 const PP_CHIP = `<svg class="chip" viewBox="0 0 40 26" aria-hidden="true"><rect x="2" y="2" width="36" height="22" rx="3" fill="none" stroke="#F2C14E" stroke-width="2"/><circle cx="20" cy="13" r="5.5" fill="none" stroke="#F2C14E" stroke-width="2"/><path d="M2 13h12.5M25.5 13H38" stroke="#F2C14E" stroke-width="2"/></svg>`;
@@ -5729,18 +5972,19 @@ function passStats(uid) {
   return stars || stamps ? `★ ${stars} · ${stamps} stamp${stamps === 1 ? "" : "s"}` : "Ready for a first trip";
 }
 let whoCanLeave = false;
+function ppCard(cls, pass, kick, name, sub, inner, attrs) {
+  const c = BY_ID.get(pass.cc);
+  return `<button type="button" class="pp ${cls}${kick.length > 15 ? " longk" : ""}" style="--cov:${pass.cov}" ${attrs}>
+    <span class="pk">Passport<b>${esc(kick)}</b></span>
+    <span class="pe">${inner}${c && !cls.includes("new") ? flagImg(c) : ""}</span>
+    <span><span class="pn">${esc(name)}</span><span class="ps">${esc(sub)}</span></span>
+    ${PP_CHIP}</button>`;
+}
 function renderWho() {
-  const card = (cls, pass, kick, name, sub, inner, attrs) => {
-    const c = BY_ID.get(pass.cc);
-    return `<button type="button" class="pp ${cls}" style="--cov:${pass.cov}" ${attrs}>
-      <span class="pk">Passport<b>${esc(kick)}</b></span>
-      <span class="pe">${inner}${c && cls !== "new" ? flagImg(c) : ""}</span>
-      <span><span class="pn">${esc(name)}</span><span class="ps">${esc(sub)}</span></span>
-      ${PP_CHIP}</button>`;
-  };
+  const card = ppCard;
   $("#who-grid").innerHTML =
     CL.players.map(p => { const pass = passFor(p); return card(p.uid === CL.active ? "on" : "", pass, pass.n, p.name, passStats(p.uid), PP_EMBLEM, `data-uid="${p.uid}" aria-label="Play as ${esc(p.name)}"`); }).join("") +
-    card(!CL.active && CL.players.length ? "on" : "", PASS_GUEST, "Visitor", "Guest", passStats(null) || "Saved on this device", PP_EMBLEM, `data-uid="" aria-label="Play as a guest"`) +
+    card(!CL.active && CL.players.length ? "on" : "", passGuest(), passPicked(null) ? passGuest().n : "Visitor", "Guest", passStats(null) || "Saved on this device", PP_EMBLEM, `data-uid="" aria-label="Play as a guest"`) +
     card("new", PASS_NEW, "Apply here", "New Passport", "Sign in or make a player", PP_PLUS, `data-new="1" aria-label="New passport: sign in or create a player"`);
   $("#who-grid").querySelectorAll(".pp").forEach(b => b.onclick = () => {
     sfx("tap");
@@ -5836,7 +6080,7 @@ if (window.history && history.pushState) {
 }
 
 /* ================= check for updates ================= */
-const APP_VERSION = "atlas-v38";
+const APP_VERSION = "atlas-v40";
 const verNum = v => +((String(v).match(/(\d+)\s*$/) || [0, 0])[1]);
 async function remoteVersion() {
   const res = await fetch("sw.js?check=" + Date.now(), { cache: "no-store" });
