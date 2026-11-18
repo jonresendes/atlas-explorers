@@ -1166,6 +1166,13 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
 .qcfeed .soft { color: var(--ink-soft); }
 .qcfeed .pts { background: var(--sun); color: var(--ink); border: 2px solid var(--ink); border-radius: 99px; padding: 0 9px; font-size: .86em; }
 .qcbar { flex: none; display: grid; }
+.micbtn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+.micbtn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.micbtn.live { background: var(--mint); color: var(--ink); animation: qcmic 1s ease-in-out infinite alternate; }
+.micbtn.wait { opacity: .7; }
+.vxbar { display: flex; align-items: center; gap: 10px; margin-top: 10px; flex: none; }
+.vxbar .btn { min-height: 0; padding: 7px 14px; font-size: .95rem; }
+.vxheard { font-size: .85rem; font-weight: 800; color: var(--ink-soft); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .qcmic { display: flex; align-items: center; gap: 10px; min-height: 46px; padding: 6px 14px; background: var(--paper); border: var(--ol); border-radius: 14px; box-shadow: 0 3px 0 var(--shadow); font-weight: 800; color: var(--ink-soft); min-width: 0; }
 .qcmic .dot { flex: none; width: 30px; height: 30px; border-radius: 50%; background: #C9D3DF; border: 2px solid var(--ink); display: grid; place-items: center; }
 .qcmic .dot svg { width: 16px; height: 16px; fill: none; stroke: var(--ink); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
@@ -1328,7 +1335,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
       <div class="mid"><div class="mode">Name Them All</div><div class="qn num" id="ac-count">0 of 197 countries</div></div>
       <div class="scorebox" id="ac-timebox"><small>Time left</small><b class="num" id="ac-time">15:00</b></div>
     </div>
-    <div class="acbar"><input id="ac-input" class="acinput" type="text" autocomplete="off" autocorrect="off" autocapitalize="words" spellcheck="false" enterkeyhint="done" placeholder="Type a country…" aria-label="Type a country name"><button class="btn alt" id="ac-giveup" type="button">Give up</button></div>
+    <div class="acbar"><input id="ac-input" class="acinput" type="text" autocomplete="off" autocorrect="off" autocapitalize="words" spellcheck="false" enterkeyhint="done" placeholder="Type a country…" aria-label="Type a country name"><button class="btn alt micbtn" id="ac-mic" data-owner="ac" type="button" aria-pressed="false" aria-label="Say the names"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button><button class="btn alt" id="ac-giveup" type="button">Give up</button></div>
     <div class="acfeed" id="ac-feed" aria-live="polite"></div>
     <div class="acmain"><div class="mapbox" id="ac-map"></div><div class="panel acside" id="ac-side"></div></div>
   </section>
@@ -1950,6 +1957,7 @@ function gamePreview(k) {
   return "";
 }
 function goHome() {
+  vxOff();
   if (curCat) openCat(curCat); else { renderMenu(); show("s-menu"); }
 }
 
@@ -3193,6 +3201,8 @@ const s3 = m => ((newEra().stars[m]) || 0) >= 3;
 const chef = (cid, city) => { const N = newEra(), c = BY_ID.get(cid); return !!(N.city[city] && N.st[cid] && catsFor(c).every(m => N.st[cid][m])); };
 const SPECIAL = [
   ["truscott", "🚂", "Travelling Truscott", "Name all 197 countries in under 9 minutes in Name Them All.", () => (P.acFast || 1e9) < 540],
+  ["simonsays", "🗣️", "Simon Says", "Say all 197 countries out loud in Name Them All in under 5 minutes.", () => (P.acVoice || 1e9) < 300],
+  ["trussy", "🧳", "Trussy's Travels", "Say all 197 countries out loud in Name Them All in under 3 minutes 31 seconds.", () => (P.acVoice || 1e9) < 211],
   ["italianchef", "🍕", "Italian Chef", "Answer every kind of question about Italy, and find Naples in Big Cities.", () => chef("IT", "Naples")],
   ["sushichef", "🍣", "Sushi Chef", "Answer every kind of question about Japan, and find Osaka in Big Cities.", () => chef("JP", "Osaka")],
   ["tacochef", "🌮", "Taco Chef", "Answer every kind of question about Mexico, and find Guadalajara in Big Cities.", () => chef("MX", "Guadalajara")],
@@ -3707,7 +3717,7 @@ function acRemaining() { return NTA.pool.filter(id => !NTA.found[id]).map(id => 
 function acFmt(s) { s = Math.max(0, Math.ceil(s)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; }
 /* Before a game: Explorers pick a continent; everyone picks a time limit. */
 function startAllc() {
-  sfx("tap");
+  sfx("tap"); qvInit().then(() => { const b = $("#ac-govoice"); if (b && !QV.kind) b.hidden = true; });
   const lv = S.level, times = AC_TIMES[lv];
   let secs = (S.acTime && S.acTime[lv]) || times[lv === "hard" ? 1 : 1][0];
   if (!times.some(t => t[0] === secs)) secs = times[1][0];
@@ -3717,13 +3727,18 @@ function startAllc() {
       <p>${lv === "easy" ? "Pick a continent, then type every country in it before time runs out." : "Type every country in the world before time runs out."}</p>
       ${lv === "easy" ? `<h3>Continent</h3><div class="acconts pick">${CONT_KEYS.map(k => `<button class="acc" data-k="${k}" aria-pressed="${k === cont}" style="--f:${CONT[k].col}"><b>${CONT[k].n}</b><span class="num">${GEO.filter(c => c.m === k).length} countries</span>${P.acCont && P.acCont[k] ? `<small>Best ${P.acCont[k].n}/${P.acCont[k].of}</small>` : ""}</button>`).join("")}</div>` : ""}
       <h3>Time limit</h3><div class="seg actime">${times.map(([v, l]) => `<button data-v="${v}" aria-pressed="${v === secs}">${l}</button>`).join("")}</div>
-      <div class="cc-actions"><button class="btn ghost" id="info-close">Back</button><button class="btn" id="ac-go">Start!</button></div></div>`);
+      ${lv === "hard" ? `<p class="qcsmall">Say all 197 out loud in under 5 minutes to earn <b>Simon Says</b> 🗣️, or under 3:31 for <b>Trussy's Travels</b> 🧳.</p>` : ""}
+      <div class="cc-actions three"><button class="btn ghost" id="info-close">Back</button><button class="btn alt" id="ac-go">⌨️ Type</button><button class="btn" id="ac-govoice">🎤 Say them</button></div></div>`);
     $("#info-in").querySelectorAll(".acc").forEach(b => b.onclick = () => { cont = b.dataset.k; sfx("tap"); draw(); });
     $("#info-in").querySelectorAll(".actime button").forEach(b => b.onclick = () => { secs = +b.dataset.v; sfx("tap"); draw(); });
-    $("#ac-go").onclick = () => {
+    const go = voice => {
       S.acTime = Object.assign({}, S.acTime, { [lv]: secs }); if (lv === "easy") S.acCont = cont; saveS();
       $("#info").hidden = true; acBegin(lv === "easy" ? cont : null, secs);
+      if (voice) vxTap("ac");   // still inside the tap, so the browser lets the microphone start
     };
+    $("#ac-go").onclick = () => go(false);
+    $("#ac-govoice").onclick = () => go(true);
+    if (QV.done && !QV.kind) $("#ac-govoice").hidden = true;
   };
   draw();
 }
@@ -3731,7 +3746,8 @@ function acBegin(cont, secs) {
   sfx("go");
   H.on = false;
   const pool = cont ? GEO.filter(c => c.m === cont).map(c => c.id) : GEO.map(c => c.id);
-  Object.assign(NTA, { on: true, found: {}, order: [], left: secs, total: secs, paused: false, done: false, review: false, cont, pool, inPool: new Set(pool), lv: S.level });
+  Object.assign(NTA, { on: true, found: {}, order: [], left: secs, total: secs, paused: false, done: false, review: false, cont, pool, inPool: new Set(pool), lv: S.level, typedN: 0, voiceN: 0, voiceUsed: false, vjust: new Set() });
+  vxOff();
   const W = MAPS.WC;
   const PAL = shuffle(["#FF8A6B", "#FFC93C", "#8FDB6E", "#7FD0F5", "#B9A2FF", "#FF8FB1", "#5FD7C4", "#FFB25E"]), col = {};
   shuffle(GEO).forEach(c => {
@@ -3802,13 +3818,14 @@ function acInput() {
   }
   if (AC_HINT[v]) acFeed(esc(AC_HINT[v]), "hint");
 }
-function acAccept(id) {
+function acAccept(id, how) {
   if (NTA.found[id] || NTA.done) return;
   const c = BY_ID.get(id);
+  if (how === "voice") NTA.voiceN++; else NTA.typedN++;
   NTA.found[id] = Date.now(); NTA.order.push(id);
   $("#ac-input").value = "";
   sfx("right");
-  acFeed(`${flagImg(c)} <b>${esc(c.n)}</b> ✓`, "ok");
+  acFeed(`${flagImg(c)} <b>${esc(c.n)}</b> ✓${how === "voice" ? " 🎤" : ""}`, "ok");
   const svg = $("#ac-map svg");
   svg.querySelectorAll(`[data-id="${id}"]`).forEach(el => { el.classList.add("found"); el.classList.remove("hid"); });
   if (svg.querySelector(`.mk[data-id="${id}"]`)) scaleMarkers(svg);
@@ -3890,17 +3907,18 @@ function acPause() {
   NTA.paused = true; $("#app").classList.add("paused");
   showInfo(`<h2>Paused</h2><p>${NTA.order.length} countries named · ${acFmt(NTA.left)} left</p>
     <button class="btn" id="info-close">Resume</button><button class="btn danger" id="ac-quit">Quit to main menu</button>`);
-  const resume = () => { NTA.paused = false; NTA.last = performance.now(); $("#app").classList.remove("paused"); $("#info").hidden = true; setTimeout(() => { try { $("#ac-input").focus(); } catch (e) {} }, 50); };
+  const talk = QV.owner === "ac"; vxOff();
+  const resume = () => { NTA.paused = false; NTA.last = performance.now(); $("#app").classList.remove("paused"); $("#info").hidden = true; if (talk) vxTap("ac"); else setTimeout(() => { try { $("#ac-input").focus(); } catch (e) {} }, 50); };
   $("#info-close").onclick = resume;
   $("#ac-quit").onclick = () => { $("#info").hidden = true; acExit(); };
 }
 function acExit() {
-  NTA.on = false; NTA.done = true; NTA.paused = false; cancelAnimationFrame(NTA.raf); clearTimeout(NTA.wait);
+  vxOff(); NTA.on = false; NTA.done = true; NTA.paused = false; cancelAnimationFrame(NTA.raf); clearTimeout(NTA.wait);
   $("#app").classList.remove("paused"); goHome();
 }
 function acFinish(title) {
   if (NTA.done) return;
-  NTA.done = true; NTA.review = true; clearTimeout(NTA.wait); cancelAnimationFrame(NTA.raf);
+  NTA.done = true; NTA.review = true; clearTimeout(NTA.wait); cancelAnimationFrame(NTA.raf); vxOff();
   const inp = $("#ac-input"); inp.disabled = true; inp.blur();
   $("#ac-giveup").textContent = "Done";
   const n = NTA.order.length, of = NTA.pool.length, used = NTA.total - Math.max(0, NTA.left);
@@ -3916,6 +3934,7 @@ function acFinish(title) {
   } else {
     P.acBest = Math.max(P.acBest || 0, n);
     if (n >= of) P.acFast = Math.min(P.acFast || 1e9, Math.round(used));
+    if (n >= of && !NTA.typedN) P.acVoice = Math.min(P.acVoice || 1e9, Math.round(used));   // every name said out loud
     if (n >= 100) award("memory");
   }
   saveP(); acAwards(n, of, used);
@@ -4231,7 +4250,10 @@ function renderQ() {
       renderClues(false);
       $("#nextclue").onclick = () => revealClue();
     } else {
-      stage.innerHTML = `<div class="card"><div class="vis">${q.visual}</div><div class="prompt">${esc(q.prompt)}</div></div>${opts}`;
+      const talk = G.mode === "capitals" && !H.on && !(QV.done && !QV.kind);
+      stage.innerHTML = `<div class="card"><div class="vis">${q.visual}</div><div class="prompt">${esc(q.prompt)}</div></div>${opts}` +
+        (talk ? `<div class="vxbar"><button class="btn alt micbtn" data-owner="quiz" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg><span>Say it</span></button><span class="vxheard" id="vx-heard">${QV.owner === "quiz" ? "Listening… say the country, then “next”" : "Tap 🎤 to answer out loud"}</span></div>` : "");
+      if (talk) { qvInit(); stage.querySelector(".micbtn").onclick = () => vxTap("quiz"); G.vskip = QV.partial || ""; G.vAt = performance.now(); vxUI(); }
     }
     document.querySelectorAll(".opt").forEach(b => safeTap(b, () => choose(+b.dataset.i)));
   }
@@ -4441,6 +4463,7 @@ function quitToMenu() {
 
 /* ================= results ================= */
 function endGame() {
+  vxOff();
   if (H.on) return h2hResults();
   G.active = false; stopTimer();
   const n = G.qs.length, pct = G.right / n;
@@ -4650,8 +4673,8 @@ function qvInit() {
         const d = await window.claude.use("dictation");
         if (d) {
           QV.kind = "claude"; QV.d = d;
-          d.onPartial(e => { QV.partial = (e && e.text) || ""; if (QV.partial) qcHear(QV.partial, false); });
-          d.onFinal(e => { QV.partial = ""; qcHear((e && e.text) || "", true); });
+          d.onPartial(e => { QV.partial = (e && e.text) || ""; if (QV.partial) qvHear(QV.partial, false); });
+          d.onFinal(e => { QV.partial = ""; qvHear((e && e.text) || "", true); });
           d.onState(e => qvState(e.state, e.reason));
         }
       }
@@ -4665,10 +4688,12 @@ function qvState(state, reason) {
   if (state === "idle") {
     if (reason === "not_granted") QV.denied = true;
     if (reason === "unavailable") QV.gone = true;
-    if (QV.want) { QV.want = false; qcMicLost(reason); }
+    if (QV.want) { QV.want = false; (QV.onLost || qcMicLost)(reason); }
   }
-  qcMicUI();
+  (QV.ui || qcMicUI)();
 }
+/* Words heard go to whichever game is listening: Quick Call, Name Them All or Capital Quest */
+const qvHear = (text, final) => (QV.sink || qcHear)(text, final);
 /* Must be called straight from a tap or key press. Resolves true once the microphone is listening. */
 function qvStart() {
   QV.err = "";
@@ -4701,10 +4726,10 @@ function qvStart() {
             if (i < (QV.finN || 0)) continue;   // already handled in this listening session
             QV.finN = i + 1;
             const f = fresh(tx); if (tx.trim()) QV.lastFin = tx.trim().toLowerCase();
-            QV.partial = ""; if (f) qcHear(f, true);
+            QV.partial = ""; if (f) qvHear(f, true);
           } else interim += tx;
         }
-        if (interim) { const f = fresh(interim); QV.partial = f; if (f) qcHear(f, false); }
+        if (interim) { const f = fresh(interim); QV.partial = f; if (f) qvHear(f, false); }
       };
       r.onerror = e => {
         if (e.error === "no-speech" || e.error === "aborted") return;
@@ -4811,7 +4836,7 @@ const QC_SOUND = new Map(GEO.map(c => [c.id, (QC_KEYS.get(c.id) || []).filter(k 
 const QC_PLAIN = new Set("like likes look looks lots less loss lose lies city cities cute cool okay yeah yes what where when that this there their these those then than think thing things know knew said says maybe mean really guess sure just pass skip next wait time tell call kind mind many much more most some sure well very easy hard about again".split(" "));
 const qcSoundsLike = (k, id) => !k.includes(" ") && k.length >= 4 && !QC_PLAIN.has(k) && (QC_SOUND.get(id) || []).some(([n, s]) => Math.abs(n - k.length) <= 2 && s === qcSound(k));
 const qcNear = (k, id) => (QC_KEYS.get(id) || []).some(t => { if (t.length < 5) return false; const max = t.length >= 9 ? 2 : 1; return qcLev(k, t, max) <= max; });
-const qcWords = text => String(text).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/&/g, " and ").replace(/[^a-z0-9]+/g, " ").trim().split(" ").filter(Boolean).slice(-14);
+const qcWords = (text, max = 14) => String(text).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/&/g, " and ").replace(/[^a-z0-9]+/g, " ").trim().split(" ").filter(Boolean).slice(-max);
 /* Did these words name the country asked for? And if not, which other country did they name? */
 function qcMatch(text, id) {
   const w = qcWords(text), found = [];
@@ -4858,6 +4883,7 @@ function startQuick() {
 }
 /* A tap on a "use my voice" button: turn the microphone on, then carry on. */
 function qcVoiceTap(btn, then) {
+  QV.owner = "qc"; QV.sink = qcHear; QV.ui = qcMicUI; QV.onLost = qcMicLost;
   const p = qvStart();   // straight from the tap, before anything else
   btn.disabled = true; btn.textContent = "Waiting for the mic…";
   p.then(ok => {
@@ -5169,6 +5195,94 @@ function qcMicLost(reason) {
   qcPause(reason || "upstream_error");
 }
 
+/* ================= Voice answers in Name Them All and Capital Quest =================
+   The same microphone as Quick Call. A 🎤 button turns it on and off; typing or tapping still works alongside. */
+// Mishearings that are everyday words: fine when one country is being asked for (Quick Call), too loose when any country counts.
+const VX_PLAIN = new Set("hungry chat chad check summer iron button baton butane cereal serial surname believe believes guitar gutter cutter cotter kotter gonna omen olivia monica cameras utopia cynical gamma gimme pillow baron span grease crease geese phoebe molly mollie marley toga garner benign louse allows livia lidia chilly chili chilli dr oz tonka granada columbia catarrh greek greeks swiss".split(" ").map(acNorm));
+/* Every country named in some words. Names inside longer names don't count ("Sudan" in "South Sudan").
+   While the words are still coming in, names that could still grow (Niger → Nigeria) wait for the end of the phrase. */
+function vxFind(text, final, fuzzyIds) {
+  const w = qcWords(text, 60), found = [];
+  for (let i = 0; i < w.length; i++) for (let n = 1; n <= 7 && i + n <= w.length; n++) {
+    const k = acNorm(w.slice(i, i + n).join(" ")); if (!k) continue;
+    let hit = AC_MAP.get(k);
+    if (!hit && QC_SAID.has(k) && !VX_PLAIN.has(k)) hit = QC_SAID.get(k);
+    if (!hit && final && fuzzyIds && n <= 3 && k.length >= 6) hit = fuzzyIds.find(id => qcNear(k, id)) || null;
+    if (hit) found.push({ i, n, id: hit });
+  }
+  const top = found.filter(a => !found.some(b => b.id !== a.id && b.n > a.n && b.i <= a.i && b.i + b.n >= a.i + a.n));
+  return [...new Set(top.filter(a => final || !QC_AMBIG.has(a.id) || a.i + a.n < w.length).map(a => a.id))];
+}
+function vxUI(state) {
+  document.querySelectorAll(".micbtn").forEach(b => {
+    const mine = QV.owner === b.dataset.owner, on = mine && (QV.live || state === "wait");
+    b.classList.toggle("live", on); b.classList.toggle("wait", mine && state === "wait"); b.setAttribute("aria-pressed", String(on));
+    if (QV.done && !QV.kind) b.hidden = true;
+  });
+  const inp = $("#ac-input"); if (inp) inp.placeholder = QV.owner === "ac" && QV.live ? "🎤 Listening… say country names (or type)" : "Type a country…";
+}
+function vxOff() { if (QV.owner === "ac" || QV.owner === "quiz") { QV.owner = null; qvStop(); } vxUI(); }
+function vxLost() { const was = QV.owner; QV.owner = null; vxUI(); if (was === "ac" || was === "quiz") toast("🎤", "The microphone stopped", "Tap 🎤 to turn it back on, or keep going by typing."); }
+/* From a tap: turn the microphone on for this game, or off again */
+function vxTap(owner) {
+  if (QV.owner === owner && QV.want) { sfx("tap"); vxOff(); return; }
+  if (!QV.done) { qvInit().then(() => vxUI()); toast("🎤", "Getting the microphone ready", "Tap 🎤 again in a moment."); return; }
+  if (!qvCan()) { toast("🎤", QV.denied ? "The microphone is switched off" : "Voice answers aren't available here", QV.denied ? "Allow the microphone for this site to talk your answers." : "They work in Chrome, Edge and Safari. You can keep typing."); return; }
+  sfx("tap");
+  QV.owner = owner; QV.sink = owner === "ac" ? acHear : quizHear; QV.ui = vxUI; QV.onLost = vxLost;
+  vxUI("wait");
+  qvStart().then(ok => {
+    if (!ok) { QV.owner = null; toast("🎤", "The microphone didn't turn on", QV.denied ? "Allow the microphone for this site, then try again." : "Try again, or keep typing."); }
+    if (ok && owner === "ac") NTA.voiceUsed = true;
+    vxUI();
+  });
+}
+/* Name Them All: every country heard is counted at once */
+function acHear(text, final) {
+  if (!NTA.on || NTA.done || NTA.paused) return;
+  NTA.vjust = NTA.vjust || new Set();
+  const todo = final ? NTA.pool.filter(id => !NTA.found[id]) : null;
+  const ids = vxFind(text, final, todo);
+  let got = 0, note = "";
+  ids.forEach(id => {
+    if (NTA.found[id]) { if (final && !NTA.vjust.has(id)) note = `You already have <b>${esc(BY_ID.get(id).n)}</b>!`; return; }
+    if (!NTA.inPool.has(id)) { if (final) note = `<span><b>${esc(BY_ID.get(id).n)}</b> is in ${CONT[BY_ID.get(id).m].n}, not ${CONT[NTA.cont].n}.</span>`; return; }
+    acAccept(id, "voice"); NTA.vjust.add(id); got++;
+  });
+  if (final) {
+    if (!got && note) acFeed(note, "dup");
+    else if (!got && !ids.length && !NTA.vjust.size) acFeed(`🎤 Heard “${esc(text.length > 40 ? "…" + text.slice(-38) : text)}”`, "hint");
+    NTA.vjust = new Set();
+  }
+}
+/* Capital Quest: say the country whose capital is shown */
+function quizHear(text, final) {
+  if (!G.active || G.paused || G.mode !== "capitals") return;
+  if (G.locked) {   // on the answer card, saying "next" moves on
+    const sh = $("#sh-next"); if (sh && sh.closest(".show") && /\b(next|continue|go on|okay next)\b/i.test(text) && performance.now() - (G.vNextAt || 0) > 1500) { G.vNextAt = performance.now(); G.vskip = QV.partial || ""; sh.click(); }
+    return;
+  }
+  const q = G.qs[G.i]; if (!q || !q.options) return;
+  text = String(text || "");
+  if (G.vskip) {   // words still being said when this question appeared don't count for it
+    if (text.toLowerCase().startsWith(G.vskip.toLowerCase())) text = text.slice(G.vskip.length); else if (!final) G.vskip = "";
+    if (final) G.vskip = "";
+  }
+  text = text.trim(); if (!text) return;
+  const h = $("#vx-heard"); if (h) h.textContent = "“" + (text.length > 34 ? "…" + text.slice(-32) : text) + "”";
+  const ids = q.options.map(o => { const c = BY_NAME.get(o.text); return c ? c.id : null; });
+  const hits = ids.map((id, k) => id && qcMatch(text, id).ok ? k : -1).filter(k => k >= 0);
+  if (hits.length === 1) {
+    const k = hits[0];
+    if (QC_AMBIG.has(ids[k]) && !final) { clearTimeout(G.vwait); G.vwait = setTimeout(() => { if (!G.locked && G.qs[G.i] === q) choose(k); }, 450); return; }
+    clearTimeout(G.vwait); return choose(k);
+  }
+  if (final && h && performance.now() - (G.vAt || 0) > 700) {
+    const said = vxFind(text, true).find(id => !ids.includes(id));
+    if (said) h.textContent = `${BY_ID.get(said).n} isn't one of the choices`;
+  }
+}
+
 /* ================= wiring ================= */
 document.querySelectorAll(".ticket button").forEach(b => b.onclick = () => { S.level = b.dataset.level; saveS(); sfx("tap"); renderMenu(); });
 $("#cases").addEventListener("click", e => { const b = e.target.closest(".veh"); if (!b) return; sfx("tap"); openCat(b.dataset.cat); });
@@ -5193,6 +5307,7 @@ $("#cat-games").addEventListener("click", e => {
 });
 $("#ac-input").addEventListener("input", acInput);
 $("#ac-input").addEventListener("keydown", e => { if (e.key === "Enter") { const id = AC_MAP.get(acNorm(e.target.value)); if (id && !NTA.found[id]) acAccept(id); } });
+$("#ac-mic").onclick = () => vxTap("ac");
 $("#ac-pause").onclick = () => { sfx("tap"); if (NTA.done) acExit(); else acPause(); };
 $("#ac-giveup").onclick = () => { sfx("tap"); if (NTA.done) return acExit(); NTA.paused = true; confirmBox("Give up?", "The map will show which countries you missed.", "Give up", () => { NTA.paused = false; acFinish("Nice try!"); }); $("#c-no").onclick = () => { $("#confirm").hidden = true; NTA.paused = false; NTA.last = performance.now(); try { $("#ac-input").focus(); } catch (e) {} }; };
 $("#m-h2h").onclick = () => openPage("s-h2h");
@@ -5721,7 +5836,7 @@ if (window.history && history.pushState) {
 }
 
 /* ================= check for updates ================= */
-const APP_VERSION = "atlas-v37";
+const APP_VERSION = "atlas-v38";
 const verNum = v => +((String(v).match(/(\d+)\s*$/) || [0, 0])[1]);
 async function remoteVersion() {
   const res = await fetch("sw.js?check=" + Date.now(), { cache: "no-store" });
