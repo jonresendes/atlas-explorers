@@ -1,0 +1,17 @@
+Copyright (c) 2026 Jonathan Resendes. All rights reserved.
+
+Atlas Explorers, including its code, design, artwork, text and game content,
+is the property of the copyright holder. No part of it may be copied,
+modified, distributed, published, sold or used to make other works without
+written permission from the copyright holder.
+
+The game is made available at https://jonresendes.github.io/atlas-explorers/
+for personal play only.
+
+Third-party material included in this repository keeps its own licence:
+- Country shapes: Natural Earth (public domain), via world-atlas
+- Country facts: world-countries by Mohammed Le Doze (ODbL 1.0)
+- Satellite imagery: NASA Blue Marble (public domain)
+- three.js and globe.gl (MIT licence), in dist/globe-view.js
+- Fonts: Lilita One and Nunito (SIL Open Font License 1.1)
+- Flag designs: public domain
