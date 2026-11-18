@@ -1,12 +1,13 @@
 // Atlas Explorers offline support.
 // Change VERSION whenever you upload a new index.html so phones pick up the update.
-const VERSION = "atlas-v42";
+const VERSION = "atlas-v43";
 const CORE = [
   "./",
   "index.html",
   "manifest.json",
   "icon-192.png",
   "icon-512.png",
+  "icon-maskable-512.png",
   "apple-touch-icon.png",
   "favicon-32.png",
   "icon.svg"
