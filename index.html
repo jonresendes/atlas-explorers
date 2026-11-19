@@ -3559,6 +3559,7 @@ function renderBoard() {
     return;
   }
   $("#lb-note").textContent = me ? "Top 10 players everywhere. Your best score is added when you're signed in and online." : "Top 10 players everywhere. Sign in with a passport to add your scores.";
+  if (me && LS.get("lbrules", 0)) $("#lb-note").textContent += " ⚠️ Times and long name tags can't be uploaded yet: the game's online leaderboard rules need updating in Firebase.";
   const draw = l => { $("#lb-list").innerHTML = (l.length ? rows(l, e => me && e.uid === me.uid) : `<p class="empty">No one has posted a ${MODES[lbMode].name} score yet. Be the first!</p>`) + foot; };
   if (boardCache[key]) draw(boardCache[key]); else $("#lb-list").innerHTML = `<p class="empty">Loading the world leaderboard…</p>` + foot;
   if (!navigator.onLine) { if (!boardCache[key]) $("#lb-list").innerHTML = `<p class="empty">Connect to the internet to see everyone's scores.</p>` + foot; return; }
@@ -5784,7 +5785,8 @@ async function cloudBoardPost() {
       const put = fields => fetch(`${boardUrl(key)}/players/${me.uid}`, { method: "PATCH", headers: { Authorization: "Bearer " + tok, "Content-Type": "application/json" }, body: JSON.stringify({ fields }) });
       const base = { score: { integerValue: String(sc) }, at: { integerValue: String(lb.d || Date.now()) } };
       let r = await put(Object.assign({ ini: { stringValue: ini } }, base, lb.a ? { ach: { stringValue: String(lb.a).slice(0, 40) } } : {}, lb.t >= 0 ? { secs: { integerValue: String(lb.t) } } : {})), full = !!lb.a;
-      if (r.status === 403) { r = await put(Object.assign({ ini: { stringValue: ini.slice(0, 3) } }, base)); full = false; }   // older Firestore rules: try again once they're updated
+      if (r.status === 403) { r = await put(Object.assign({ ini: { stringValue: ini.slice(0, 3) } }, base)); full = false; if (r.ok && lb.a) LS.set("lbrules", Date.now()); }   // older Firestore rules: try again once they're updated
+      if (r.ok && full) LS.set("lbrules", 0);
       if (r.ok) { posted[key] = { s: sc, full }; LS.set("lbposted_" + me.uid, posted); boardCache[key] = null; }
     } catch (e) { return; }
   }
@@ -6156,7 +6158,7 @@ if (window.history && history.pushState) {
 }
 
 /* ================= check for updates ================= */
-const APP_VERSION = "atlas-v44";
+const APP_VERSION = "atlas-v45";
 const verNum = v => +((String(v).match(/(\d+)\s*$/) || [0, 0])[1]);
 async function remoteVersion() {
   const res = await fetch("sw.js?check=" + Date.now(), { cache: "no-store" });
