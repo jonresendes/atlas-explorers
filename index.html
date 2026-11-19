@@ -1413,6 +1413,14 @@ span.off { color: rgba(217,194,145,.55); }
 .pstamp.off img { filter: grayscale(1) sepia(.3); opacity: .5; }
 .gcard.metal:not(.off) { background: radial-gradient(120% 90% at 50% 0%, #FFF6D8, #F7E8C2); box-shadow: 0 0 0 1px #E3B04B, 0 0 16px rgba(227,176,75,.35); }
 .gcard.metal.off { background: #EFE5CC; }
+
+.sharebox h2 { text-align: center; }
+.sharelink { background: var(--paper); border: 2px dashed var(--brass); border-radius: 12px; padding: 10px 12px; margin: 10px 0 12px; text-align: center; font-weight: 700; word-break: break-all; user-select: all; -webkit-user-select: all; color: var(--ink); }
+.sharegrid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.sharegrid .btn { font-size: 1rem; min-height: 46px; padding: 6px 10px; }
+.sharegrid #sh-app, .sharegrid #sh-copy { grid-column: 1 / -1; }
+.cc-actions.one { grid-template-columns: 1fr; margin-top: 10px; }
+@media (max-width: 360px) { .sharegrid { grid-template-columns: 1fr; } }
 </style>
 
 </head>
@@ -1523,8 +1531,9 @@ span.off { color: rgba(217,194,145,.55); }
       <div class="row"><span class="lbl">Difficulty</span><div class="seg" id="set-level"></div></div>
       <div class="row" id="pl-row"><span class="lbl">Player<span class="sub" id="pl-sub">Save progress online and play on any device</span></span><button class="btn alt" id="set-player" style="min-height:40px;font-size:1rem;padding:6px 14px;white-space:nowrap">Sign in</button></div>
       <div class="row" id="pass-row"><span class="lbl">Passport<span class="sub" id="pass-sub">Pick your passport's colour and flag</span></span><button class="btn alt" id="set-pass" style="min-height:40px;font-size:1rem;padding:6px 14px;white-space:nowrap">🛂 Change</button></div>
+      <div class="row"><span class="lbl">Share the game<span class="sub">Send it to friends and family by app, email, text or link</span></span><button class="btn alt" id="set-share" style="min-height:40px;font-size:1rem;padding:6px 14px;white-space:nowrap">📤 Share</button></div>
       <div class="row"><span class="lbl">Privacy &amp; safety<span class="sub">What's saved, the leaderboard, deleting a player</span></span><button class="btn alt" id="set-privacy" style="min-height:40px;font-size:1rem;padding:6px 14px;white-space:nowrap">Open</button></div>
-      <div class="row" id="upd-row" hidden><span class="lbl">Version <span class="num" id="upd-ver"></span><span class="sub" id="upd-status">Get the newest games and fixes</span></span><span class="updbtns"><a class="btn alt" id="upd-gh" target="_blank" rel="noopener" hidden>GitHub</a><button class="btn" id="set-update">Check for updates</button></span></div>
+      <div class="row" id="upd-row" hidden><span class="lbl">Version <span class="num" id="upd-ver"></span><span class="sub" id="upd-status">Get the newest games and fixes</span></span><span class="updbtns"><button class="btn" id="set-update">Check for updates</button></span></div>
       <div class="row" id="inst-row" hidden><span class="lbl">Install the app<span class="sub" id="inst-sub">Its own icon and window, and it works offline</span></span><button class="btn alt" id="set-install" style="min-height:40px;font-size:1rem;padding:6px 14px;white-space:nowrap">Install</button></div>
       <div class="row"><span class="lbl">How to play<span class="sub">Rules for every game</span></span><button class="btn alt" id="set-howto" style="min-height:40px;font-size:1rem;padding:6px 14px">Open</button></div>
       <div class="row"><span class="lbl">Reset progress<span class="sub">Clears scores, stamps and trophies</span></span><button class="btn danger" id="set-reset" style="min-height:40px;font-size:1rem;padding:6px 14px">Reset</button></div>
@@ -5417,10 +5426,46 @@ function parentGate(then, why) {
 document.addEventListener("click", e => {
   const a = e.target.closest("a[href]"); if (!a) return;
   let u; try { u = new URL(a.href, location.href); } catch (err) { return; }
-  if (u.origin === location.origin) return;
+  if (u.origin === location.origin || /^(mailto|sms):$/.test(u.protocol)) return;
   e.preventDefault(); e.stopPropagation();
   parentGate(() => { try { window.open(u.href, "_blank", "noopener,noreferrer"); } catch (err) {} });
 }, true);
+/* ---------- Share the game ---------- */
+const SHARE_HOME = "https://jonresendes.github.io/atlas-explorers/";
+function shareLink() {
+  const h = location.hostname;
+  if (location.protocol === "https:" && !/(^|\.)(claude|anthropic|claudeusercontent)\.(ai|com)$/i.test(h) && !/claude|anthropic/i.test(h))
+    return location.origin + location.pathname.replace(/index\.html$/i, "");
+  return SHARE_HOME;
+}
+const SHARE_TITLE = "Atlas Explorers";
+const SHARE_TEXT = "Come explore the world with me in Atlas Explorers! Flags, maps, capitals, landmarks and 18 geography games.";
+function openShare() {
+  const url = shareLink(), canApp = !!navigator.share;
+  const body = `${SHARE_TEXT}\n\n${url}`;
+  showInfo(`<div class="sharebox"><h2>Share Atlas Explorers</h2>
+    <p class="note">Send the game to friends and family. They can play it in a browser or install it.</p>
+    <div class="sharelink num" id="sh-url">${esc(url)}</div>
+    <div class="sharegrid">
+      ${canApp ? `<button class="btn" id="sh-app" type="button">📲 Share with an app</button>` : ""}
+      <button class="btn alt" id="sh-mail" type="button">✉️ Email</button>
+      <button class="btn alt" id="sh-sms" type="button">💬 Text message</button>
+      <button class="btn alt" id="sh-copy" type="button">🔗 Copy link</button>
+    </div>
+    <p class="plmsg ok" id="sh-msg"></p>
+    <div class="cc-actions one"><button class="btn ghost" id="info-close" type="button">Done</button></div></div>`);
+  const msg = t => { $("#sh-msg").textContent = t; };
+  const go = href => { const a = document.createElement("a"); a.href = href; a.rel = "noopener"; a.click(); };
+  if (canApp) $("#sh-app").onclick = async () => { sfx("tap"); try { await navigator.share({ title: SHARE_TITLE, text: SHARE_TEXT, url }); msg("Shared!"); } catch (e) { if (e && e.name !== "AbortError") msg("Sharing didn't work here. Try Copy link."); } };
+  $("#sh-mail").onclick = () => { sfx("tap"); go(`mailto:?subject=${encodeURIComponent("Play " + SHARE_TITLE + " with me")}&body=${encodeURIComponent(body)}`); };
+  $("#sh-sms").onclick = () => { sfx("tap"); go(`sms:?&body=${encodeURIComponent(body)}`); };
+  $("#sh-copy").onclick = async () => {
+    sfx("tap");
+    try { await navigator.clipboard.writeText(url); msg("Link copied. Paste it anywhere!"); }
+    catch (e) { const r = document.createRange(); r.selectNodeContents($("#sh-url")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); msg("Select the link above and copy it."); }
+  };
+}
+$("#set-share").onclick = () => { sfx("tap"); parentGate(openShare, "Sharing sends a link to the game to other people."); };
 /* Remove this player's entries from every online leaderboard */
 async function boardsRemove(p) {
   const tok = await idToken(p), keys = new Set(Object.keys(BEST));
@@ -6111,7 +6156,7 @@ if (window.history && history.pushState) {
 }
 
 /* ================= check for updates ================= */
-const APP_VERSION = "atlas-v43";
+const APP_VERSION = "atlas-v44";
 const verNum = v => +((String(v).match(/(\d+)\s*$/) || [0, 0])[1]);
 async function remoteVersion() {
   const res = await fetch("sw.js?check=" + Date.now(), { cache: "no-store" });
@@ -6146,13 +6191,6 @@ function setupUpdates() {
   $("#upd-row").hidden = false;
   $("#upd-ver").textContent = verNum(APP_VERSION);
   $("#set-update").onclick = () => { sfx("tap"); checkUpdates(); };
-  // GitHub Pages address (name.github.io/repo/) -> the repository page
-  const m = location.hostname.match(/^([^.]+)\.github\.io$/i);
-  if (m) {
-    const repo = location.pathname.split("/").filter(Boolean)[0];
-    const gh = $("#upd-gh"); gh.hidden = false;
-    gh.href = `https://github.com/${m[1]}/${repo && !/\.html$/.test(repo) ? repo : m[1] + ".github.io"}`;
-  }
   // Automatic checks: when the game opens, whenever it comes back on screen, and every 20 minutes.
   if (location.protocol !== "https:") return;
   setTimeout(autoCheck, 2500);
