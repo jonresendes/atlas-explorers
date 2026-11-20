@@ -1421,6 +1421,21 @@ span.off { color: rgba(217,194,145,.55); }
 .sharegrid #sh-app, .sharegrid #sh-copy { grid-column: 1 / -1; }
 .cc-actions.one { grid-template-columns: 1fr; margin-top: 10px; }
 @media (max-width: 360px) { .sharegrid { grid-template-columns: 1fr; } }
+
+/* Leaderboard header on phones: title on its own line, Explorer/Expert switch beside it at full size */
+@media (max-width: 560px) {
+  #s-board .topbar { flex-wrap: wrap; row-gap: 8px; }
+  #s-board .topbar h2 { flex: 1 1 0; min-width: 0; white-space: nowrap; overflow: visible; text-overflow: clip; font-size: clamp(1.15rem, 6.2vw, 1.6rem); letter-spacing: .02em; }
+  #s-board .topbar #lb-level { flex: 0 0 auto; }
+}
+@media (max-width: 400px) {
+  #s-board .topbar #lb-level { order: 3; flex: 1 1 100%; display: grid; grid-template-columns: 1fr 1fr; }
+}
+
+/* Switches (Explorer/Expert, Everyone/This device...): the chosen option is gold, like the game chips,
+   so it stands out; on the navy background the other options are dimmed instead of bright cream */
+.seg button[aria-pressed="true"] { background: linear-gradient(#F4D27A, #C99A45); color: var(--navy-deep); border-color: #8A6420; box-shadow: 0 2px 0 rgba(0,0,0,.25), 0 0 0 2px rgba(244,210,122,.25); }
+.screen > .seg button:not([aria-pressed="true"]), .topbar .seg button:not([aria-pressed="true"]), .mtop .seg button:not([aria-pressed="true"]) { background: rgba(255,255,255,.06); color: #EADBB8; border-color: rgba(184,138,62,.55); }
 </style>
 
 </head>
@@ -4318,6 +4333,7 @@ let returnTo = "s-menu";
 
 function show(id) {
   document.querySelectorAll(".screen").forEach(s => s.hidden = s.id !== id);
+  if (id !== "s-game") hideSheet();   // a game's answer panel never follows you to another screen
   const s = document.getElementById(id); if (s) s.scrollTop = 0;
   gvScreen(id);
 }
@@ -6158,7 +6174,7 @@ if (window.history && history.pushState) {
 }
 
 /* ================= check for updates ================= */
-const APP_VERSION = "atlas-v46";
+const APP_VERSION = "atlas-v47";
 const verNum = v => +((String(v).match(/(\d+)\s*$/) || [0, 0])[1]);
 async function remoteVersion() {
   const res = await fetch("sw.js?check=" + Date.now(), { cache: "no-store" });
