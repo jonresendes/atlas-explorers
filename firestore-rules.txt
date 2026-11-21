@@ -1,0 +1,96 @@
+rules_version = '2';
+
+// Atlas Explorers: Firestore security rules (v48)
+// Paste ALL of this into Firebase console > Firestore Database > Rules, then click Publish.
+// Before publishing, replace PASTE_YOUR_ADMIN_UID_HERE (below) with the User UID of your admin account
+// (Firebase console > Authentication > Users).
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // The admin account: the only one that can read bug reports and usage counts.
+    function isAdmin() {
+      return request.auth != null && request.auth.uid in ['PASTE_YOUR_ADMIN_UID_HERE'];
+    }
+    function signedIn() { return request.auth != null; }
+    function isStr(v, max) { return v is string && v.size() <= max; }
+    function isCount(v) { return v is int && v >= 0 && v < 100000000; }
+
+    // A player's saved progress: only that player can read or change it.
+    match /users/{uid} {
+      allow read: if signedIn() && (request.auth.uid == uid || isAdmin());
+      allow create, update: if signedIn() && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['name', 'data', 'updated'])
+        && request.resource.data.name is string
+        && request.resource.data.name.matches('^[A-Za-z0-9_]{3,16}$')
+        && isStr(request.resource.data.data, 500000)
+        && request.resource.data.updated is int;
+      allow delete: if signedIn() && request.auth.uid == uid;
+    }
+
+    // Online leaderboards: anyone can read; each player can only write their own entry.
+    match /boards/{board}/players/{uid} {
+      allow read: if board.matches('^[a-z0-9]{2,12}_(easy|hard)$');
+      allow create, update: if signedIn() && request.auth.uid == uid
+        && board.matches('^[a-z0-9]{2,12}_(easy|hard)$')
+        && request.resource.data.keys().hasOnly(['ini', 'score', 'at', 'ach', 'secs'])
+        && request.resource.data.ini is string
+        && request.resource.data.ini.matches('^[!-~]{1,6}$')
+        && request.resource.data.score is int
+        && request.resource.data.score >= 0 && request.resource.data.score <= 1000000
+        && request.resource.data.at is int
+        && request.resource.data.at <= request.time.toMillis() + 600000
+        && (!('ach' in request.resource.data) || isStr(request.resource.data.ach, 60))
+        && (!('secs' in request.resource.data) || (request.resource.data.secs is int
+              && request.resource.data.secs >= 0 && request.resource.data.secs < 100000));
+      allow delete: if signedIn() && (request.auth.uid == uid || isAdmin());
+    }
+
+    // Bug reports: any device can send one (as itself); only the admin can read, resolve or delete them.
+    match /reports/{id} {
+      allow create: if signedIn()
+        && request.resource.data.keys().hasOnly(['desc', 'shot', 'v', 'screen', 'ctx', 'ua', 'plat', 'inst', 'w', 'h', 'at', 'player', 'dev', 'status'])
+        && request.resource.data.dev == request.auth.uid
+        && request.resource.data.status == 'open'
+        && request.resource.data.desc is string
+        && request.resource.data.desc.size() >= 1 && request.resource.data.desc.size() <= 1000
+        && isStr(request.resource.data.shot, 700000)
+        && isStr(request.resource.data.v, 40)
+        && isStr(request.resource.data.screen, 40)
+        && isStr(request.resource.data.ctx, 500)
+        && isStr(request.resource.data.ua, 400)
+        && isStr(request.resource.data.plat, 20)
+        && request.resource.data.inst is bool
+        && request.resource.data.player is bool
+        && isCount(request.resource.data.w) && isCount(request.resource.data.h)
+        && request.resource.data.at is int;
+      allow read, delete: if isAdmin();
+      allow update: if isAdmin()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'note', 'resolvedAt']);
+    }
+
+    // Anonymous usage counts: one entry per device (a random ID, no names), written only by that device.
+    match /devices/{dev} {
+      allow create, update: if signedIn() && request.auth.uid == dev
+        && request.resource.data.keys().hasOnly(['first', 'last', 'lastPlay', 'opens', 'plays', 'v', 'inst', 'plat'])
+        && request.resource.data.first is int && request.resource.data.last is int
+        && request.resource.data.lastPlay is int
+        && isCount(request.resource.data.opens) && isCount(request.resource.data.plays)
+        && isStr(request.resource.data.v, 40) && request.resource.data.inst is bool
+        && isStr(request.resource.data.plat, 20);
+      allow read, delete: if isAdmin();
+    }
+    match /days/{day}/d/{dev} {
+      allow create, update: if signedIn() && request.auth.uid == dev
+        && day.matches('^20[0-9][0-9]-[01][0-9]-[0-3][0-9]$')
+        && request.resource.data.keys().hasOnly(['o', 'p'])
+        && isCount(request.resource.data.o) && isCount(request.resource.data.p);
+      allow read, delete: if isAdmin();
+    }
+
+    // Everything else is closed.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
