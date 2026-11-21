@@ -6156,11 +6156,15 @@ function openWho(canLeave) { whoCanLeave = !!canLeave; show("s-who"); renderWho(
 $("#who-manage").onclick = () => { sfx("tap"); openPage("s-players", "s-who"); renderPlayers(); };
 
 /* ================= phone back button =================
-   One press steps back inside the game. Two quick presses ask whether to close the app.
-   A spare history entry catches the press so the browser never leaves the page by itself. */
+   Each press of the phone's back button steps back one screen inside the game (closing a box,
+   pausing a game, leaving a page). On the home screen the first press says "Press back again to exit",
+   and a second press within 2½ seconds closes the app.
+   How: the game keeps a few spare history entries for the back button to use up. Chrome ignores
+   entries a page adds without a tap or key press, so they're only ever added during a tap. */
 const vis = id => !$(id).hidden;
 function appBack() {
   if (vis("#countdown")) return;
+  if (vis("#bug")) { closeBug(); return; }
   if (vis("#confirm")) { $("#c-no").click(); return; }
   if (vis("#ini")) { $("#ini-skip").click(); return; }
   if (vis("#detail")) { $("#detail").hidden = true; return; }
@@ -6179,47 +6183,40 @@ function appBack() {
   if (vis("#s-who") && whoCanLeave) { renderMenu(); show("s-menu"); return; }
   const page = document.querySelector(".screen.page:not([hidden])");
   if (page) { goBack(); return; }
-  toast("👋", "Press back twice quickly", "to close the app");
 }
-function askClose() {
-  if (G.active && !G.paused) pause();
-  const typing = NTA.on && !NTA.done && !NTA.paused && vis("#s-allc");
-  if (typing) NTA.paused = true;
-  confirmBox("Close Atlas Explorers?", "Your scores, stamps and trophies are saved.", "Close the app", () => {
-    backReady = false;
-    try { window.close(); } catch (e) {}
-    // Step off the spare history entry. The phone's next back press then closes the app for real
-    // (web pages aren't allowed to close an installed app by themselves).
-    history.go(-1);
-    toast("👋", "Press back once more", "to close the app");
-  });
-  $("#c-no").textContent = "Keep playing";
-  $("#c-no").onclick = () => { $("#confirm").hidden = true; if (typing) { NTA.paused = false; NTA.last = performance.now(); } };
+const atHome = () => !["#countdown", "#confirm", "#ini", "#detail", "#installhelp", "#info", "#pause", "#bug"].some(s => { const e = $(s); return e && !e.hidden; })
+  && (vis("#s-menu") || (vis("#s-who") && !whoCanLeave));
+const BACK = { ready: false, spare: 0, skip: 0, exitUntil: 0, seq: 0, timer: 0 };
+const SPARE = 6;
+function backTopUp() {
+  if (!BACK.ready || Date.now() < BACK.exitUntil) return;
+  while (BACK.spare < SPARE) { history.pushState({ atlasGuard: ++BACK.seq }, ""); BACK.spare++; }
 }
-let backReady = false, backTimer = 0, lastBack = 0;
-function armBack() { if (!backReady) return; if (!history.state || !history.state.atlasGuard) history.pushState({ atlasGuard: 1 }, ""); }
 if (window.history && history.pushState) {
   history.replaceState({ atlasBase: 1 }, "");
-  // Browsers only honour the spare entry after the person has interacted with the page.
-  const arm = () => { if (backReady) return; backReady = true; armBack(); };
-  ["pointerdown", "keydown"].forEach(t => addEventListener(t, arm, { capture: true }));
+  ["pointerdown", "keydown"].forEach(type => addEventListener(type, () => { BACK.ready = true; BACK.exitUntil = 0; clearTimeout(BACK.timer); backTopUp(); }, { capture: true }));   // any tap cancels a pending exit
   addEventListener("popstate", () => {
-    if (!backReady) return;
-    history.pushState({ atlasGuard: 1 }, "");
-    const now = Date.now();
-    if (now - lastBack < 450) {   // double press
-      clearTimeout(backTimer); lastBack = 0;
-      if (vis("#confirm") && $("#c-yes").textContent === "Close the app") return;
-      askClose(); return;
+    if (BACK.skip > 0) { BACK.skip--; return; }
+    if (!BACK.ready) return;
+    BACK.spare = Math.max(0, BACK.spare - 1);
+    if (atHome()) {
+      // first press on the home screen: step back to the game's first history entry,
+      // so the next press of the back button leaves the app
+      BACK.exitUntil = Date.now() + 2500;
+      toast("👋", "Press back again to exit", "");
+      if (BACK.spare > 0) { BACK.skip = 1; history.go(-BACK.spare); BACK.spare = 0; }
+      clearTimeout(BACK.timer);
+      BACK.timer = setTimeout(() => { BACK.exitUntil = 0; backTopUp(); }, 2600);
+      return;
     }
-    lastBack = now;
-    clearTimeout(backTimer);
-    backTimer = setTimeout(appBack, 300);
+    BACK.exitUntil = 0;
+    appBack();
+    if (BACK.spare === 0) { BACK.spare = 0; backTopUp(); }   // used them all up without a tap: add more (best effort)
   });
 }
 
 /* ================= check for updates ================= */
-const APP_VERSION = "atlas-v49";
+const APP_VERSION = "atlas-v50";
 const verNum = v => +((String(v).match(/(\d+)\s*$/) || [0, 0])[1]);
 async function remoteVersion() {
   const res = await fetch("sw.js?check=" + Date.now(), { cache: "no-store" });
