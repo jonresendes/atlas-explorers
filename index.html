@@ -599,7 +599,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
 .acc i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--f); }
 .acrecent h3 { font-size: .92rem; margin-bottom: 4px; }
 .acrecent .hint { margin: 0; font-size: .82rem; color: var(--ink-soft); }
-.acnames { display: flex; flex-wrap: wrap; gap: 4px; max-height: 54px; overflow: hidden; }
+.acnames { display: flex; flex-wrap: wrap; gap: 4px; max-height: 76px; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; touch-action: pan-y; padding-right: 2px; scrollbar-width: thin; }
 .acnames.big { max-height: 46vh; overflow-y: auto; }
 .acname { display: inline-flex; align-items: center; gap: 4px; font-size: .74rem; font-weight: 900; background: #EEF6FD; border-radius: 99px; padding: 2px 8px 2px 3px; }
 .acname img { width: 18px; border-radius: 2px; }
@@ -4061,9 +4061,9 @@ function acSide() {
     const all = GEO.filter(c => c.m === k), got = all.filter(c => NTA.found[c.id]).length;
     return `<button class="acc" data-k="${k}" style="--f:${CONT[k].col}"><b>${CONT[k].n}</b><span class="num">${got}/${all.length}</span><i style="width:${(got / all.length * 100).toFixed(1)}%"></i></button>`;
   }).join("");
-  const recent = NTA.order.slice(-40).reverse().map(id => `<span class="acname">${flagImg(BY_ID.get(id))}${esc(BY_ID.get(id).n)}</span>`).join("");
+  const recent = NTA.order.slice().reverse().map(id => `<span class="acname">${flagImg(BY_ID.get(id))}${esc(BY_ID.get(id).n)}</span>`).join("");
   $("#ac-side").innerHTML = `<div class="acconts">${rows}</div>
-    <div class="acrecent">${NTA.review ? "" : (recent ? `<h3>Found so far</h3><div class="acnames">${recent}</div>` : `<p class="hint">Countries you name appear here and light up on the map.</p>`)}</div>`;
+    <div class="acrecent">${NTA.review ? "" : (recent ? `<h3>Found so far <span class="num" style="opacity:.6;font-weight:600">(${NTA.order.length})</span></h3><div class="acnames">${recent}</div>` : `<p class="hint">Countries you name appear here and light up on the map.</p>`)}</div>`;
   $("#ac-side").querySelectorAll(".acc").forEach(b => b.onclick = () => acContList(b.dataset.k));
 }
 function acContList(k) {
@@ -4933,7 +4933,7 @@ const qvCan = () => !!QV.kind && !QV.denied && !QV.gone;
 /* ---- matching what was said (or typed) to a country ---- */
 /* Words the microphone often hears in place of a country's name. They only ever count towards the country being asked. */
 const QC_SAID_SRC = {
-  TD: ["chat", "chad", "chadd"], ML: ["molly", "marley", "mollie", "mahli"], TG: ["to go", "toga", "tow go"], BJ: ["been in", "ben in", "bennin", "beneen", "ben een", "benign"],
+  TD: ["chat", "chad", "chadd"], ML: ["molly", "marley", "mollie", "mahli", "mally", "mollee", "molli", "marly", "mah lee", "ma lee", "mall e", "mal e", "moly", "mollie mollie"], TG: ["to go", "toga", "tow go"], BJ: ["been in", "ben in", "bennin", "beneen", "ben een", "benign"],
   NE: ["nijer", "nee jair", "knee jair", "nijair", "ni jair"], CL: ["chilly", "chili", "chilli", "chee lay"], HU: ["hungry", "hungary's", "hung gary"], GR: ["grease", "greece's", "grece", "greek", "greeks", "grecia", "crease", "geese", "greese", "grees", "the greece", "hellas"], IR: ["i ran", "iron", "e ron", "e ran"],
   IQ: ["a rock", "i rack", "e rock", "i rock", "e rack", "a rack"], LA: ["louse", "allows", "lous", "laus"], PE: ["per roo", "peroo", "pay roo"], KE: ["ken ya", "keenya", "kenia"],
   GH: ["gonna", "garner", "ganna", "gana"], OM: ["oh man", "o man", "omen", "oh mon"], YE: ["yeah men", "yeah man", "yaman"], HT: ["hate e", "hey t", "hay tee", "hi t", "hady"],
@@ -4943,7 +4943,7 @@ const QC_SAID_SRC = {
   PW: ["palao", "pulao", "pa lao", "pillow", "pah lao", "belau"], NR: ["now roo", "na ru", "naru", "nah roo", "now ru"], TV: ["two valu", "to value", "too valu", "to valu", "two value"],
   BT: ["baton", "button", "boo tan", "butane", "bhutan's", "boutan"], MM: ["me and mar", "mian mar", "my anmar", "me anmar", "mianmar", "my and mar"], UY: ["your a guy", "you're a guy", "uru guay", "you are a guy", "uruguay's", "oo roo gwai"],
   PY: ["pair a guy", "para guay", "parrot guy", "para gwai"], CI: ["coat de voir", "cote d ivoire", "cote divoire", "coat d ivoire", "code d ivoire", "coat divoire", "cote devoir", "coat devoir", "ivory coast"],
-  TL: ["team or less tay", "timor less tay", "timor leste", "teamor leste", "t more leste", "east timor", "timor"], ST: ["south to may", "sow tomay", "sao tome", "saw to may", "sao tomay", "south tome", "sal tome"],
+  TL: ["team or less tay", "timor less tay", "timor leste", "teamor leste", "t more leste", "east timor", "timor"], ST: ["south to may", "sow tomay", "sao tome", "saw to may", "sao tomay", "south tome", "sal tome", "so to may", "so tomay", "so tome", "sao tommy", "so tommy", "sow tommy", "south tommy", "sao tomei", "sal tomei", "sao thome", "sao tome and principal", "sao tome and prince", "sao tome in principe", "sao tome and principle", "so tome and principe", "san tome", "santo me", "san tome and principe", "saint tome", "saint thomas and prince", "saint thomas and principe", "sao tome principal", "principe", "principe island", "sao tome and pre see pay", "sao tome and prin see pay", "prin see pay", "principay", "princippe", "sow to me", "sao to me", "saw tome", "sa o tome", "sautome", "sao tomey"],
   CV: ["cape verd", "cape bird", "cabo verde", "cape vert", "cape third", "kabo verde"], DJ: ["jabooty", "ja booty", "jibouti", "d jibouti", "jibooty", "the booty", "ji booty", "jibuti"],
   ER: ["air atrea", "era trea", "eritrea's", "erie trea", "air a tray a", "eritria", "aritrea"], GA: ["gab on", "gabone", "gab own", "ga bon", "gabbon"], RW: ["ruanda", "rawanda", "ro wanda", "ruwanda", "r wanda"],
   BI: ["brundi", "burundy", "boo roondi", "barundi"], MR: ["more attania", "moritania", "mauretania"], MU: ["more ishes", "marishes", "moritius", "more itious", "mauritious"], BN: ["brew nigh", "bruni", "brunai", "brew nye", "brunei darussalam"],
@@ -5377,7 +5377,7 @@ function qcMicLost(reason) {
 /* ================= Voice answers in Name Them All and Capital Quest =================
    The same microphone as Quick Call. A 🎤 button turns it on and off; typing or tapping still works alongside. */
 // Mishearings that are everyday words: fine when one country is being asked for (Quick Call), too loose when any country counts.
-const VX_PLAIN = new Set("hungry chat chad check summer iron button baton butane cereal serial surname believe believes guitar gutter cutter cotter kotter gonna omen olivia monica cameras utopia cynical gamma gimme pillow baron span grease crease geese phoebe molly mollie marley toga garner benign louse allows livia lidia chilly chili chilli dr oz tonka granada columbia catarrh greek greeks swiss".split(" ").map(acNorm));
+const VX_PLAIN = new Set("hungry chat chad check summer iron button baton butane cereal serial surname believe believes guitar gutter cutter cotter kotter gonna omen olivia monica cameras utopia cynical gamma gimme pillow baron span grease crease geese phoebe toga garner benign louse allows livia lidia chilly chili chilli dr oz tonka granada columbia catarrh greek greeks swiss".split(" ").map(acNorm));
 /* Every country named in some words. Names inside longer names don't count ("Sudan" in "South Sudan").
    While the words are still coming in, names that could still grow (Niger → Nigeria) wait for the end of the phrase. */
 function vxFind(text, final, fuzzyIds) {
@@ -6219,7 +6219,7 @@ if (window.history && history.pushState) {
 }
 
 /* ================= check for updates ================= */
-const APP_VERSION = "atlas-v48";
+const APP_VERSION = "atlas-v49";
 const verNum = v => +((String(v).match(/(\d+)\s*$/) || [0, 0])[1]);
 async function remoteVersion() {
   const res = await fetch("sw.js?check=" + Date.now(), { cache: "no-store" });
