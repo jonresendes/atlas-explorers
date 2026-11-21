@@ -10,7 +10,7 @@ service cloud.firestore {
 
     // The admin account: the only one that can read bug reports and usage counts.
     function isAdmin() {
-      return request.auth != null && request.auth.uid in ['PASTE_YOUR_ADMIN_UID_HERE'];
+      return request.auth != null && request.auth.uid in ['HQWbBn8Ac7SL6FgwaTQn0xbAt602'];
     }
     function signedIn() { return request.auth != null; }
     function isStr(v, max) { return v is string && v.size() <= max; }
