@@ -18,6 +18,42 @@
 body { margin: 0; }
 img { max-width: 100%; }
 [hidden] { display: none !important; }
+
+/* ---- Report a bug: the ladybug button ---- */
+.bugfab { position: fixed; z-index: 35; right: max(12px, env(safe-area-inset-right, 0px)); bottom: calc(var(--bugb, 12px) + env(safe-area-inset-bottom, 0px));
+  display: flex; align-items: center; gap: 0; height: 44px; min-width: 44px; padding: 0 6px; border-radius: 999px;
+  background: linear-gradient(#FBF3E1, #EAD9B4); border: 2px solid var(--brass); color: var(--ink); box-shadow: 0 3px 10px rgba(0,0,0,.35);
+  font-weight: 800; font-size: .92rem; cursor: pointer; transition: opacity .35s, filter .35s, padding .25s, gap .25s; }
+.bugfab .lbug { width: 30px; height: 30px; flex: 0 0 auto; }
+.bugfab .bf-lbl { max-width: 0; overflow: hidden; white-space: nowrap; transition: max-width .3s; }
+.bugfab.open { gap: 6px; padding: 0 14px 0 7px; }
+.bugfab.open .bf-lbl { max-width: 140px; }
+.bugfab:not(.open) { filter: grayscale(1); opacity: .5; }
+.bugfab:not(.open):hover, .bugfab:not(.open):focus-visible, .bugfab:not(.open):active { filter: none; opacity: 1; }
+@media (hover: hover) { .bugfab:hover { gap: 6px; padding: 0 14px 0 7px; } .bugfab:hover .bf-lbl { max-width: 140px; } }
+.screen.page::after { content: ""; display: block; height: 56px; flex: 0 0 auto; }
+.bugbtn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; margin-top: 10px; font-size: 1rem; }
+.bugbtn .lbug { width: 24px; height: 24px; }
+/* ---- the report box ---- */
+.overlay.bugov { z-index: 70; }
+.bugmodal { max-width: 460px; width: calc(100vw - 24px); max-height: calc(100dvh - 24px); overflow: auto; text-align: left; }
+.bughead { display: flex; gap: 12px; align-items: center; margin-bottom: 4px; }
+.bughead .lbug { width: 46px; height: 46px; flex: 0 0 auto; }
+.bughead h2 { margin: 0; }
+.bugmodal h3 { margin: 12px 0 6px; font-size: 1.05rem; }
+.bugyn { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.bugyn .btn { font-size: .95rem; min-height: 44px; padding: 6px 8px; }
+.bugthumb { display: flex; gap: 12px; align-items: center; }
+.bugthumb img { width: 96px; max-height: 170px; object-fit: cover; object-position: top; border-radius: 8px; border: 2px solid var(--brass); background: #1A2B4C; }
+.bugwait { animation: bugpulse 1s ease-in-out infinite alternate; }
+@keyframes bugpulse { from { opacity: .5; } to { opacity: 1; } }
+.buglbl { display: block; font-family: var(--display); font-weight: 700; font-size: 1.05rem; margin: 12px 0 6px; color: var(--ink); }
+#bug-text { width: 100%; box-sizing: border-box; border-radius: 12px; border: 2px solid rgba(184,138,62,.7); background: #FFFDF6; color: var(--ink); padding: 10px 12px; font: inherit; font-size: 1rem; resize: vertical; min-height: 96px; }
+#bug-text:focus { outline: 3px solid rgba(244,210,122,.7); border-color: var(--brass); }
+.bugcount { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; margin-top: 4px; }
+.bugcount .note, .bugmodal .note { font-size: .82rem; color: var(--ink); opacity: .78; }
+.bugshot .note { text-align: left; margin: 0 0 8px; font-size: .9rem; }
+.linkbtn { background: none; border: 0; padding: 0; color: var(--coral); font-weight: 800; text-decoration: underline; cursor: pointer; font: inherit; }
 </style>
 <script>
 /* Security: where the game is hosted on its own site (or packaged as an app), only its own files and its Firebase
@@ -1428,7 +1464,7 @@ span.off { color: rgba(217,194,145,.55); }
   #s-board .topbar h2 { flex: 1 1 0; min-width: 0; white-space: nowrap; overflow: visible; text-overflow: clip; font-size: clamp(1.15rem, 6.2vw, 1.6rem); letter-spacing: .02em; }
   #s-board .topbar #lb-level { flex: 0 0 auto; }
 }
-@media (max-width: 400px) {
+@media (max-width: 560px) {
   #s-board .topbar #lb-level { order: 3; flex: 1 1 100%; display: grid; grid-template-columns: 1fr 1fr; }
 }
 
@@ -1547,6 +1583,7 @@ span.off { color: rgba(217,194,145,.55); }
       <div class="row" id="pl-row"><span class="lbl">Player<span class="sub" id="pl-sub">Save progress online and play on any device</span></span><button class="btn alt" id="set-player" style="min-height:40px;font-size:1rem;padding:6px 14px;white-space:nowrap">Sign in</button></div>
       <div class="row" id="pass-row"><span class="lbl">Passport<span class="sub" id="pass-sub">Pick your passport's colour and flag</span></span><button class="btn alt" id="set-pass" style="min-height:40px;font-size:1rem;padding:6px 14px;white-space:nowrap">🛂 Change</button></div>
       <div class="row"><span class="lbl">Share the game<span class="sub">Send it to friends and family by app, email, text or link</span></span><button class="btn alt" id="set-share" style="min-height:40px;font-size:1rem;padding:6px 14px;white-space:nowrap">📤 Share</button></div>
+      <div class="row"><span class="lbl">Report a bug<span class="sub">Something not working? Tell us, with a picture</span></span><button class="btn alt" id="set-bug" style="min-height:40px;font-size:1rem;padding:6px 14px;white-space:nowrap">🐞 Report</button></div>
       <div class="row"><span class="lbl">Privacy &amp; safety<span class="sub">What's saved, the leaderboard, deleting a player</span></span><button class="btn alt" id="set-privacy" style="min-height:40px;font-size:1rem;padding:6px 14px;white-space:nowrap">Open</button></div>
       <div class="row" id="upd-row" hidden><span class="lbl">Version <span class="num" id="upd-ver"></span><span class="sub" id="upd-status">Get the newest games and fixes</span></span><span class="updbtns"><button class="btn" id="set-update">Check for updates</button></span></div>
       <div class="row" id="inst-row" hidden><span class="lbl">Install the app<span class="sub" id="inst-sub">Its own icon and window, and it works offline</span></span><button class="btn alt" id="set-install" style="min-height:40px;font-size:1rem;padding:6px 14px;white-space:nowrap">Install</button></div>
@@ -3519,6 +3556,7 @@ function badWord(s) {
 const INI_MAX = 6, iniClean = v => Array.from(String(v || "").toUpperCase().replace(/[^\x21-\x7E]/g, "")).slice(0, INI_MAX).join("");
 // Remember what this round achieved, for the leaderboard (and keep the best one for the online board).
 function lbNote(mode, lv, score, ach, secs) {
+  statPlay();
   G.lbAch = ach; G.lbSecs = secs;
   const key = bestKey(mode, lv), b = BEST[key] || (BEST[key] = { score: 0, stars: 0 });
   if (score > 0 && (!b.lb || score > b.lb.s)) { b.lb = { _lb: 1, s: score, a: ach, t: secs, d: Date.now() }; LS.set("best", BEST); }
@@ -3800,7 +3838,7 @@ function applyPicks() {
   renderTeambar();
 }
 function h2hResults() {
-  G.active = false; stopTimer();
+  G.active = false; stopTimer(); statPlay();
   const ranked = H.teams.slice().sort((a, b) => b.score - a.score);
   const top = ranked[0].score, winners = ranked.filter(t => t.score === top);
   $("#hr-title").textContent = winners.length > 1 ? "It's a tie!" : `${winners[0].name} win!`;
@@ -4334,6 +4372,7 @@ let returnTo = "s-menu";
 function show(id) {
   document.querySelectorAll(".screen").forEach(s => s.hidden = s.id !== id);
   if (id !== "s-game") hideSheet();   // a game's answer panel never follows you to another screen
+  if (typeof bugFab === "function") bugFab(id);
   const s = document.getElementById(id); if (s) s.scrollTop = 0;
   gvScreen(id);
 }
@@ -5511,8 +5550,12 @@ function openPrivacy() {
     <ul><li><b>On this device:</b> scores, stars, stamps, badges and settings.</li>
     <li><b>Online, only for signed-in players:</b> the player name, the password (kept by Google's Firebase sign-in, never by the game), progress, and the chosen passport. Player names aren't email addresses, and no real names, ages or locations are asked for.</li>
     <li><b>Seen by other players:</b> only the leaderboard name tag (up to 6 characters), the score, what was achieved and how long it took.</li></ul>
+    <h3>Bug reports and usage counts</h3>
+    <ul><li><b>Bug reports</b> are only sent when you tap Send. They hold what you wrote, the picture of the screen if you chose to add one, the game version, the page you were on, and the type of device and browser.</li>
+    <li><b>Usage counts:</b> the game counts how many devices open it and finish games each day, so we know what's being played. Each device is a random anonymous number: no names, no locations, nothing about who is playing.</li></ul>
+    <div class="row prow"><span class="lbl">Share anonymous usage counts<span class="sub">Helps us see which games get played</span></span><button class="switch" role="switch" id="pv-stats" aria-checked="${S.stats !== false}" aria-label="Share anonymous usage counts"></button></div>
     <h3>What the game never does</h3>
-    <ul><li>No ads, no in-app purchases, no tracking or analytics, no chat between players.</li></ul>
+    <ul><li>No ads, no in-app purchases, no advertising or tracking across other apps and websites, no chat between players.</li></ul>
     <h3>Voice answers</h3>
     <p>Voice answers are optional. The microphone is only on while a 🎤 is lit. What is said is turned into words by the browser's own speech service (for example Google in Chrome, Apple in Safari), not stored by the game.</p>
     ${me ? `<h3>${esc(me.name)}'s player</h3>
@@ -5523,6 +5566,8 @@ function openPrivacy() {
     <p class="note">Country shapes: Natural Earth (public domain). Country facts: world-countries by Mohammed Le Doze (ODbL). Satellite imagery: NASA Blue Marble (public domain). 3D globe: three.js and globe.gl (MIT licence). Flags: public-domain designs.</p>
     <p class="note">© ${new Date().getFullYear()} Atlas Explorers. All rights reserved.</p>
     <div class="cc-actions"><button class="btn" id="info-close" type="button">Done</button></div></div>`);
+  const ss = $("#pv-stats");
+  ss.onclick = () => { S.stats = S.stats === false; saveS(); ss.setAttribute("aria-checked", String(S.stats)); sfx("tap"); if (S.stats) statOpen(); };
   if (!me) return;
   const sw = $("#pv-lb");
   sw.onclick = async () => {
@@ -6174,7 +6219,7 @@ if (window.history && history.pushState) {
 }
 
 /* ================= check for updates ================= */
-const APP_VERSION = "atlas-v47";
+const APP_VERSION = "atlas-v48";
 const verNum = v => +((String(v).match(/(\d+)\s*$/) || [0, 0])[1]);
 async function remoteVersion() {
   const res = await fetch("sw.js?check=" + Date.now(), { cache: "no-store" });
@@ -6311,6 +6356,242 @@ renderMenu();
 (() => {
   let go = null; try { go = sessionStorage.getItem("atlasx_go"); sessionStorage.removeItem("atlasx_go"); } catch (e) {}
   if (go !== "menu" && (CL.cfg || CL.players.length)) openWho(false); else show("s-menu");
+})();
+
+/* ================= Report a bug + anonymous usage counts =================
+   A ladybug button sits at the bottom of every page (it never shows during a game: there it lives in the
+   pause menu). A report can include a picture of the screen (taken without the pause menu, so it shows the
+   game itself) and a description, and goes to the game's Firebase "reports" list for the admin page.
+   Usage counts: each device gets a random anonymous ID (no names); the game notes the days it was opened
+   and how many games were finished, so the admin page can show active and passive users. */
+const BUG_GAME_SCREENS = new Set(["s-game", "s-allc", "s-hop", "s-pz", "s-fr", "s-qc"]);
+const LADYBUG_SVG = `<svg class="lbug" viewBox="0 0 32 32" aria-hidden="true"><path d="M12.5 6.5 9.5 3M19.5 6.5l3-3.5" stroke="#1d1a16" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="16" cy="9" r="4.6" fill="#1d1a16"/><ellipse cx="16" cy="18.5" rx="10.5" ry="10" fill="#D8402B" stroke="#1d1a16" stroke-width="1.4"/><path d="M16 9v19.4" stroke="#1d1a16" stroke-width="1.5"/><circle cx="11" cy="15" r="2.1" fill="#1d1a16"/><circle cx="21" cy="15" r="2.1" fill="#1d1a16"/><circle cx="10.4" cy="22" r="2.3" fill="#1d1a16"/><circle cx="21.6" cy="22" r="2.3" fill="#1d1a16"/><ellipse cx="12.5" cy="12.6" rx="2.2" ry="1.2" fill="#fff" opacity=".35" transform="rotate(-30 12.5 12.6)"/></svg>`;
+const BUG = { timer: 0, shot: "", ctx: null, busy: false };
+const visScreen = () => { const s = [...document.querySelectorAll(".screen")].find(x => !x.hidden); return s ? s.id : ""; };
+
+function bugFab(id) {
+  const f = $("#bugfab"); if (!f) return;
+  f.hidden = BUG_GAME_SCREENS.has(id) || !id;
+  if (f.hidden) return;
+  bugPlace(id);
+  f.classList.add("open"); clearTimeout(BUG.timer);
+  BUG.timer = setTimeout(() => f.classList.remove("open"), 2200);
+}
+
+/* Where the ladybug sits: bottom-right of the page; above the tab bar on the menu;
+   on the World Map, in the map's own bottom-left corner (the zoom buttons are bottom-right, the continent buttons below) */
+function bugPlace(id = visScreen()) {
+  const f = $("#bugfab"); if (!f || f.hidden) return;
+  let bottom = "", left = "";
+  if (id === "s-menu") { const tb = document.querySelector("#s-menu .tabbar"); if (tb) bottom = Math.round(tb.getBoundingClientRect().height + 10) + "px"; }
+  if (id === "s-map") {
+    const box = ["#mx-globe", "#mx-map"].map(s => $(s)).find(e => e && !e.hidden && e.getBoundingClientRect().height > 60);
+    if (box) { const r = box.getBoundingClientRect(); bottom = Math.round(innerHeight - r.bottom + 8) + "px"; left = Math.round(r.left + 8) + "px"; }
+  }
+  f.style.setProperty("--bugb", bottom || ""); if (!bottom) f.style.removeProperty("--bugb");
+  f.classList.toggle("atleft", !!left); f.style.left = left; f.style.right = left ? "auto" : "";
+}
+/* What was on screen when the report was started, so the bug can be found again */
+function bugContext() {
+  const sc = visScreen(), c = { screen: sc, level: S.level };
+  try {
+    if (sc === "s-game" && G.mode) { c.game = G.mode; c.q = `${Math.min(G.i + 1, (G.qs || []).length)}/${(G.qs || []).length}`; const q = G.qs && G.qs[G.i]; if (q && q.c) c.country = q.c.id || q.c.n; if (q && q.kind) c.kind = q.kind; }
+    else if (sc === "s-allc") c.game = "allc";
+    else if (sc === "s-hop") { c.game = "hop"; c.q = `${HOP.i + 1}/${HOP.list.length}`; }
+    else if (sc === "s-pz") { c.game = "puzzle"; c.q = `${PZ.i + 1}/${PZ.list.length}`; }
+    else if (sc === "s-fr") c.game = "flagrun";
+    else if (sc === "s-qc") c.game = "quick";
+    if (H.on) c.h2h = true;
+  } catch (e) {}
+  return c;
+}
+
+function loadShotLib() {
+  if (window.html2canvas) return Promise.resolve(window.html2canvas);
+  return new Promise((ok, no) => {
+    const s = document.createElement("script"); s.src = "html2canvas.min.js";
+    s.onload = () => window.html2canvas ? ok(window.html2canvas) : no(new Error("lib"));
+    s.onerror = () => no(new Error("lib")); document.head.appendChild(s);
+  });
+}
+/* A picture of the screen as it looks behind the report (and behind the pause menu, if paused) */
+async function bugTakeShot(fromPause) {
+  const h2c = await loadShotLib();
+  const W = innerWidth, Hh = innerHeight, scale = Math.min(devicePixelRatio || 1, 2, 900 / W);
+  const skip = new Set(["bug", "bugfab", "toasts"]); if (fromPause) { skip.add("pause"); skip.add("info"); skip.add("confirm"); }
+  const canvas = await h2c(document.body, {
+    backgroundColor: "#1A2B4C", scale, logging: false, useCORS: true,
+    x: scrollX, y: scrollY, width: W, height: Hh, windowWidth: W, windowHeight: Hh,
+    ignoreElements: el => skip.has(el.id),
+    onclone: doc => { const a = doc.getElementById("app"); if (a) a.classList.remove("paused"); doc.body.classList.remove("paused"); }
+  });
+  let q = .75, url = canvas.toDataURL("image/jpeg", q);
+  while (url.length > 650000 && q > .3) { q -= .12; url = canvas.toDataURL("image/jpeg", q); }
+  return url.length > 650000 ? "" : url;
+}
+
+function openBug(fromPause) {
+  sfx("tap");
+  BUG.shot = ""; BUG.ctx = bugContext(); BUG.fromPause = !!fromPause;
+  $("#bug-in").innerHTML = `<div class="bughead">${LADYBUG_SVG}<div><h2 id="bug-h">Report a bug</h2><p class="note">Tell us what went wrong and we'll fix it.</p></div></div>
+    <h3>Add a picture of the screen?</h3>
+    <div class="bugshot" id="bug-shot">
+      <p class="note">${fromPause ? "The picture shows the game behind this pause menu." : "The picture shows the page behind this box."}</p>
+      <div class="bugyn"><button class="btn alt" id="bug-pic" type="button">📸 Yes, add a picture</button><button class="btn ghost" id="bug-nopic" type="button">No picture</button></div>
+    </div>
+    <label class="buglbl" for="bug-text">What happened?</label>
+    <textarea id="bug-text" maxlength="1000" rows="4" placeholder="For example: Cape Verde was off the edge of the map, so I couldn't tap it."></textarea>
+    <div class="bugcount"><span class="note">Please don't write names, addresses, phone numbers or other personal details.</span><span class="num" id="bug-n">0/1000</span></div>
+    <p class="plmsg" id="bug-msg"></p>
+    <div class="cc-actions"><button class="btn ghost" id="bug-cancel" type="button">Cancel</button><button class="btn" id="bug-send" type="button">Send report</button></div>`;
+  $("#bug").hidden = false;
+  const msg = (t, ok) => { const m = $("#bug-msg"); m.textContent = t; m.classList.toggle("ok", !!ok); };
+  const shotBox = $("#bug-shot");
+  const noPic = () => { BUG.shot = ""; shotBox.innerHTML = `<p class="note">No picture. <button class="linkbtn" id="bug-pic2" type="button">Add one</button></p>`; $("#bug-pic2").onclick = takePic; };
+  const takePic = async () => {
+    sfx("tap"); shotBox.innerHTML = `<p class="note bugwait">📸 Taking a picture of the screen…</p>`;
+    try {
+      BUG.shot = await bugTakeShot(BUG.fromPause);
+      if (!BUG.shot) throw new Error("big");
+      shotBox.innerHTML = `<div class="bugthumb"><img alt="Picture of the screen" src="${BUG.shot}"><div><p class="note">Picture added ✓</p><button class="linkbtn" id="bug-rm" type="button">Remove it</button></div></div>`;
+      $("#bug-rm").onclick = () => { sfx("tap"); noPic(); };
+    } catch (e) { noPic(); msg("The picture couldn't be taken here, but you can still send the report."); }
+  };
+  $("#bug-pic").onclick = takePic;
+  $("#bug-nopic").onclick = () => { sfx("tap"); noPic(); setTimeout(() => $("#bug-text").focus(), 30); };
+  const ta = $("#bug-text"); ta.oninput = () => { $("#bug-n").textContent = `${ta.value.length}/1000`; };
+  $("#bug-cancel").onclick = () => { sfx("tap"); closeBug(); };
+  $("#bug-send").onclick = async () => {
+    const text = ta.value.trim();
+    if (text.length < 3) { msg("Please say what went wrong first."); ta.focus(); return; }
+    if (BUG.busy) return; BUG.busy = true; $("#bug-send").disabled = true; msg("Sending…", true);
+    const rep = bugReport(text);
+    const r = await bugPost(rep);
+    BUG.busy = false; $("#bug-send").disabled = false;
+    if (r === "ok") { sfx("right"); closeBug(); toast("🐞", "Thanks! Your report was sent.", "We'll take a look and fix it."); }
+    else { bugQueue(rep); closeBug(); toast("🐞", "Thanks! Your report is saved.", r === "off" ? "It will be sent once reports are switched on." : "It will be sent when you're back online."); }
+  };
+}
+function closeBug() { $("#bug").hidden = true; $("#bug-in").innerHTML = ""; BUG.shot = ""; }
+
+function bugPlat() {
+  const u = navigator.userAgent || "";
+  if (/iPad/.test(u) || (/Macintosh/.test(u) && navigator.maxTouchPoints > 1)) return "iPad";
+  if (/iPhone|iPod/.test(u)) return "iPhone"; if (/Android/.test(u)) return "Android"; if (/CrOS/.test(u)) return "Chromebook";
+  if (/Windows/.test(u)) return "Windows"; if (/Macintosh/.test(u)) return "Mac"; if (/Linux/.test(u)) return "Linux"; return "Other";
+}
+const bugInstalled = () => !!((window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone);
+function bugReport(text) {
+  const c = BUG.ctx || {};
+  return { desc: text.slice(0, 1000), shot: BUG.shot || "", v: String(typeof APP_VERSION !== "undefined" ? APP_VERSION : "").slice(0, 40),
+    screen: String(c.screen || "").slice(0, 40), ctx: JSON.stringify(c).slice(0, 500),
+    ua: (navigator.userAgent || "").slice(0, 400), plat: bugPlat(), inst: bugInstalled(),
+    w: Math.round(innerWidth), h: Math.round(innerHeight), at: Date.now(), player: !!plMe() };
+}
+
+/* ---- an anonymous Firebase sign-in for this device (used for reports and usage counts) ---- */
+const ANON = { tok: "", exp: 0 };
+async function anonToken() {
+  if (!CL.cfg) await cloudConfig();
+  if (!CL.cfg) throw new Error("nocloud");
+  if (ANON.tok && Date.now() < ANON.exp - 60000) return ANON.tok;
+  const key = encodeURIComponent(CL.cfg.apiKey); let a = LS.get("anon", null), j, r;
+  if (a && a.refresh) {
+    r = await fetch(`https://securetoken.googleapis.com/v1/token?key=${key}`, { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: "grant_type=refresh_token&refresh_token=" + encodeURIComponent(a.refresh) });
+    j = await r.json().catch(() => ({}));
+    if (r.ok) { a.refresh = j.refresh_token || a.refresh; LS.set("anon", a); ANON.tok = j.id_token; ANON.exp = Date.now() + (+j.expires_in || 3600) * 1000; return ANON.tok; }
+    if (!/TOKEN_EXPIRED|USER_NOT_FOUND|INVALID_REFRESH_TOKEN|USER_DISABLED/.test(JSON.stringify(j))) throw new Error("net");
+  }
+  r = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${key}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ returnSecureToken: true }) });
+  j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(/OPERATION_NOT_ALLOWED|ADMIN_ONLY/.test(JSON.stringify(j)) ? "off" : "net");
+  LS.set("anon", { uid: j.localId, refresh: j.refreshToken });
+  ANON.tok = j.idToken; ANON.exp = Date.now() + (+j.expiresIn || 3600) * 1000; return ANON.tok;
+}
+const fsBase = () => `https://firestore.googleapis.com/v1/projects/${encodeURIComponent(CL.cfg.projectId)}/databases/(default)/documents`;
+const fsVal = v => typeof v === "boolean" ? { booleanValue: v } : typeof v === "number" ? { integerValue: String(Math.round(v)) } : { stringValue: String(v) };
+const fsFields = o => Object.fromEntries(Object.entries(o).map(([k, v]) => [k, fsVal(v)]));
+
+async function bugPost(rep) {
+  if (!navigator.onLine) return "net";
+  try {
+    const tok = await anonToken(), uid = (LS.get("anon", {}) || {}).uid;
+    const r = await fetch(`${fsBase()}/reports`, { method: "POST", headers: { Authorization: "Bearer " + tok, "Content-Type": "application/json" },
+      body: JSON.stringify({ fields: fsFields(Object.assign({}, rep, { dev: uid, status: "open" })) }) });
+    return r.ok ? "ok" : r.status === 403 ? "off" : "net";
+  } catch (e) { return e.message === "off" || e.message === "nocloud" ? "off" : "net"; }
+}
+function bugQueue(rep) {
+  const q = LS.get("bugq", []); q.push(rep);
+  while (q.length > 3) q.shift();
+  try { LS.set("bugq", q); } catch (e) { rep.shot = ""; try { LS.set("bugq", q); } catch (e2) {} }
+}
+async function bugFlush() {
+  const q = LS.get("bugq", []); if (!q.length || !navigator.onLine) return;
+  let left = [];
+  for (let i = 0; i < q.length; i++) { const r = await bugPost(q[i]); if (r !== "ok") { left = q.slice(i); break; } }
+  LS.set("bugq", left);
+}
+
+/* ---- usage counts ---- */
+const dayKey = (t = new Date()) => `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, "0")}-${String(t.getDate()).padStart(2, "0")}`;
+const STAT = { timer: 0 };
+function statGet() {
+  const s = LS.get("stat", null) || { first: Date.now(), opens: 0, plays: 0, lastPlay: 0, lastOpen: 0, day: "", dO: 0, dP: 0 };
+  const d = dayKey(); if (s.day !== d) { s.day = d; s.dO = 0; s.dP = 0; }
+  return s;
+}
+function statOpen() {
+  if (S.stats === false) return;
+  const s = statGet(), now = Date.now();
+  if (now - (s.lastOpen || 0) > 30 * 60 * 1000 || !s.dO) { s.opens++; s.dO++; s.lastOpen = now; s.dirty = 1; LS.set("stat", s); }
+  statSoon(3000);
+}
+function statPlay() {
+  if (S.stats === false) return;
+  const s = statGet(); s.plays++; s.dP++; s.lastPlay = Date.now(); s.dirty = 1; LS.set("stat", s); statSoon(8000);
+}
+function statSoon(ms) { clearTimeout(STAT.timer); STAT.timer = setTimeout(statFlush, ms); }
+async function statFlush() {
+  if (S.stats === false || !navigator.onLine) return;
+  const s = statGet(); if (!s.dirty) return;
+  try {
+    const tok = await anonToken(), uid = LS.get("anon", {}).uid, h = { Authorization: "Bearer " + tok, "Content-Type": "application/json" };
+    const dev = { first: s.first, last: Math.max(s.lastOpen || 0, s.lastPlay || 0, Date.now()), lastPlay: s.lastPlay || 0, opens: s.opens, plays: s.plays,
+      v: String(typeof APP_VERSION !== "undefined" ? APP_VERSION : "").slice(0, 40), inst: bugInstalled(), plat: bugPlat() };
+    const a = await fetch(`${fsBase()}/devices/${uid}`, { method: "PATCH", headers: h, body: JSON.stringify({ fields: fsFields(dev) }) });
+    const b = await fetch(`${fsBase()}/days/${s.day}/d/${uid}`, { method: "PATCH", headers: h, body: JSON.stringify({ fields: fsFields({ o: s.dO, p: s.dP }) }) });
+    if (a.ok && b.ok) { const n = statGet(); if (n.day === s.day && n.dO === s.dO && n.dP === s.dP && n.plays === s.plays) { n.dirty = 0; LS.set("stat", n); } }
+  } catch (e) {}
+}
+
+(function bugStart() {
+  const f = document.createElement("button");
+  f.id = "bugfab"; f.className = "bugfab"; f.type = "button"; f.hidden = true; f.setAttribute("aria-label", "Report a bug");
+  f.innerHTML = `${LADYBUG_SVG}<span class="bf-lbl">Report a bug</span>`;
+  f.onclick = () => openBug(false);
+  document.body.appendChild(f);
+  const o = document.createElement("div"); o.className = "overlay bugov"; o.id = "bug"; o.hidden = true;
+  o.innerHTML = `<div class="modal bugmodal" role="dialog" aria-modal="true" aria-labelledby="bug-h"><div id="bug-in"></div></div>`;
+  document.body.appendChild(o);
+  // in a game, the report button is in the pause menu
+  const pm = document.querySelector("#pause .pm-actions");
+  if (pm) { const b = document.createElement("button"); b.className = "btn ghost bugbtn"; b.id = "p-bug"; b.type = "button"; b.innerHTML = `${LADYBUG_SVG} Report a bug`; b.onclick = () => openBug(true); pm.appendChild(b); }
+  const origInfo = showInfo;
+  showInfo = function (html) {
+    origInfo(html);
+    if (BUG_GAME_SCREENS.has(visScreen()) && /<h2>Paused<\/h2>/.test(html)) {
+      const b = document.createElement("button"); b.className = "btn ghost bugbtn"; b.id = "info-bug"; b.type = "button"; b.innerHTML = `${LADYBUG_SVG} Report a bug`;
+      b.onclick = () => openBug(true); $("#info-in").appendChild(b);
+    }
+  };
+  const sb = $("#set-bug"); if (sb) sb.onclick = () => openBug(false);
+  bugFab(visScreen());
+  addEventListener("resize", () => bugPlace());
+  if (window.ResizeObserver) { const ro = new ResizeObserver(() => bugPlace()); ["#mx-map", "#mx-globe", "#mx-side"].forEach(s => { const e = $(s); if (e) ro.observe(e); }); }
+  setTimeout(() => { statOpen(); bugFlush(); }, 2500);
+  addEventListener("online", () => { bugFlush(); statSoon(2000); });
+  document.addEventListener("visibilitychange", () => { if (document.hidden) statFlush(); else statOpen(); });
 })();
 </script>
 

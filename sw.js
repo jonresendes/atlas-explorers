@@ -1,6 +1,6 @@
 // Atlas Explorers offline support.
 // Change VERSION whenever you upload a new index.html so phones pick up the update.
-const VERSION = "atlas-v47";
+const VERSION = "atlas-v48";
 const CORE = [
   "./",
   "index.html",
@@ -41,7 +41,8 @@ self.addEventListener("fetch", event => {
   if (req.method !== "GET") return;
   const url = new URL(req.url);
   // The "Check for updates" button always asks the website directly.
-  if (url.pathname.endsWith("/sw.js") || url.pathname.endsWith("/cloud.json")) return;
+  // The admin page is never cached (and never swapped for the game).
+  if (url.pathname.endsWith("/sw.js") || url.pathname.endsWith("/cloud.json") || url.pathname.endsWith("/admin.html")) return;
   const isFont = url.hostname === "fonts.googleapis.com" || url.hostname === "fonts.gstatic.com";
   if (url.origin !== self.location.origin && !isFont) return;
 

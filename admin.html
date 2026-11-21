@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+<title>Atlas Explorers · Admin</title>
+<link rel="icon" href="favicon-32.png">
+<style>
+:root { --navy: #1A2B4C; --navy-deep: #111d36; --ink: #22314F; --paper: #F6ECD6; --paper2: #EAD9B4; --brass: #B88A3E; --gold: #F4D27A;
+  --coral: #D9673A; --mint: #1FA37A; --red: #C2412B; --muted: #6b6250; }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; }
+body { font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: var(--ink); min-height: 100vh;
+  background: radial-gradient(1200px 700px at 70% -10%, #24406f, transparent), var(--navy); }
+header { position: sticky; top: 0; z-index: 5; display: flex; gap: 12px; align-items: center; padding: 12px 18px; background: rgba(17,29,54,.92);
+  border-bottom: 2px solid var(--brass); backdrop-filter: blur(6px); flex-wrap: wrap; }
+header h1 { margin: 0; font: 700 1.25rem Georgia, "Times New Roman", serif; letter-spacing: .06em; color: var(--gold); text-transform: uppercase; }
+header .who { margin-left: auto; color: #EADBB8; font-size: .85rem; display: flex; gap: 10px; align-items: center; }
+main { max-width: 1100px; margin: 0 auto; padding: 18px; }
+.tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+button { font: inherit; cursor: pointer; }
+.btn { border: 2px solid var(--brass); background: linear-gradient(#FBF3E1, #EAD9B4); color: var(--ink); font-weight: 700; border-radius: 10px; padding: 7px 14px; }
+.btn:hover { filter: brightness(1.05); }
+.btn.on, .btn.primary { background: linear-gradient(#F4D27A, #C99A45); border-color: #8A6420; color: var(--navy-deep); }
+.btn.dark { background: rgba(255,255,255,.06); color: #EADBB8; border-color: rgba(184,138,62,.6); }
+.btn.dark.on { background: linear-gradient(#F4D27A, #C99A45); color: var(--navy-deep); }
+.btn.danger { background: linear-gradient(#e2734f, #b8442a); color: #fff; border-color: #7d2b18; }
+.btn.small { padding: 4px 10px; font-size: .85rem; border-radius: 8px; }
+.btn:disabled { opacity: .5; cursor: default; }
+.panel { background: linear-gradient(var(--paper), var(--paper2)); border: 3px solid var(--brass); border-radius: 16px; padding: 18px; box-shadow: 0 6px 24px rgba(0,0,0,.35); }
+.login { max-width: 420px; margin: 8vh auto; }
+.login h2 { margin: 0 0 6px; font-family: Georgia, serif; }
+label { display: block; font-weight: 700; margin: 12px 0 4px; }
+input[type=email], input[type=password], input[type=text], textarea, select { width: 100%; border: 2px solid rgba(184,138,62,.7); border-radius: 10px; padding: 9px 11px; font: inherit; background: #FFFDF6; color: var(--ink); }
+textarea { resize: vertical; min-height: 60px; }
+.msg { min-height: 1.3em; margin: 10px 0 0; font-weight: 600; }
+.msg.err { color: var(--red); } .msg.ok { color: var(--mint); }
+.note { color: var(--muted); font-size: .88rem; }
+.bar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 16px 0; color: #EADBB8; }
+.bar .sp { flex: 1; }
+.cards { display: grid; gap: 14px; }
+.rep { display: grid; grid-template-columns: 170px 1fr; gap: 16px; }
+.rep.res { opacity: .78; }
+.shot { width: 170px; max-height: 300px; object-fit: cover; object-position: top; border-radius: 10px; border: 2px solid var(--brass); background: var(--navy); cursor: zoom-in; display: block; }
+.noshot { width: 170px; height: 120px; display: grid; place-items: center; border-radius: 10px; border: 2px dashed rgba(184,138,62,.6); color: var(--muted); font-size: .85rem; text-align: center; padding: 8px; }
+.rhead { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 6px; }
+.chip { font-size: .75rem; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; padding: 3px 9px; border-radius: 999px; }
+.chip.open { background: #f9d8cc; color: #8a2d16; } .chip.resolved { background: #cdeee0; color: #0f6646; }
+.when { color: var(--muted); font-size: .85rem; }
+.desc { white-space: pre-wrap; font-size: 1.02rem; margin: 4px 0 10px; font-weight: 500; }
+dl { display: grid; grid-template-columns: max-content 1fr; gap: 2px 12px; margin: 0 0 10px; font-size: .88rem; }
+dt { color: var(--muted); } dd { margin: 0; word-break: break-word; }
+details { font-size: .82rem; color: var(--muted); margin-bottom: 8px; }
+.acts { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.notebox { display: flex; gap: 8px; margin-top: 8px; }
+.notebox textarea { min-height: 40px; }
+.empty { text-align: center; padding: 30px; color: var(--muted); }
+.lightbox { position: fixed; inset: 0; z-index: 20; background: rgba(8,14,28,.9); display: grid; place-items: center; padding: 20px; cursor: zoom-out; }
+.lightbox img { max-width: 100%; max-height: 100%; border-radius: 10px; border: 2px solid var(--brass); }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+.stat { text-align: center; padding: 14px 10px; }
+.stat b { display: block; font: 700 2rem Georgia, serif; color: var(--navy); }
+.stat span { font-weight: 700; } .stat small { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
+.stat.act b { color: var(--mint); } .stat.pas b { color: var(--coral); }
+h3 { font-family: Georgia, serif; margin: 0 0 10px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+.hbar { display: grid; grid-template-columns: 110px 1fr 48px; gap: 8px; align-items: center; margin: 5px 0; font-size: .88rem; }
+.hbar i { display: block; height: 14px; border-radius: 7px; background: linear-gradient(90deg, var(--brass), var(--gold)); }
+.legend { display: flex; gap: 14px; font-size: .85rem; margin-bottom: 6px; }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -1px; margin-right: 5px; }
+svg text { font: 11px system-ui, sans-serif; fill: var(--muted); }
+table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid rgba(184,138,62,.4); }
+th { font-size: .75rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+.uid { font-family: ui-monospace, Menlo, monospace; background: #FFFDF6; border: 1px dashed var(--brass); padding: 8px 10px; border-radius: 8px; word-break: break-all; margin: 8px 0; }
+@media (max-width: 700px) { header { position: static; } .rep { grid-template-columns: 1fr; } .shot, .noshot { width: 100%; max-height: 260px; } .grid2 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>🐞 Atlas Explorers · Admin</h1>
+  <nav class="tabs" id="tabs" hidden>
+    <button class="btn dark on" data-tab="reports">Bug reports</button>
+    <button class="btn dark" data-tab="usage">Players &amp; usage</button>
+    <button class="btn dark" data-tab="boards">Leaderboards</button>
+  </nav>
+  <div class="who" id="who" hidden><span id="who-email"></span><button class="btn small dark" id="signout">Sign out</button></div>
+</header>
+<main id="main"></main>
+
+<script>
+"use strict";
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const A = { cfg: null, tok: "", exp: 0, refresh: "", email: "", uid: "", tab: "reports", filter: "open", reports: [], period: 7 };
+const GAMES = { flags: "Flag Finder", capitals: "Capital Quest", shapes: "Shape Shifter", clues: "Mystery Country", languages: "Say Hello", animals: "Animal Atlas",
+  maphunt: "Map Hunt", cappin: "Capital Pin", landmarks: "Landmarks", neighbours: "Neighbours", cities: "Big Cities", flagrun: "Flag Marathon", hop: "Border Hop",
+  puzzle: "Map Puzzle", quick: "Quick Call", allc: "Name Them All", mix: "World Tour" };
+const SCREENS = { "s-who": "Passport picker", "s-menu": "Main menu", "s-game": "In a game", "s-results": "Results", "s-map": "World Map", "s-settings": "Settings",
+  "s-howto": "How to play", "s-allc": "Name Them All", "s-hop": "Border Hop", "s-pz": "Map Puzzle", "s-fr": "Flag Marathon", "s-qc": "Quick Call",
+  "s-players": "Players", "s-h2h": "Head-to-Head setup", "s-h2hres": "Head-to-Head results", "s-awards": "Trophy Room", "s-board": "Leaderboard", "s-atlas": "All countries" };
+
+/* ---------- Firebase (REST) ---------- */
+async function config() {
+  if (A.cfg) return A.cfg;
+  const r = await fetch("cloud.json?t=" + Date.now(), { cache: "no-store" });
+  if (!r.ok) throw new Error("Couldn't load cloud.json. This page has to be on the same site as the game.");
+  const c = await r.json(); A.cfg = { apiKey: String(c.apiKey).trim(), projectId: String(c.projectId).trim() }; return A.cfg;
+}
+const base = () => `https://firestore.googleapis.com/v1/projects/${encodeURIComponent(A.cfg.projectId)}/databases/(default)/documents`;
+const AUTH_ERR = { INVALID_LOGIN_CREDENTIALS: "That email and password don't match.", INVALID_PASSWORD: "That email and password don't match.",
+  EMAIL_NOT_FOUND: "That email and password don't match.", USER_DISABLED: "This account is switched off.", TOO_MANY_ATTEMPTS_TRY_LATER: "Too many tries. Wait a few minutes.",
+  INVALID_EMAIL: "That isn't a valid email address." };
+async function signIn(email, password) {
+  await config();
+  const r = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${encodeURIComponent(A.cfg.apiKey)}`,
+    { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, password, returnSecureToken: true }) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) { const code = String((j.error && j.error.message) || "").split(" ")[0]; throw new Error(AUTH_ERR[code] || "Sign-in failed (" + code + ")."); }
+  A.tok = j.idToken; A.exp = Date.now() + (+j.expiresIn || 3600) * 1000; A.refresh = j.refreshToken; A.email = j.email; A.uid = j.localId;
+  sessionStorage.setItem("atlas_admin", JSON.stringify({ refresh: A.refresh, email: A.email, uid: A.uid }));
+}
+async function token() {
+  if (A.tok && Date.now() < A.exp - 60000) return A.tok;
+  await config();
+  const r = await fetch(`https://securetoken.googleapis.com/v1/token?key=${encodeURIComponent(A.cfg.apiKey)}`,
+    { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: "grant_type=refresh_token&refresh_token=" + encodeURIComponent(A.refresh) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) { signOut(); throw new Error("Signed out. Please sign in again."); }
+  A.tok = j.id_token; A.exp = Date.now() + (+j.expires_in || 3600) * 1000; A.refresh = j.refresh_token || A.refresh;
+  return A.tok;
+}
+async function api(path, opts = {}) {
+  const r = await fetch(base() + path, Object.assign({}, opts, { headers: Object.assign({ Authorization: "Bearer " + await token(), "Content-Type": "application/json" }, opts.headers || {}) }));
+  if (r.status === 403) { const e = new Error("rules"); e.status = 403; throw e; }
+  if (!r.ok) throw new Error("Firebase said " + r.status);
+  return r.status === 204 ? null : r.json().catch(() => null);
+}
+const val = f => !f ? undefined : "stringValue" in f ? f.stringValue : "integerValue" in f ? +f.integerValue : "booleanValue" in f ? f.booleanValue : "doubleValue" in f ? f.doubleValue : "timestampValue" in f ? f.timestampValue : undefined;
+const plain = doc => { const o = { _id: doc.name.split("/").pop(), _name: doc.name }; for (const [k, f] of Object.entries(doc.fields || {})) o[k] = val(f); return o; };
+async function query(parent, sq) { const j = await api(parent + ":runQuery", { method: "POST", body: JSON.stringify({ structuredQuery: sq }) }); return (j || []).filter(x => x.document).map(x => plain(x.document)); }
+async function count(parent, collectionId, where) {
+  const sq = { from: [{ collectionId }] }; if (where) sq.where = where;
+  const j = await api(parent + ":runAggregationQuery", { method: "POST", body: JSON.stringify({ structuredAggregationQuery: { structuredQuery: sq, aggregations: [{ alias: "n", count: {} }] } }) });
+  const f = j && j[0] && j[0].result && j[0].result.aggregateFields && j[0].result.aggregateFields.n; return f ? +f.integerValue : 0;
+}
+
+/* ---------- sign in / out ---------- */
+function signOut() { sessionStorage.removeItem("atlas_admin"); Object.assign(A, { tok: "", exp: 0, refresh: "", email: "", uid: "" }); $("#tabs").hidden = true; $("#who").hidden = true; renderLogin(); }
+function renderLogin(msg) {
+  $("#main").innerHTML = `<div class="panel login"><h2>Admin sign-in</h2>
+    <p class="note">Sign in with the admin account you created in Firebase (Authentication › Users). Players' passports can't sign in here.</p>
+    <label for="em">Email</label><input type="email" id="em" autocomplete="username">
+    <label for="pw">Password</label><input type="password" id="pw" autocomplete="current-password">
+    <p class="msg err" id="lmsg">${esc(msg || "")}</p>
+    <button class="btn primary" id="go" style="width:100%;margin-top:6px">Sign in</button></div>`;
+  const go = async () => {
+    const b = $("#go"); b.disabled = true; $("#lmsg").textContent = "";
+    try { await signIn($("#em").value.trim(), $("#pw").value); await start(); }
+    catch (e) { $("#lmsg").textContent = e.message; b.disabled = false; }
+  };
+  $("#go").onclick = go; $("#pw").onkeydown = e => { if (e.key === "Enter") go(); };
+  $("#em").focus();
+}
+function notAdmin() {
+  $("#main").innerHTML = `<div class="panel login"><h2>Almost there</h2>
+    <p>You're signed in as <b>${esc(A.email)}</b>, but Firebase doesn't know this is the admin account yet.</p>
+    <p>Your admin ID (User UID) is:</p><div class="uid" id="uidbox">${esc(A.uid)}</div>
+    <button class="btn" id="cp">Copy admin ID</button>
+    <ol class="note" style="margin-top:14px;padding-left:18px">
+      <li>Open the Firebase console › Firestore Database › <b>Rules</b>.</li>
+      <li>Find <b>PASTE_YOUR_ADMIN_UID_HERE</b> and replace it with the ID above (keep the quote marks).</li>
+      <li>Click <b>Publish</b>, wait a minute, then come back and press Try again.</li></ol>
+    <button class="btn primary" id="again" style="width:100%;margin-top:6px">Try again</button></div>`;
+  $("#cp").onclick = () => navigator.clipboard.writeText(A.uid).then(() => { $("#cp").textContent = "Copied ✓"; });
+  $("#again").onclick = start;
+}
+async function start() {
+  $("#main").innerHTML = `<p class="note" style="color:#EADBB8">Loading…</p>`;
+  try { await query("", { from: [{ collectionId: "reports" }], limit: 1 }); }
+  catch (e) { if (e.status === 403) return notAdmin(); $("#main").innerHTML = `<div class="panel">${esc(e.message)}</div>`; return; }
+  $("#tabs").hidden = false; $("#who").hidden = false; $("#who-email").textContent = A.email;
+  show(A.tab);
+}
+function show(tab) {
+  A.tab = tab; document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.tab === tab));
+  ({ reports: loadReports, usage: loadUsage, boards: loadBoards })[tab]();
+}
+
+/* ---------- bug reports ---------- */
+const fmtWhen = t => t ? new Date(t).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" }) : "?";
+async function loadReports() {
+  $("#main").innerHTML = `<p class="note" style="color:#EADBB8">Loading reports…</p>`;
+  try { A.reports = await query("", { from: [{ collectionId: "reports" }], orderBy: [{ field: { fieldPath: "at" }, direction: "DESCENDING" }], limit: 300 }); }
+  catch (e) { $("#main").innerHTML = `<div class="panel">Couldn't load reports: ${esc(e.message)}</div>`; return; }
+  renderReports();
+}
+function ctxOf(r) { try { return JSON.parse(r.ctx || "{}"); } catch (e) { return {}; } }
+function claudeText(r) {
+  const c = ctxOf(r);
+  return [`Atlas Explorers bug report (${fmtWhen(r.at)})`, `What happened: ${r.desc}`, `Version: ${r.v || "?"}`,
+    `Page: ${SCREENS[r.screen] || r.screen || "?"}${c.game ? ` · Game: ${GAMES[c.game] || c.game}` : ""}${c.q ? ` · Question ${c.q}` : ""}${c.country ? ` · Country: ${c.country}` : ""}${c.kind ? ` · Question type: ${c.kind}` : ""}${c.level ? ` · Level: ${c.level === "hard" ? "World Expert" : "Explorer"}` : ""}${c.h2h ? " · Head-to-Head" : ""}`,
+    `Device: ${r.plat || "?"} (${r.inst ? "installed app" : "browser"}), screen ${r.w}×${r.h}`, `Browser: ${r.ua || "?"}`,
+    r.shot ? "(A screenshot is attached to this report: download it from the admin page and add it to the chat.)" : "(No screenshot.)"].join("\n");
+}
+function renderReports() {
+  const open = A.reports.filter(r => r.status !== "resolved"), done = A.reports.filter(r => r.status === "resolved");
+  const list = A.filter === "open" ? open : A.filter === "resolved" ? done : A.reports;
+  $("#main").innerHTML = `<div class="bar"><button class="btn dark ${A.filter === "open" ? "on" : ""}" data-f="open">Open (${open.length})</button>
+    <button class="btn dark ${A.filter === "resolved" ? "on" : ""}" data-f="resolved">Resolved (${done.length})</button>
+    <button class="btn dark ${A.filter === "all" ? "on" : ""}" data-f="all">All (${A.reports.length})</button><span class="sp"></span>
+    <button class="btn small dark" id="reload">↻ Refresh</button></div>
+    <div class="cards">${list.length ? list.map(repCard).join("") : `<div class="panel empty">${A.filter === "open" ? "No open bug reports. 🎉" : "Nothing here yet."}</div>`}</div>`;
+  document.querySelectorAll("[data-f]").forEach(b => b.onclick = () => { A.filter = b.dataset.f; renderReports(); });
+  $("#reload").onclick = loadReports;
+  document.querySelectorAll(".rep").forEach(el => wireRep(el, A.reports.find(r => r._id === el.dataset.id)));
+}
+function repCard(r) {
+  const c = ctxOf(r), res = r.status === "resolved";
+  const rows = [["Version", r.v], ["Page", SCREENS[r.screen] || r.screen], ["Game", c.game && (GAMES[c.game] || c.game)], ["Question", c.q], ["Country", c.country],
+    ["Question type", c.kind], ["Level", c.level && (c.level === "hard" ? "World Expert" : "Explorer")], ["Head-to-Head", c.h2h && "Yes"],
+    ["Device", `${r.plat || "?"} · ${r.inst ? "installed app" : "browser"} · ${r.w}×${r.h}`], ["Signed-in player", r.player ? "Yes" : "No (guest)"], ["Device ID", (r.dev || "").slice(0, 10)]]
+    .filter(x => x[1]);
+  return `<div class="panel rep ${res ? "res" : ""}" data-id="${esc(r._id)}">
+    <div>${r.shot ? `<img class="shot" alt="Screenshot" src="${esc(r.shot)}">` : `<div class="noshot">No picture</div>`}</div>
+    <div><div class="rhead"><span class="chip ${res ? "resolved" : "open"}">${res ? "Resolved" : "Open"}</span><span class="when">${esc(fmtWhen(r.at))}${res && r.resolvedAt ? ` · resolved ${esc(fmtWhen(r.resolvedAt))}` : ""}</span></div>
+      <div class="desc">${esc(r.desc)}</div>
+      <dl>${rows.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}</dl>
+      <details><summary>Browser details</summary>${esc(r.ua)}</details>
+      <div class="acts">
+        <button class="btn small ${res ? "" : "primary"}" data-a="toggle">${res ? "↺ Reopen" : "✓ Mark resolved"}</button>
+        <button class="btn small" data-a="copy">📋 Copy for Claude</button>
+        ${r.shot ? `<button class="btn small" data-a="dl">⬇ Download picture</button>` : ""}
+        <button class="btn small danger" data-a="del">Delete</button>
+        <span class="note" data-a="msg"></span></div>
+      <div class="notebox"><textarea placeholder="Your notes (only you see these)" maxlength="2000">${esc(r.note || "")}</textarea><button class="btn small" data-a="note">Save note</button></div>
+    </div></div>`;
+}
+async function patchRep(r, fields) {
+  const mask = Object.keys(fields).map(k => "updateMask.fieldPaths=" + encodeURIComponent(k)).join("&");
+  const body = { fields: Object.fromEntries(Object.entries(fields).map(([k, v]) => [k, typeof v === "number" ? { integerValue: String(v) } : { stringValue: String(v) }])) };
+  await api(`/reports/${encodeURIComponent(r._id)}?${mask}`, { method: "PATCH", body: JSON.stringify(body) });
+  Object.assign(r, fields);
+}
+function wireRep(el, r) {
+  const msg = t => { el.querySelector('[data-a="msg"]').textContent = t; };
+  const img = el.querySelector(".shot"); if (img) img.onclick = () => { const lb = document.createElement("div"); lb.className = "lightbox"; lb.innerHTML = `<img alt="Screenshot" src="${esc(r.shot)}">`; lb.onclick = () => lb.remove(); document.body.appendChild(lb); };
+  el.querySelector('[data-a="toggle"]').onclick = async () => {
+    try { const res = r.status !== "resolved"; await patchRep(r, { status: res ? "resolved" : "open", resolvedAt: res ? Date.now() : 0 }); renderReports(); } catch (e) { msg("Couldn't save: " + e.message); }
+  };
+  el.querySelector('[data-a="copy"]').onclick = () => navigator.clipboard.writeText(claudeText(r)).then(() => msg("Copied. Paste it into your chat with Claude."), () => msg("Couldn't copy."));
+  const dl = el.querySelector('[data-a="dl"]'); if (dl) dl.onclick = () => { const a = document.createElement("a"); a.href = r.shot; a.download = `atlas-bug-${new Date(r.at).toISOString().slice(0, 16).replace(/[:T]/g, "-")}.jpg`; a.click(); };
+  el.querySelector('[data-a="note"]').onclick = async () => { try { await patchRep(r, { note: el.querySelector("textarea").value }); msg("Note saved ✓"); } catch (e) { msg("Couldn't save: " + e.message); } };
+  el.querySelector('[data-a="del"]').onclick = async () => {
+    if (!confirm("Delete this bug report for good?")) return;
+    try { await api(`/reports/${encodeURIComponent(r._id)}`, { method: "DELETE" }); A.reports = A.reports.filter(x => x !== r); renderReports(); } catch (e) { msg("Couldn't delete: " + e.message); }
+  };
+}
+
+/* ---------- players & usage ---------- */
+const DAY = 86400000;
+const dayKey = t => { const d = new Date(t); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; };
+const startOfDay = t => { const d = new Date(t); d.setHours(0, 0, 0, 0); return +d; };
+async function loadUsage() {
+  $("#main").innerHTML = `<p class="note" style="color:#EADBB8">Counting players…</p>`;
+  let devs, passports = null;
+  try { devs = await query("", { from: [{ collectionId: "devices" }], limit: 20000 }); }
+  catch (e) { $("#main").innerHTML = `<div class="panel">Couldn't load usage: ${esc(e.message)}</div>`; return; }
+  try { passports = await count("", "users"); } catch (e) {}
+  A.devs = devs; A.passports = passports; A.days = null;
+  renderUsage();
+  // daily trend: the last 30 days, two counts per day (devices that opened the game, and those that finished a game)
+  const days = []; for (let i = 29; i >= 0; i--) days.push(dayKey(startOfDay(Date.now()) - i * DAY + DAY / 2));
+  const out = {}; let next = 0;
+  const work = async () => { while (next < days.length) { const d = days[next++]; try {
+    const [all, played] = await Promise.all([count(`/days/${d}`, "d"), count(`/days/${d}`, "d", { fieldFilter: { field: { fieldPath: "p" }, op: "GREATER_THAN", value: { integerValue: "0" } } })]);
+    out[d] = { all, played }; } catch (e) { out[d] = { all: 0, played: 0, err: 1 }; } } };
+  await Promise.all([work(), work(), work(), work(), work()]);
+  A.days = days.map(d => Object.assign({ d }, out[d]));
+  if (A.tab === "usage") renderUsage();
+}
+function renderUsage() {
+  const now = Date.now(), since = A.period === 1 ? startOfDay(now) : now - A.period * DAY, devs = A.devs || [];
+  const seen = devs.filter(d => (d.last || 0) >= since);
+  const active = seen.filter(d => (d.lastPlay || 0) >= since), passive = seen.filter(d => !((d.lastPlay || 0) >= since));
+  const fresh = devs.filter(d => (d.first || 0) >= since), inst = seen.filter(d => d.inst).length;
+  const per = A.period === 1 ? "today" : `in the last ${A.period} days`;
+  const tally = (arr, key) => { const m = {}; arr.forEach(d => { const k = d[key] || "?"; m[k] = (m[k] || 0) + 1; }); return Object.entries(m).sort((a, b) => b[1] - a[1]); };
+  const bars = (rows, total) => rows.length ? rows.map(([k, n]) => `<div class="hbar"><span>${esc(k)}</span><i style="width:${Math.max(4, Math.round(n / total * 100))}%"></i><b>${n}</b></div>`).join("") : `<p class="note">No data yet.</p>`;
+  $("#main").innerHTML = `<div class="bar">${[1, 7, 30].map(p => `<button class="btn dark ${A.period === p ? "on" : ""}" data-p="${p}">${p === 1 ? "Today" : `Last ${p} days`}</button>`).join("")}<span class="sp"></span><button class="btn small dark" id="reload">↻ Refresh</button></div>
+    <div class="stats">
+      <div class="panel stat act"><b>${active.length}</b><span>Active users</span><small>finished at least one game ${per}</small></div>
+      <div class="panel stat pas"><b>${passive.length}</b><span>Passive users</span><small>opened the game ${per} but didn't finish a game</small></div>
+      <div class="panel stat"><b>${seen.length}</b><span>All users ${A.period === 1 ? "today" : ""}</span><small>opened the game ${per}</small></div>
+      <div class="panel stat"><b>${fresh.length}</b><span>New users</span><small>first opened the game ${per}</small></div>
+      <div class="panel stat"><b>${devs.length}</b><span>Users ever</span><small>since usage counts started (v48)</small></div>
+      <div class="panel stat"><b>${A.passports == null ? "?" : A.passports}</b><span>Online passports</span><small>signed-in players saved in the cloud</small></div>
+    </div>
+    <div class="panel" style="margin-top:14px"><h3>Last 30 days</h3>
+      <div class="legend"><span><i style="background:var(--mint)"></i>Active (finished a game)</span><span><i style="background:var(--coral)"></i>Passive (only opened)</span></div>
+      <div id="chart">${A.days ? chart(A.days) : `<p class="note">Counting each day…</p>`}</div></div>
+    <div class="grid2">
+      <div class="panel"><h3>Devices ${per}</h3>${bars(tally(seen, "plat"), seen.length || 1)}
+        <p class="note">${seen.length ? `${Math.round(inst / seen.length * 100)}% use the installed app, ${100 - Math.round(inst / seen.length * 100)}% a web browser.` : ""}</p></div>
+      <div class="panel"><h3>Versions in use ${per}</h3>${bars(tally(seen, "v").slice(0, 8), seen.length || 1)}
+        <p class="note">Devices on an old version haven't picked up your latest upload yet.</p></div>
+    </div>
+    <p class="note" style="color:#c9bb99;margin-top:14px">A “user” here is one device or browser. Someone who plays on a phone and a laptop counts twice; players who switch off “Share anonymous usage counts” aren't counted. Counts start from version 48.</p>`;
+  document.querySelectorAll("[data-p]").forEach(b => b.onclick = () => { A.period = +b.dataset.p; renderUsage(); });
+  $("#reload").onclick = loadUsage;
+}
+function chart(days) {
+  const W = 900, H = 220, L = 34, B = 26, T = 10, max = Math.max(1, ...days.map(d => d.all)), bw = (W - L - 10) / days.length;
+  const y = v => H - B - (v / max) * (H - B - T); let s = "";
+  const step = Math.max(1, Math.ceil(max / 4));
+  for (let v = 0; v <= max; v += step) s += `<line x1="${L}" x2="${W - 6}" y1="${y(v)}" y2="${y(v)}" stroke="rgba(184,138,62,.35)"/><text x="${L - 6}" y="${y(v) + 4}" text-anchor="end">${v}</text>`;
+  days.forEach((d, i) => {
+    const x = L + i * bw + 2, w = Math.max(2, bw - 4), act = d.played || 0, pas = Math.max(0, (d.all || 0) - act);
+    s += `<rect x="${x}" y="${y(act)}" width="${w}" height="${H - B - y(act)}" fill="#1FA37A" rx="2"><title>${d.d}: ${act} active</title></rect>`;
+    s += `<rect x="${x}" y="${y(act + pas)}" width="${w}" height="${y(act) - y(act + pas)}" fill="#D9673A" rx="2"><title>${d.d}: ${pas} passive</title></rect>`;
+    if (i % 5 === 4 || i === days.length - 1) s += `<text x="${x + w / 2}" y="${H - 8}" text-anchor="middle">${d.d.slice(5)}</text>`;
+  });
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Active and passive users per day">${s}</svg>`;
+}
+
+/* ---------- leaderboard moderation ---------- */
+async function loadBoards() {
+  const g = A.bg || "flags", lv = A.bl || "easy";
+  $("#main").innerHTML = `<div class="bar"><select id="bg" style="max-width:220px">${Object.entries(GAMES).map(([k, n]) => `<option value="${k}" ${k === g ? "selected" : ""}>${esc(n)}</option>`).join("")}</select>
+    <button class="btn dark ${lv === "easy" ? "on" : ""}" data-l="easy">Explorer</button><button class="btn dark ${lv === "hard" ? "on" : ""}" data-l="hard">World Expert</button><span class="sp"></span></div>
+    <div class="panel" id="blist"><p class="note">Loading…</p></div>
+    <p class="note" style="color:#c9bb99;margin-top:12px">Remove a name tag that isn't suitable. The player can still play, and their entry comes back the next time they beat their best score.</p>`;
+  $("#bg").onchange = () => { A.bg = $("#bg").value; loadBoards(); };
+  document.querySelectorAll("[data-l]").forEach(b => b.onclick = () => { A.bl = b.dataset.l; loadBoards(); });
+  try {
+    const rows = await query(`/boards/${g}_${lv}`, { from: [{ collectionId: "players" }], orderBy: [{ field: { fieldPath: "score" }, direction: "DESCENDING" }], limit: 50 });
+    $("#blist").innerHTML = rows.length ? `<table><tr><th>#</th><th>Tag</th><th>Score</th><th>Achievement</th><th>Time</th><th>Date</th><th></th></tr>${rows.map((r, i) => `<tr><td>${i + 1}</td><td><b>${esc(r.ini)}</b></td><td>${(r.score || 0).toLocaleString()}</td><td>${esc(r.ach || "")}</td><td>${r.secs >= 0 ? `${Math.floor(r.secs / 60)}:${String(r.secs % 60).padStart(2, "0")}` : ""}</td><td>${r.at ? new Date(r.at).toLocaleDateString() : ""}</td><td><button class="btn small danger" data-del="${esc(r._id)}">Remove</button></td></tr>`).join("")}</table>` : `<p class="note">No scores on this board yet.</p>`;
+    document.querySelectorAll("[data-del]").forEach(b => b.onclick = async () => {
+      if (!confirm("Remove this entry from the leaderboard?")) return;
+      try { await api(`/boards/${g}_${lv}/players/${encodeURIComponent(b.dataset.del)}`, { method: "DELETE" }); loadBoards(); } catch (e) { alert("Couldn't remove it: " + e.message); }
+    });
+  } catch (e) { $("#blist").innerHTML = `<p>Couldn't load: ${esc(e.message)}</p>`; }
+}
+
+/* ---------- start ---------- */
+document.querySelectorAll("#tabs button").forEach(b => b.onclick = () => show(b.dataset.tab));
+$("#signout").onclick = signOut;
+(async () => {
+  try { await config(); } catch (e) { $("#main").innerHTML = `<div class="panel login">${esc(e.message)}</div>`; return; }
+  const s = JSON.parse(sessionStorage.getItem("atlas_admin") || "null");
+  if (s && s.refresh) { Object.assign(A, s); try { await token(); return start(); } catch (e) {} }
+  renderLogin();
+})();
+</script>
+</body>
+</html>
