@@ -183,6 +183,18 @@ img { max-width: 100%; }
 .cgcard .bigflag { width: min(46vw, 30vh * 4 / 3, 520px) !important; }
 .cgcard .shapebox svg { width: min(32vh, 56vw); height: min(32vh, 56vw); }
 .cgcode { font-size: clamp(2.6rem, 6.5vw, 7rem); max-width: 100%; box-sizing: border-box; }
+
+/* back arrows for the class game and the passport picker */
+.cgnav { display: flex; align-items: center; gap: 10px; max-width: 1400px; margin: 0 auto 10px; width: 100%; }
+.cgnavt { font-family: var(--title, var(--display)); color: var(--gold, #F4D27A); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; font-size: clamp(1rem, 2.2vw, 1.4rem); }
+#s-class.cg-live .cgnav { display: none; }
+.cgendbtn { min-width: 0 !important; }
+#s-who { position: relative; }
+.whoback { position: absolute; top: calc(env(safe-area-inset-top, 0px) + 12px); left: 12px; z-index: 2; }
+#s-who.canleave .whohead { padding-top: 46px; }
+/* passport names only break between words (a long single word still wraps rather than overflowing) */
+button.pp .pn { overflow-wrap: break-word; word-break: normal; hyphens: manual; }
+button.pp.new .pn { font-size: clamp(.7rem, 11.5cqi, 1.2rem); }
 </style>
 <script>
 /* Security: where the game is hosted on its own site (or packaged as an app), only its own files and its Firebase
@@ -1609,6 +1621,7 @@ span.off { color: rgba(217,194,145,.55); }
 
   <!-- WHO'S PLAYING -->
   <section class="screen" id="s-who" hidden>
+    <button class="iconbtn whoback" id="who-back" type="button" aria-label="Back to the menu" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
     <div class="whohead">
       <div class="whokick">Atlas Explorers · Departures</div>
       <h2>Who's travelling today?</h2>
@@ -1819,7 +1832,7 @@ span.off { color: rgba(217,194,145,.55); }
 
   <!-- HEAD-TO-HEAD RESULTS -->
   <!-- CLASS GAME (projector + students' devices) -->
-  <section class="screen" id="s-class" hidden><div id="cg-body"></div></section>
+  <section class="screen" id="s-class" hidden><div class="cgnav"><button class="iconbtn" id="cg-back" type="button" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><span class="cgnavt">Class game</span></div><div id="cg-body"></div></section>
 
   <section class="screen" id="s-h2hres" hidden>
     <div class="hrhead"><div class="cup">🏆</div><h2 id="hr-title">Winners!</h2><div class="ressub" id="hr-sub"></div></div>
@@ -5812,6 +5825,8 @@ $("#info").addEventListener("click", e => { if (e.target.id === "info" && !(NTA.
 $("#mx-back").onclick = () => { sfx("tap"); renderMenu(); show("s-menu"); };
 $("#mx-search").onclick = () => openPage("s-atlas", "s-map");
 document.querySelectorAll(".back").forEach(b => b.onclick = goBack);
+$("#cg-back").onclick = () => { sfx("tap"); cgBack(); };
+$("#who-back").onclick = () => { sfx("tap"); renderMenu(); show("s-menu"); };
 $("#atlas-q").addEventListener("input", renderAtlas);
 $("#detail").addEventListener("click", e => { if (e.target.id === "detail") $("#detail").hidden = true; });
 if (WIDE.addEventListener) WIDE.addEventListener("change", () => { if (!$("#s-map").hidden) renderSide(); });
@@ -6328,7 +6343,7 @@ function sizeWho() {
   g.style.justifyContent = "center";
 }
 addEventListener("resize", () => { if (!$("#s-who").hidden) sizeWho(); });
-function openWho(canLeave) { whoCanLeave = !!canLeave; show("s-who"); renderWho(); try { document.fonts.ready.then(sizeWho); } catch (e) {} }
+function openWho(canLeave) { whoCanLeave = !!canLeave; $("#who-back").hidden = !whoCanLeave; $("#s-who").classList.toggle("canleave", whoCanLeave); show("s-who"); renderWho(); try { document.fonts.ready.then(sizeWho); } catch (e) {} }
 $("#who-manage").onclick = () => { sfx("tap"); openPage("s-players", "s-who"); renderPlayers(); };
 
 /* ================= phone back button =================
@@ -6393,7 +6408,7 @@ if (window.history && history.pushState) {
 }
 
 /* ================= check for updates ================= */
-const APP_VERSION = "atlas-v54";
+const APP_VERSION = "atlas-v55";
 const verNum = v => +((String(v).match(/(\d+)\s*$/) || [0, 0])[1]);
 async function remoteVersion() {
   const res = await fetch("sw.js?check=" + Date.now(), { cache: "no-store" });
@@ -6845,7 +6860,11 @@ function openClassGame(role, code) {
   show("s-class"); $("#app").classList.toggle("cg-host", role === "host");
   if (role === "host") cgSetup(); else if (role === "remote") cgRemoteForm(code || ""); else cgJoinForm(code || "");
 }
-const cgBody = html => { $("#cg-body").innerHTML = html; };
+const cgBody = html => {
+  // the back arrow steps aside while a question is up on the projector (an End game button is there instead)
+  $("#s-class").classList.toggle("cg-live", CG.role === "host" && (CG.view === "q" || CG.view === "rev"));
+  $("#cg-body").innerHTML = html;
+};
 function cgBack() {
   if (CG.role === "host" && CG.code) {
     confirmBox("End the class game?", "Everyone's game will stop.", "End game", () => cgEnd(true));
@@ -6853,7 +6872,7 @@ function cgBack() {
     cgStop(); CG.code = ""; goHome();   // leaving the remote doesn't stop the game; the projector carries on
   } else if (CG.role === "player" && CG.code && CG.pub && CG.pub.phase !== "end") {
     confirmBox("Leave the class game?", "You can join again with the same code.", "Leave", () => { cgStop(); CG.code = ""; goHome(); });
-  } else { cgStop(); CG.code = ""; goHome(); }
+  } else { cgStop(); CG.code = ""; $("#app").classList.remove("cg-host"); H.on = false; show("s-h2h"); renderH2HSetup(); }   // back to Head-to-Head, where class games start
 }
 
 /* ---- teacher: set up ---- */
@@ -7008,7 +7027,8 @@ function cgDrawQ(i, endAt) {
     <div class="cgtbar"><i id="cg-tbar"></i></div>
     <div class="card cgcard">${cgVisual(q)}<div class="prompt cgprompt">${esc(q.prompt || "")}</div></div>
     ${cgOptsHTML(q)}
-    <div class="cgbar"><button class="btn ghost" id="cg-stop" type="button">Show the answer now</button></div></div>`);
+    <div class="cgbar"><button class="btn ghost cgendbtn" type="button">✕ End game</button><button class="btn ghost" id="cg-stop" type="button">Show the answer now</button></div></div>`);
+  $("#cg-body .cgendbtn").onclick = cgBack;
   $("#cg-stop").onclick = () => cgClose();
   const end = endAt;
   CG.tick = setInterval(() => {
@@ -7044,7 +7064,8 @@ function cgDrawRev(counts, np) {
   cgBody(`<div class="cgq"><div class="cgtop"><span class="cgqn">Question ${CG.i + 1} of ${CG.qs.length}</span><span class="cgqn">${counts.reduce((a, b) => a + b, 0)} of ${ps.length} answered</span></div>
     <div class="cgrevgrid"><div><div class="card cgcard small">${cgVisual(q)}<div class="prompt cgprompt">${esc(q.prompt || "")}</div></div>${cgOptsHTML(q, counts)}</div>
     <div class="panel cgtop5"><h3>Leaderboard</h3>${ranked.slice(0, 5).map((p, k) => `<div class="cgrow"><span class="rk">${["🥇", "🥈", "🥉"][k] || k + 1}</span><span class="n">${esc(p.n)}</span>${p.g ? `<small class="num">+${p.g}</small>` : "<small></small>"}<b class="num">${p.s.toLocaleString()}</b></div>`).join("") || `<p class="note">No one has joined.</p>`}</div></div>
-    <div class="cgbar"><button class="btn" id="cg-next" type="button">${last ? "See the winners 🏆" : "Next question"}</button></div></div>`);
+    <div class="cgbar"><button class="btn ghost cgendbtn" type="button">✕ End game</button><button class="btn" id="cg-next" type="button">${last ? "See the winners 🏆" : "Next question"}</button></div></div>`);
+  $("#cg-body .cgendbtn").onclick = cgBack;
   $("#cg-next").onclick = () => { if (last) cgFinish(); else cgAsk(CG.i + 1); };
 }
 async function cgFinish() {
