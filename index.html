@@ -54,6 +54,15 @@ img { max-width: 100%; }
 .bugcount .note, .bugmodal .note { font-size: .82rem; color: var(--ink); opacity: .78; }
 .bugshot .note { text-align: left; margin: 0 0 8px; font-size: .9rem; }
 .linkbtn { background: none; border: 0; padding: 0; color: var(--coral); font-weight: 800; text-decoration: underline; cursor: pointer; font: inherit; }
+
+/* country (chef) badges: each kind of question as a little icon, greyed out until it's done */
+.chefcard { font: inherit; color: inherit; text-align: center; cursor: pointer; }
+.cheftrack { display: flex; flex-wrap: wrap; justify-content: center; gap: 3px; margin: 6px 0 2px; }
+.cheftrack .ct { width: 24px; height: 24px; border-radius: 6px; display: grid; place-items: center; font-size: 1.05rem; filter: grayscale(1); opacity: .35; }
+.cheftrack .ct .gico { width: 24px; height: 24px; border-radius: 6px; }
+.cheftrack .ct.on { filter: none; opacity: 1; box-shadow: 0 0 0 2px #1FA37A; }
+.chefcard.off .cheftrack .ct.on { opacity: 1; }
+.rosette.big { font-size: 2.2rem; }
 </style>
 <script>
 /* Security: where the game is hosted on its own site (or packaged as an app), only its own files and its Firebase
@@ -1077,14 +1086,14 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap
 .frprog i { display: block; height: 100%; background: linear-gradient(90deg, #22C384, #FFC93C); transition: width .3s ease; }
 .frstatus { flex: none; text-align: center; font-weight: 900; font-size: .9rem; min-height: 1.3em; }
 .frstatus .clean { color: #12955F; } .frstatus .lost { color: #B8451F; }
-.frflag { flex: 1 1 auto; min-height: 0; display: grid; place-items: center; }
-.frflag img { max-width: min(100%, 520px); max-height: 100%; width: auto; height: auto; min-height: 60px; border: 3px solid var(--ink); border-radius: 10px; box-shadow: 0 5px 0 var(--shadow); background: #fff; }
+.frflag { flex: 1 1 auto; min-height: 0; display: grid; place-items: center; container-type: size; width: 100%; }
+.frflag img { width: var(--fw, min(100cqw, 150cqh, 520px)); height: auto; max-width: 100%; max-height: 100%; min-height: 60px; box-sizing: border-box; border: 3px solid var(--ink); border-radius: 10px; box-shadow: 0 5px 0 var(--shadow); background: #fff; }
 .frchoices { flex: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(6px, 1.2vh, 12px); width: 100%; }
 .frchoices .opt { width: 100%; min-height: clamp(52px, 8vh, 72px); justify-content: center; text-align: center; font-size: clamp(.95rem, 2.3vh, 1.2rem); }
 @media (min-width: 720px) and (min-aspect-ratio: 5/4) { .frchoices { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 .frtype { display: none; flex: none; }
 #s-fr.typing .frchoices { display: none; }
-#s-fr.typing .frtype { display: grid; gap: 6px; }
+#s-fr.typing .frtype { display: grid; gap: 6px; grid-template-columns: minmax(0, 1fr); width: 100%; }
 .frfeed { min-height: 1.6em; text-align: center; font-family: var(--display); font-size: 1.25rem; }
 .frfeed .ok { color: #12955F; } .frfeed .no { color: #B8451F; }
 .frmissed { display: flex; flex-wrap: wrap; gap: 4px 10px; justify-content: center; font-weight: 800; font-size: .8rem; max-height: 30vh; overflow-y: auto; }
@@ -2628,6 +2637,8 @@ function frShow() {
   $("#fr-right").textContent = FR.right; $("#fr-wrong").textContent = FR.wrong;
   $("#fr-bar").style.width = (FR.i / FR.order.length * 100).toFixed(1) + "%";
   $("#fr-flag").innerHTML = flagImg(c);
+  { const vb = (c.f.match(/viewBox="\s*[-\d.]+[\s,]+[-\d.]+[\s,]+([\d.]+)[\s,]+([\d.]+)/) || []), r = vb[2] ? vb[1] / vb[2] : 1.5;
+    $("#fr-flag img").style.setProperty("--fw", `min(100cqw, ${(r * 100 * 0.94).toFixed(1)}cqh, 520px)`); }
   $("#fr-status").innerHTML = FR.wrong ? `<span class="lost">${FR.wrong} wrong · no badge this run, but keep going for your best score!</span>` : `<span class="clean">Perfect so far! 🔥</span>`;
   if (FR.lv === "easy") {
     const near = shuffleArr(GEO.filter(x => x.id !== id && x.m === c.m)).slice(0, 3);
@@ -2709,7 +2720,7 @@ function countryPool(mode) {
   let p = S.level === "easy" ? GEO.filter(c => EASY.has(c.id)) : GEO.slice();
   if (mode === "shapes") p = p.filter(c => c.a >= 2000);
   if (mode === "capitals") p = p.filter(c => c.cap);
-  if (mode === "cappin") p = p.filter(c => c.a >= (S.level === "easy" ? 30000 : 12000));
+  if (mode === "cappin") p = p.filter(c => c.a >= 12000);   // same rule as the passport stamp, so every stamp can be finished on either level
   if (mode === "neighbours") p = p.filter(nbEligible);
   return p;
 }
@@ -3324,7 +3335,28 @@ const NEW_ERA = Date.UTC(2026, 10, 10, 6, 0, 0);
 function newEra() { P.n = P.n || {}; ["cc", "st", "cap", "city", "stars"].forEach(k => { P.n[k] = P.n[k] || {}; }); return P.n; }
 function noteStars(key, stars) { const N = newEra(), m = key.split("_")[0]; N.stars[m] = Math.max(N.stars[m] || 0, stars); }
 const s3 = m => ((newEra().stars[m]) || 0) >= 3;
-const chef = (cid, city) => { const N = newEra(), c = BY_ID.get(cid); return !!(N.city[city] && N.st[cid] && catsFor(c).every(m => N.st[cid][m])); };
+const chef = (cid, city) => { const N = newEra(), c = BY_ID.get(cid); return !!(N.city[city] && catsFor(c).every(m => done(c, m))); };
+/* The country badges read the passport: every kind of question about the country (the same checklist as its passport stamp),
+   plus finding the named city in Big Cities. Done ones are in colour on the badge, the ones still to do are greyed out. */
+const CHEF = { italianchef: ["IT", "Naples"], sushichef: ["JP", "Osaka"], tacochef: ["MX", "Guadalajara"], frenchbaker: ["FR", "Lyon"], currychef: ["IN", "Mumbai"] };
+function chefParts(id) {
+  const [cid, city] = CHEF[id], c = BY_ID.get(cid), cats = catsFor(c);
+  return { c, city, cats, got: cats.filter(m => done(c, m)), cityOk: !!newEra().city[city] };
+}
+function chefTrack(id) {
+  const x = chefParts(id);
+  return `<div class="cheftrack">${x.cats.map(m => `<span class="ct${done(x.c, m) ? " on" : ""}" title="${esc(CAT_LABEL[m])}">${gameIcon(m, "gico")}</span>`).join("")}<span class="ct city${x.cityOk ? " on" : ""}" title="${esc(x.city)} in Big Cities">📍</span></div>
+    <small class="num">${x.got.length + (x.cityOk ? 1 : 0)} / ${x.cats.length + 1}</small>`;
+}
+function chefInfo(id) {
+  const sp = SPECIAL.find(s => s[0] === id), x = chefParts(id), on = !!P.bd["sp_" + id]; sfx("tap");
+  showInfo(`<div class="cc-head"><span class="rosette big">${sp[1]}</span><div><h2>${esc(sp[2])}</h2><small>${on ? "Badge earned!" : `${esc(x.c.n)}: ${x.got.length + (x.cityOk ? 1 : 0)} of ${x.cats.length + 1} done`}</small></div></div>
+    <p class="note" style="margin:4px 0 8px">Ticked items come straight from your ${esc(x.c.n)} passport stamp. Answer the greyed-out kinds of question in their games to finish the badge.</p>
+    <ul class="checks">${x.cats.map(m => `<li class="${done(x.c, m) ? "ok" : ""}"><span class="dot gdot">${gameIcon(m, "gico")}</span>${CAT_LABEL[m]}<small>${MODES[m].name}</small><b>${done(x.c, m) ? "✓" : ""}</b></li>`).join("")}
+      <li class="${x.cityOk ? "ok" : ""}"><span class="dot gdot">${gameIcon("cities", "gico")}</span>Find ${esc(x.city)}<small>Big Cities</small><b>${x.cityOk ? "✓" : ""}</b></li></ul>
+    <div class="cc-actions"><button class="btn alt" id="info-stamp">Passport stamp</button><button class="btn" id="info-close">Close</button></div>`);
+  $("#info-stamp").onclick = () => stampInfo(x.c.id);
+}
 const SPECIAL = [
   ["truscott", "🚂", "Travelling Truscott", "Name all 197 countries in under 9 minutes in Name Them All.", () => (P.acFast || 1e9) < 540],
   ["simonsays", "🗣️", "Simon Says", "Say all 197 countries out loud in Name Them All in under 5 minutes.", () => (P.acVoice || 1e9) < 300],
@@ -3437,8 +3469,9 @@ function contGoalsHTML() {
     }).join("")}</div>`;
 }
 function specialHTML() {
-  return `<div class="awhead"><div><h3>Special badges</h3><p>Fun badges for doing well across different games. Progress counts from this update on.</p></div></div><div class="tgrid">${SPECIAL.map(([id, ic, n, d]) =>
-    `<div class="tcard${P.bd["sp_" + id] ? "" : " off"}"><span class="rosette">${ic}</span><b>${esc(n)}</b><small>${esc(d)}</small>${P.bd["sp_" + id] ? `<span class="got">Earned</span>` : ""}</div>`).join("")}</div>`;
+  return `<div class="awhead"><div><h3>Special badges</h3><p>Fun badges for doing well across different games. The country badges use your passport stamps: tap one to see what's left.</p></div></div><div class="tgrid">${SPECIAL.map(([id, ic, n, d]) => CHEF[id]
+    ? `<button type="button" class="tcard chefcard${P.bd["sp_" + id] ? "" : " off"}" data-chef="${id}"><span class="rosette">${ic}</span><b>${esc(n)}</b><small>${esc(d)}</small>${P.bd["sp_" + id] ? `<span class="got">Earned</span>` : chefTrack(id)}</button>`
+    : `<div class="tcard${P.bd["sp_" + id] ? "" : " off"}"><span class="rosette">${ic}</span><b>${esc(n)}</b><small>${esc(d)}</small>${P.bd["sp_" + id] ? `<span class="got">Earned</span>` : ""}</div>`).join("")}</div>`;
 }
 
 /* toasts */
@@ -3639,6 +3672,7 @@ function renderAwards() {
   body.querySelectorAll("#aw-conts button").forEach(b => b.onclick = () => { awCont = b.dataset.k; renderAwards(); sfx("tap"); });
   body.querySelectorAll(".pstamp").forEach(b => b.onclick = () => stampInfo(b.dataset.id));
   body.querySelectorAll(".gcard").forEach(b => b.onclick = () => b.dataset.m ? metalInfo(b.dataset.m) : gemInfo(b.dataset.g));
+  body.querySelectorAll("[data-chef]").forEach(b => b.onclick = () => chefInfo(b.dataset.chef));
 }
 function passportHTML() {
   const list = GEO.filter(c => c.m === awCont).sort((a, b) => a.n.localeCompare(b.n));
@@ -6216,7 +6250,7 @@ if (window.history && history.pushState) {
 }
 
 /* ================= check for updates ================= */
-const APP_VERSION = "atlas-v50";
+const APP_VERSION = "atlas-v51";
 const verNum = v => +((String(v).match(/(\d+)\s*$/) || [0, 0])[1]);
 async function remoteVersion() {
   const res = await fetch("sw.js?check=" + Date.now(), { cache: "no-store" });
