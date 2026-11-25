@@ -63,6 +63,126 @@ img { max-width: 100%; }
 .cheftrack .ct.on { filter: none; opacity: 1; box-shadow: 0 0 0 2px #1FA37A; }
 .chefcard.off .cheftrack .ct.on { opacity: 1; }
 .rosette.big { font-size: 2.2rem; }
+
+/* ================= Class game ================= */
+#s-class { padding: clamp(10px, 2vh, 22px) clamp(10px, 2.5vw, 28px); overflow-y: auto; }
+#cg-body { max-width: 1400px; margin: 0 auto; width: 100%; }
+.cghead { display: flex; gap: 14px; align-items: center; margin-bottom: 6px; }
+.cghead h2 { margin: 0 0 2px; }
+.cgbig { font-size: 2.6rem; line-height: 1; }
+.cgsetup, .cgjoinform { max-width: 760px; margin: 0 auto; }
+.cgsetup h3 { margin: 14px 0 6px; font-size: 1.02rem; }
+.cgchips { display: flex; flex-wrap: wrap; gap: 6px; }
+.cgchips button { display: inline-flex; align-items: center; gap: 6px; }
+.cgchips .gico { width: 26px; height: 26px; border-radius: 6px; }
+.cgsetup #cg-create, .cgjoinform #cg-join { width: 100%; margin-top: 10px; }
+.cgin { width: 100%; box-sizing: border-box; letter-spacing: .04em; }
+#cg-code { letter-spacing: .3em; text-transform: uppercase; font-size: clamp(1.5rem, 5vw, 2rem); text-align: center; }
+/* projector: lobby */
+.cglobby { display: grid; gap: 16px; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: start; }
+.cglobby .cgbar { grid-column: 1 / -1; }
+@media (max-width: 760px) { .cglobby { grid-template-columns: 1fr; } }
+.cgjoin { text-align: center; }
+.cgstep { font-family: var(--display); font-weight: 700; font-size: clamp(1.1rem, 2.2vw, 1.6rem); color: var(--ink); }
+.cgstep.small { font-family: inherit; font-weight: 600; font-size: clamp(.9rem, 1.5vw, 1.15rem); opacity: .8; margin-top: 4px; }
+.cgurl { font-weight: 800; font-size: clamp(1.1rem, 2.6vw, 2rem); color: var(--coral); word-break: break-all; margin: 6px 0 2px; }
+.cgcode { display: flex; justify-content: center; gap: .08em; font-family: var(--title, var(--display)); font-weight: 700; font-size: clamp(3rem, 10vw, 8rem); letter-spacing: .06em; color: var(--navy-deep, #111d36);
+  background: #FFFDF6; border: 4px solid var(--brass); border-radius: 22px; padding: .05em .3em; margin: 14px auto 8px; width: fit-content; box-shadow: inset 0 2px 10px rgba(0,0,0,.08); }
+.cgcode i { width: .12em; }
+.cgmeta { opacity: .75; font-weight: 700; }
+.cgplayers h3 { margin: 0 0 10px; font-size: clamp(1.1rem, 2vw, 1.6rem); }
+.cgnames { display: flex; flex-wrap: wrap; gap: 8px; max-height: 52vh; overflow-y: auto; }
+.cgname { display: inline-block; background: #FFFDF6; border: 2px solid var(--brass); border-radius: 999px; padding: 5px 14px; font-weight: 800; font-size: clamp(.95rem, 1.6vw, 1.3rem); color: var(--ink); animation: cgpop .35s ease-out; }
+@keyframes cgpop { from { transform: scale(.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.cgbar { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 14px; }
+.cgbar .btn { min-width: 220px; }
+/* projector: question */
+.cgq { display: flex; flex-direction: column; gap: 12px; min-height: calc(100dvh - 40px); }
+.cgtop { display: flex; justify-content: space-between; align-items: center; gap: 10px; color: #F3E6C8; font-weight: 800; }
+.cgqn { font-size: clamp(1rem, 1.8vw, 1.5rem); }
+.cgtimer { display: grid; place-items: center; width: clamp(64px, 8vw, 110px); height: clamp(64px, 8vw, 110px); border-radius: 50%; background: radial-gradient(#FBF3E1, #EAD9B4); border: 4px solid var(--brass); color: var(--ink); font-family: var(--display); font-size: clamp(1.8rem, 3.6vw, 3.2rem); font-weight: 800; }
+.cgtbar { height: 10px; border-radius: 99px; background: rgba(255,255,255,.12); overflow: hidden; border: 1px solid rgba(184,138,62,.6); }
+.cgtbar i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, #1FA37A, #F4D27A); transition: width .2s linear; }
+.cgcard { text-align: center; padding: clamp(10px, 2vh, 24px); }
+.cgcard .vis { display: grid; place-items: center; }
+.cgcard .bigflag { width: min(52vw, 34vh * 1.5, 560px) !important; }
+.cgcard .shapebox svg { width: min(40vh, 60vw); height: min(40vh, 60vw); }
+.cgcard .capital, .cgcard .lmname { font-size: clamp(2rem, 5vw, 4.4rem); }
+.cgcard .lmemoji { font-size: clamp(3rem, 8vw, 6rem); }
+.cgprompt { font-size: clamp(1.2rem, 2.6vw, 2.3rem) !important; margin-top: 8px; }
+.cgclues { text-align: left; margin: 0 auto; max-width: 980px; font-size: clamp(1.05rem, 2vw, 1.7rem); font-weight: 600; line-height: 1.35; }
+.cgclues li { margin: 6px 0; }
+.cgopts { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(8px, 1.4vw, 16px); }
+.cgopt { position: relative; display: flex; align-items: center; gap: 12px; min-height: clamp(60px, 9vh, 110px); padding: 8px 16px; border-radius: 16px; background: var(--cg); color: #fff;
+  font-weight: 800; font-size: clamp(1.1rem, 2.4vw, 2.1rem); box-shadow: 0 5px 0 rgba(0,0,0,.3); border: 3px solid rgba(0,0,0,.18); text-shadow: 0 1px 2px rgba(0,0,0,.35); }
+.cgopt img { width: clamp(34px, 4vw, 60px); border-radius: 4px; border: 2px solid rgba(255,255,255,.8); }
+.cgsh { font-size: 1.2em; width: 1.2em; text-align: center; opacity: .9; }
+.cgopt .t { flex: 1; }
+.cgopt.no { opacity: .32; filter: saturate(.4); }
+.cgopt.ok { outline: 5px solid #F4D27A; outline-offset: 3px; }
+.cgopt.ok::after { content: "✓"; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 1.4em; }
+.cgn { background: rgba(0,0,0,.28); border-radius: 999px; padding: 2px 12px; margin-right: 34px; font-size: .8em; }
+.cgopt.no .cgn { margin-right: 0; }
+.cgrevgrid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(260px, 1fr); gap: 16px; align-items: start; }
+@media (max-width: 860px) { .cgrevgrid { grid-template-columns: 1fr; } }
+.cgcard.small .bigflag { width: min(30vw, 22vh * 1.5, 360px) !important; }
+.cgcard.small .shapebox svg { width: 24vh; height: 24vh; }
+.cgcard.small .cgclues { font-size: clamp(.95rem, 1.4vw, 1.2rem); }
+.cgrevgrid .cgopts { margin-top: 12px; }
+.cgtop5 h3, .cgall h3 { margin: 0 0 8px; }
+.cgrow { display: grid; grid-template-columns: 2.2em 1fr auto auto; gap: 10px; align-items: center; padding: 8px 4px; border-bottom: 1px solid rgba(184,138,62,.4); font-size: clamp(1rem, 1.8vw, 1.5rem); }
+.cgrow .rk { text-align: center; font-weight: 800; } .cgrow .n { font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cgrow small { color: #1FA37A; font-weight: 800; } .cgrow b { font-family: var(--display); }
+/* projector: podium */
+.cgend { text-align: center; }
+.cgwin { font-family: var(--title, var(--display)); color: #F4D27A; font-size: clamp(2rem, 5vw, 4rem); margin: 4px 0 14px; }
+.cgpodium { display: flex; justify-content: center; align-items: flex-end; gap: clamp(8px, 2vw, 24px); margin-bottom: 16px; }
+.cgpod { width: clamp(110px, 18vw, 240px); display: flex; flex-direction: column; align-items: center; gap: 4px; color: #F3E6C8; }
+.cgpod b { font-size: clamp(1.1rem, 2.4vw, 2rem); color: #fff; } .cgpod span { font-weight: 800; }
+.cgpod i { display: block; width: 100%; border-radius: 12px 12px 0 0; background: linear-gradient(#F4D27A, #B88A3E); border: 3px solid #8A6420; margin-top: 6px; }
+.cgpod.p1 i { height: clamp(120px, 22vh, 220px); } .cgpod.p2 i { height: clamp(80px, 15vh, 160px); background: linear-gradient(#FFFFFF, #AEB8C4); border-color: #6F7B8A; } .cgpod.p3 i { height: clamp(56px, 10vh, 110px); background: linear-gradient(#F2C19A, #A9652C); border-color: #7A4519; }
+.cgpod.empty { opacity: .25; }
+.cgmedal { font-size: clamp(2rem, 4vw, 3.4rem); }
+.cgall { max-width: 760px; margin: 0 auto; max-height: 34vh; overflow-y: auto; }
+.cgall:empty { display: none; }
+/* students' devices */
+.cgme { display: flex; justify-content: space-between; align-items: center; gap: 8px; color: #F3E6C8; font-weight: 800; margin-bottom: 10px; }
+.cgwait { text-align: center; max-width: 520px; margin: 0 auto; }
+.cgwait .cgbig { font-size: 3.4rem; display: block; margin: 6px 0; }
+.cgres.ok { border-color: #1FA37A; } .cgres.no { border-color: #D9673A; }
+.cgplace { font-size: 1.15rem; }
+.cgmine { display: inline-flex; align-items: center; gap: 8px; background: var(--cg); color: #fff; border-radius: 12px; padding: 8px 16px; font-weight: 800; margin-top: 6px; }
+.cgpq { display: flex; flex-direction: column; gap: 10px; min-height: calc(100dvh - 90px); }
+.cgpq .cgqn { color: #F3E6C8; font-weight: 800; text-align: center; }
+.cgptxt { color: #fff; font-family: var(--display); font-weight: 700; font-size: 1.25rem; text-align: center; }
+.cgbtns { flex: 1; display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; gap: 10px; min-height: 260px; }
+.cgbtn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; border-radius: 18px; border: 3px solid rgba(0,0,0,.2); background: var(--cg); color: #fff;
+  font: inherit; font-weight: 800; font-size: clamp(1rem, 4.4vw, 1.4rem); padding: 10px; box-shadow: 0 6px 0 rgba(0,0,0,.3); text-shadow: 0 1px 2px rgba(0,0,0,.35); cursor: pointer; touch-action: manipulation; }
+.cgbtn .cgsh { font-size: 2.2rem; } .cgbtn:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.3); }
+.h2hclass { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.h2hclass .btn { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 12px 8px; font-size: 1.05rem; }
+.h2hclass .btn small { font-weight: 600; font-size: .8rem; opacity: .8; }
+.h2hclass-h { margin: 0 0 8px; font-size: 1.05rem; }
+/* class game: remote requests on the projector, and the teacher's remote */
+.cgrq { position: fixed; z-index: 60; left: 50%; bottom: 18px; transform: translateX(-50%); width: min(620px, calc(100vw - 24px)); display: flex; flex-direction: column; gap: 4px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,.5); animation: cgpop .3s ease-out; }
+.cgrq b { font-size: 1.1rem; } .cgrq .cgbar { margin-top: 6px; } .cgrq .cgbar .btn { min-width: 140px; }
+.cgremotehint { grid-column: 1 / -1; text-align: center; color: #EADBB8; opacity: .8; font-size: .95rem; margin: 4px 0 0; }
+.cgrem { text-align: center; max-width: 520px; margin: 0 auto 12px; }
+.cgremnum { font-family: var(--display); font-weight: 800; font-size: 4rem; line-height: 1; margin: 6px 0 0; color: var(--ink); }
+.cgremnum small { font-size: .45em; opacity: .7; }
+.cgqn2 { font-weight: 800; margin: 0 0 6px; }
+.cgrembtn { display: block; width: 100%; max-width: 520px; margin: 0 auto; min-height: 84px; font-size: 1.35rem; }
+.cgendlink { color: #F4D27A; }
+.cgremtop { text-align: left; margin-top: 8px; }
+.cgremtop .cgrow, .cgrem .cgrow { font-size: 1rem; }
+.h2hremote { display: block; margin: -4px auto 4px; color: var(--coral); }
+
+#s-class .panel .note, #s-class .cgmeta { color: var(--ink); opacity: .78; }
+.cgurl { white-space: nowrap; font-size: clamp(1rem, 2.1vw, 1.7rem); word-break: normal; overflow: hidden; text-overflow: ellipsis; }
+.cgq { min-height: 0; }
+.cgcard .bigflag { width: min(46vw, 30vh * 4 / 3, 520px) !important; }
+.cgcard .shapebox svg { width: min(32vh, 56vw); height: min(32vh, 56vw); }
+.cgcode { font-size: clamp(2.6rem, 6.5vw, 7rem); max-width: 100%; box-sizing: border-box; }
 </style>
 <script>
 /* Security: where the game is hosted on its own site (or packaged as an app), only its own files and its Firebase
@@ -72,7 +192,7 @@ img { max-width: 100%; }
   if (/claude|anthropic/i.test(h) || location.protocol === "file:") return;
   var m = document.createElement("meta"); m.httpEquiv = "Content-Security-Policy";
   m.content = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; media-src 'self' data: blob:; worker-src 'self' blob:; " +
-    "connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com; object-src 'none'; base-uri 'none'; form-action 'none'";
+    "connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://*.firebaseio.com https://*.firebasedatabase.app; object-src 'none'; base-uri 'none'; form-action 'none'";
   document.head.appendChild(m);
   try { if (window.top !== window.self) window.top.location = window.self.location.href; } catch (e) { document.documentElement.style.display = "none"; }
 })();
@@ -1698,6 +1818,9 @@ span.off { color: rgba(217,194,145,.55); }
   </section>
 
   <!-- HEAD-TO-HEAD RESULTS -->
+  <!-- CLASS GAME (projector + students' devices) -->
+  <section class="screen" id="s-class" hidden><div id="cg-body"></div></section>
+
   <section class="screen" id="s-h2hres" hidden>
     <div class="hrhead"><div class="cup">🏆</div><h2 id="hr-title">Winners!</h2><div class="ressub" id="hr-sub"></div></div>
     <div class="hrlist" id="hr-list"></div>
@@ -3592,13 +3715,16 @@ function lbNote(mode, lv, score, ach, secs) {
   statPlay();
   G.lbAch = ach; G.lbSecs = secs;
   const key = bestKey(mode, lv), b = BEST[key] || (BEST[key] = { score: 0, stars: 0 });
-  if (score > 0 && (!b.lb || score > b.lb.s)) { b.lb = { _lb: 1, s: score, a: ach, t: secs, d: Date.now() }; LS.set("best", BEST); }
+  if (score > 0 && (!b.lb || score > b.lb.s || (score === b.lb.s && secs >= 0 && secs < (b.lb.t >= 0 ? b.lb.t : 1e9)))) { b.lb = { _lb: 1, s: score, a: ach, t: secs, d: Date.now() }; LS.set("best", BEST); }
 }
 const lbKey = (m, lv) => m + "_" + lv;
-const lbList = (m, lv) => LB[lbKey(m, lv)] || [];
-function lbRank(m, lv, s) {
+// Leaderboard order: higher score first; on the same score, the faster time wins (a score with no time goes after one with a time).
+const lbSecsOf = e => (e && e.t >= 0 ? e.t : 1e9);
+const lbBetter = (a, b) => (b.s - a.s) || (lbSecsOf(a) - lbSecsOf(b));
+const lbList = (m, lv) => (LB[lbKey(m, lv)] || []).slice().sort(lbBetter);
+function lbRank(m, lv, s, t = G.lbSecs) {
   if (s <= 0) return 0;
-  const l = lbList(m, lv); let r = l.findIndex(e => s > e.s); if (r < 0) r = l.length;
+  const l = lbList(m, lv), me = { s, t }; let r = l.findIndex(e => lbBetter(me, e) < 0); if (r < 0) r = l.length;
   return r < 10 ? r + 1 : 0;
 }
 function askInitials(rank) {
@@ -3614,7 +3740,7 @@ function askInitials(rank) {
     if (r >= 0) {
       const l = lbList(G.mode, S.level).slice();
       l.splice(r, 0, { i: v, s: G.score, d: Date.now(), a: G.lbAch || "", t: G.lbSecs });
-      LB[lbKey(G.mode, S.level)] = l.slice(0, 10); LS.set("board", LB);
+      LB[lbKey(G.mode, S.level)] = l.sort(lbBetter).slice(0, 10); LS.set("board", LB);
     }
     P.ini = v; saveP(); $("#ini").hidden = true; sfx("fanfare"); award("board");
   };
@@ -3750,6 +3876,9 @@ function renderH2HSetup() {
   const lens = H.style === "turns" ? [3, 5, 8, 10] : [10, 15, 20];
   const cur = H.style === "turns" ? H.per : H.total;
   $("#h2h-body").innerHTML = `
+    <div class="h2hsec"><h3 class="h2hclass-h">🏫 Class game: everyone plays on their own device</h3>
+      <div class="h2hclass"><button class="btn alt" type="button" id="cg-host-btn">📺 Host on the projector<small>Teacher: show the questions</small></button><button class="btn" type="button" id="cg-join-btn">📲 Join a class game<small>Student: type the code</small></button></div>
+      <button class="linkbtn h2hremote" type="button" id="cg-remote-btn">🎛️ Teacher remote: run a class game from your phone</button></div>
     <div class="h2hsec"><h3>How will you play?</h3>
       <div class="stylepick">
         <button data-s="turns" aria-pressed="${H.style === "turns"}"><span class="em">📱</span><b>Take turns</b><small>Pass one phone or tablet around. Each team answers its own questions.</small></button>
@@ -3765,6 +3894,9 @@ function renderH2HSetup() {
       ${H.style === "turns" ? `<div class="rowx"><h3>Questions in a row<small class="subh">before passing the device</small></h3><div class="seg" id="h2h-block"></div></div>` : ""}
       <div class="rowx"><h3>Level</h3><div class="seg" id="h2h-level"></div></div></div>`;
   const keepNames = () => { for (let i = 0; i < H.n; i++) { const el = $("#h2h-name-" + i); if (el) { const v = el.value.trim().slice(0, 16); H.names[i] = v && !badWord(v) ? v : TEAM_PRESETS[i][0]; } } saveH(); };
+  $("#cg-host-btn").onclick = () => { sfx("tap"); openClassGame("host"); };
+  $("#cg-join-btn").onclick = () => { sfx("tap"); openClassGame("player"); };
+  $("#cg-remote-btn").onclick = () => { sfx("tap"); openClassGame("remote"); };
   $("#h2h-body").querySelectorAll("[data-team]").forEach(b => b.onclick = () => { keepNames(); sfx("tap"); teamEditor(+b.dataset.team); });
   $("#h2h-body").querySelectorAll(".stylepick button").forEach(b => b.onclick = () => { keepNames(); H.style = b.dataset.s; sfx("tap"); renderH2HSetup(); });
   $("#h2h-minus").onclick = () => { keepNames(); H.n = Math.max(2, H.n - 1); sfx("tap"); renderH2HSetup(); };
@@ -5451,11 +5583,20 @@ function vxTap(owner) {
   });
 }
 /* Name Them All: every country heard is counted at once */
+const vxPlain = s => String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z]+/g, " ").trim();
+const VX_HOLD = (() => {   // countries whose name begins another country's name
+  const m = new Map(), names = GEO.map(c => [c.id, vxPlain(c.n)]);
+  names.forEach(([id, n]) => { if (names.some(([j, o]) => j !== id && o.startsWith(n) && o !== n)) m.set(id, [n]); });
+  return m;
+})();
 function acHear(text, final) {
   if (!NTA.on || NTA.done || NTA.paused) return;
   NTA.vjust = NTA.vjust || new Set();
   const todo = final ? NTA.pool.filter(id => !NTA.found[id]) : null;
-  const ids = vxFind(text, final, todo);
+  let ids = vxFind(text, final, todo);
+  // While a phrase is still being said, a country at the very end that could be the start of a longer
+  // name waits for the rest: "Guinea…" might become "Guinea-Bissau", "Niger…" "Nigeria", "Dominica…" "Dominican Republic".
+  if (!final) { const tail = vxPlain(text); ids = ids.filter(id => !(VX_HOLD.has(id) && VX_HOLD.get(id).some(w => tail.endsWith(w)))); }
   let got = 0, note = "";
   ids.forEach(id => {
     if (NTA.found[id]) { if (final && !NTA.vjust.has(id)) note = `You already have <b>${esc(BY_ID.get(id).n)}</b>!`; return; }
@@ -5873,8 +6014,9 @@ async function cloudBoardPost() {
     // Post the best run that has its achievement and time; an older best (from before times were kept) only if it's higher.
     const [m] = key.split("_"), withT = b.lb && b.lb.a ? b.lb : null, oldS = m === "allc" ? 0 : (b.score || 0);
     const lb = withT && withT.s >= oldS ? withT : {}, sc = lb.s || oldS;
-    const pv = posted[key], pvS = typeof pv === "number" ? pv : (pv && pv.s) || 0, pvFull = !!(pv && pv.full);
-    if (!MODES[m] || !(sc > 0) || sc < pvS || (sc === pvS && (pvFull || !lb.a))) continue;
+    const pv = posted[key], pvS = typeof pv === "number" ? pv : (pv && pv.s) || 0, pvFull = !!(pv && pv.full), pvT = pv && pv.t >= 0 ? pv.t : 1e9;
+    const faster = sc === pvS && lb.a && lb.t >= 0 && lb.t < pvT;
+    if (!MODES[m] || !(sc > 0) || sc < pvS || (sc === pvS && (pvFull || !lb.a) && !faster)) continue;
     try {
       const tok = await idToken(me);
       const put = fields => fetch(`${boardUrl(key)}/players/${me.uid}`, { method: "PATCH", headers: { Authorization: "Bearer " + tok, "Content-Type": "application/json" }, body: JSON.stringify({ fields }) });
@@ -5882,19 +6024,19 @@ async function cloudBoardPost() {
       let r = await put(Object.assign({ ini: { stringValue: ini } }, base, lb.a ? { ach: { stringValue: String(lb.a).slice(0, 40) } } : {}, lb.t >= 0 ? { secs: { integerValue: String(lb.t) } } : {})), full = !!lb.a;
       if (r.status === 403) { r = await put(Object.assign({ ini: { stringValue: ini.slice(0, 3) } }, base)); full = false; if (r.ok && lb.a) LS.set("lbrules", Date.now()); }   // older Firestore rules: try again once they're updated
       if (r.ok && full) LS.set("lbrules", 0);
-      if (r.ok) { posted[key] = { s: sc, full }; LS.set("lbposted_" + me.uid, posted); boardCache[key] = null; }
+      if (r.ok) { posted[key] = { s: sc, full, t: full && lb.t >= 0 ? lb.t : undefined }; LS.set("lbposted_" + me.uid, posted); boardCache[key] = null; }
     } catch (e) { return; }
   }
 }
 const boardCache = {};
 async function cloudBoardTop(key) {
-  const body = { structuredQuery: { from: [{ collectionId: "players" }], orderBy: [{ field: { fieldPath: "score" }, direction: "DESCENDING" }], limit: 10 } };
+  const body = { structuredQuery: { from: [{ collectionId: "players" }], orderBy: [{ field: { fieldPath: "score" }, direction: "DESCENDING" }], limit: 40 } };
   const headers = { "Content-Type": "application/json" };
   try { if (plMe()) headers.Authorization = "Bearer " + await idToken(); } catch (e) {}
   const r = await fetch(`${boardUrl(key)}:runQuery`, { method: "POST", headers, body: JSON.stringify(body) });
   if (!r.ok) throw new Error(r.status === 403 ? "rules" : "net");
   const j = await r.json();
-  return boardCache[key] = j.filter(x => x.document).map(x => { const f = x.document.fields || {}; const ti = iniClean((f.ini && f.ini.stringValue) || ""); return { i: !ti || badWord(ti) ? "???" : ti, s: +((f.score && f.score.integerValue) || 0), d: +((f.at && f.at.integerValue) || 0), a: (f.ach && f.ach.stringValue) || "", t: f.secs ? +f.secs.integerValue : -1, uid: x.document.name.split("/").pop() }; });
+  return boardCache[key] = j.filter(x => x.document).map(x => { const f = x.document.fields || {}; const ti = iniClean((f.ini && f.ini.stringValue) || ""); return { i: !ti || badWord(ti) ? "???" : ti, s: +((f.score && f.score.integerValue) || 0), d: +((f.at && f.at.integerValue) || 0), a: (f.ach && f.ach.stringValue) || "", t: f.secs ? +f.secs.integerValue : -1, uid: x.document.name.split("/").pop() }; }).sort(lbBetter).slice(0, 10);
 }
 
 function cloudDirty() { if (CL.quiet || !CL.active) return; clearTimeout(CL.timer); CL.timer = setTimeout(cloudSync, 4000); }
@@ -6211,6 +6353,7 @@ function appBack() {
   if (vis("#s-pz")) { pzPause(); return; }
   if (vis("#s-qc")) { qcPause(); return; }
   if (vis("#s-fr")) { frPause(); return; }
+  if (vis("#s-class")) { cgBack(); return; }
   if (vis("#s-map")) { if (EX.map !== "WORLD") { EX.map = "WORLD"; EX.sel = null; renderExplorer(); sfx("tap"); } else { sfx("tap"); renderMenu(); show("s-menu"); } return; }
   if (vis("#s-h2hres")) { $("#hr-menu").click(); return; }
   if (vis("#s-results")) { $("#r-menu").click(); return; }
@@ -6250,7 +6393,7 @@ if (window.history && history.pushState) {
 }
 
 /* ================= check for updates ================= */
-const APP_VERSION = "atlas-v51";
+const APP_VERSION = "atlas-v54";
 const verNum = v => +((String(v).match(/(\d+)\s*$/) || [0, 0])[1]);
 async function remoteVersion() {
   const res = await fetch("sw.js?check=" + Date.now(), { cache: "no-store" });
@@ -6395,7 +6538,7 @@ renderMenu();
    game itself) and a description, and goes to the game's Firebase "reports" list for the admin page.
    Usage counts: each device gets a random anonymous ID (no names); the game notes the days it was opened
    and how many games were finished, so the admin page can show active and passive users. */
-const BUG_GAME_SCREENS = new Set(["s-game", "s-allc", "s-hop", "s-pz", "s-fr", "s-qc"]);
+const BUG_GAME_SCREENS = new Set(["s-game", "s-allc", "s-hop", "s-pz", "s-fr", "s-qc", "s-class"]);
 const LADYBUG_SVG = `<svg class="lbug" viewBox="0 0 32 32" aria-hidden="true"><path d="M12.5 6.5 9.5 3M19.5 6.5l3-3.5" stroke="#1d1a16" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="16" cy="9" r="4.6" fill="#1d1a16"/><ellipse cx="16" cy="18.5" rx="10.5" ry="10" fill="#D8402B" stroke="#1d1a16" stroke-width="1.4"/><path d="M16 9v19.4" stroke="#1d1a16" stroke-width="1.5"/><circle cx="11" cy="15" r="2.1" fill="#1d1a16"/><circle cx="21" cy="15" r="2.1" fill="#1d1a16"/><circle cx="10.4" cy="22" r="2.3" fill="#1d1a16"/><circle cx="21.6" cy="22" r="2.3" fill="#1d1a16"/><ellipse cx="12.5" cy="12.6" rx="2.2" ry="1.2" fill="#fff" opacity=".35" transform="rotate(-30 12.5 12.6)"/></svg>`;
 const BUG = { timer: 0, shot: "", ctx: null, busy: false };
 const visScreen = () => { const s = [...document.querySelectorAll(".screen")].find(x => !x.hidden); return s ? s.id : ""; };
@@ -6623,6 +6766,500 @@ async function statFlush() {
   setTimeout(() => { statOpen(); bugFlush(); }, 2500);
   addEventListener("online", () => { bugFlush(); statSoon(2000); });
   document.addEventListener("visibilitychange", () => { if (document.hidden) statFlush(); else statOpen(); });
+})();
+
+/* ================= Class game =================
+   A teacher hosts on the projector; students join on their own devices with a code and a nickname.
+   Every question is shown on the big screen and everyone answers on their device; everyone who is right
+   scores, and faster answers score more (500 to 1000 points). Nothing personal is stored: a nickname,
+   the answers and the scores, and the teacher's device deletes the game when it ends.
+   Live updates use Firebase's Realtime Database, which pushes each change to every device
+   (REST + EventSource, signed in with the device's anonymous Firebase account). */
+const CG_MODES = ["mix", "flags", "capitals", "shapes", "clues", "languages", "landmarks", "cities", "animals"];
+const CG_COL = [["#D9673A", "▲"], ["#2F6FB5", "◆"], ["#C99A45", "●"], ["#1FA37A", "■"]];
+const CG_CODE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+const CG = { role: "", code: "", setup: { mode: "mix", lv: "easy", cont: "", n: 10, dur: 20 }, qs: [], i: -1, data: {}, pub: {}, timer: 0, tick: 0, es: null, score: {}, name: "", my: null };
+
+/* ---- Realtime Database over REST ---- */
+async function rtBase() {
+  if (!CL.cfg) await cloudConfig();
+  if (!CL.cfg) throw new Error("nocloud");
+  if (!CL.rtdb) {
+    try { const r = await fetch("cloud.json?t=" + Date.now(), { cache: "no-store" }); const c = await r.json(); if (c.databaseURL) CL.rtdb = String(c.databaseURL).trim(); } catch (e) {}
+    CL.rtdb = (CL.rtdb || `https://${CL.cfg.projectId}-default-rtdb.firebaseio.com`).replace(/\/+$/, "");
+  }
+  return CL.rtdb;
+}
+async function rt(method, path, body) {
+  const base = await rtBase(), tok = await anonToken();
+  const r = await fetch(`${base}/${path}.json?auth=${encodeURIComponent(tok)}`, { method, headers: { "Content-Type": "application/json" }, body: body === undefined ? undefined : JSON.stringify(body) });
+  if (!r.ok) { const e = new Error(r.status === 401 || r.status === 403 ? "denied" : r.status === 404 ? "nodb" : "net"); e.status = r.status; throw e; }
+  return r.json();
+}
+const RT_NOW = { ".sv": "timestamp" };
+function rtSet(obj, parts, val) {
+  if (!parts.length) return val;
+  obj = obj && typeof obj === "object" ? obj : {};
+  const [k, ...rest] = parts, v = rtSet(obj[k], rest, val);
+  if (v === null || v === undefined) delete obj[k]; else obj[k] = v;
+  return obj;
+}
+/* Keep a live copy of one place in the database; onChange runs after every update */
+async function rtListen(path, onChange, onFail) {
+  const base = await rtBase(); let mirror = null, closed = false, es = null;
+  const open = async () => {
+    if (closed) return;
+    const tok = await anonToken();
+    es = new EventSource(`${base}/${path}.json?auth=${encodeURIComponent(tok)}`);
+    const apply = (ev, patch) => {
+      let d; try { d = JSON.parse(ev.data); } catch (e) { return; }
+      if (!d) return;
+      const parts = String(d.path || "/").split("/").filter(Boolean);
+      if (patch) Object.entries(d.data || {}).forEach(([k, v]) => { mirror = rtSet(mirror, parts.concat(k.split("/").filter(Boolean)), v); });
+      else mirror = rtSet(mirror, parts, d.data);
+      onChange(mirror);
+    };
+    es.addEventListener("put", e => apply(e, false));
+    es.addEventListener("patch", e => apply(e, true));
+    es.addEventListener("auth_revoked", () => { es.close(); ANON.exp = 0; open(); });
+    es.addEventListener("cancel", () => { es.close(); closed = true; if (onFail) onFail("denied"); });
+  };
+  await open();
+  return { close() { closed = true; if (es) es.close(); } };
+}
+function cgErr(e) {
+  const m = e && e.message;
+  return m === "nocloud" ? "Class games need the game's online features, which aren't set up here."
+    : m === "off" ? "Class games need Anonymous sign-in switched on in Firebase."
+    : m === "nodb" ? "The class game database isn't set up yet in Firebase (Realtime Database)."
+    : m === "denied" ? "The class game rules haven't been added in Firebase yet (Realtime Database → Rules)."
+    : !navigator.onLine ? "You're offline. Class games need the internet." : "Couldn't reach the class game. Check the internet and try again.";
+}
+function cgStop() { clearInterval(CG.tick); clearTimeout(CG.timer); if (CG.es) { CG.es.close(); CG.es = null; } }
+const cgName = s => String(s || "").replace(/[^\p{L}\p{N} _.!?'-]/gu, "").replace(/\s+/g, " ").trim().slice(0, 12);
+const cgOrd = n => n + (["th", "st", "nd", "rd"][(n % 100 - 20) % 10] || ["th", "st", "nd", "rd"][n % 100] || "th");
+
+/* ================= the class game screen ================= */
+function openClassGame(role, code) {
+  cgStop(); CG.role = role; CG.data = {}; CG.pub = {}; CG.my = null;
+  show("s-class"); $("#app").classList.toggle("cg-host", role === "host");
+  if (role === "host") cgSetup(); else if (role === "remote") cgRemoteForm(code || ""); else cgJoinForm(code || "");
+}
+const cgBody = html => { $("#cg-body").innerHTML = html; };
+function cgBack() {
+  if (CG.role === "host" && CG.code) {
+    confirmBox("End the class game?", "Everyone's game will stop.", "End game", () => cgEnd(true));
+  } else if (CG.role === "remote" && CG.code) {
+    cgStop(); CG.code = ""; goHome();   // leaving the remote doesn't stop the game; the projector carries on
+  } else if (CG.role === "player" && CG.code && CG.pub && CG.pub.phase !== "end") {
+    confirmBox("Leave the class game?", "You can join again with the same code.", "Leave", () => { cgStop(); CG.code = ""; goHome(); });
+  } else { cgStop(); CG.code = ""; goHome(); }
+}
+
+/* ---- teacher: set up ---- */
+function cgSetup() {
+  const s = CG.setup;
+  const chip = (k, v, lbl, cur) => `<button type="button" data-${k}="${v}" aria-pressed="${String(cur) === String(v)}">${lbl}</button>`;
+  cgBody(`<div class="cgsetup panel">
+    <div class="cghead"><span class="cgbig">🏫</span><div><h2>Host a class game</h2><p class="note">Show this screen on the projector. Students join on their own devices with a code and a nickname. Everyone who's right scores, and faster answers score more.</p></div></div>
+    <h3>Game</h3><div class="chips gamechips cgchips">${CG_MODES.map(k => `<button type="button" data-mode="${k}" aria-pressed="${s.mode === k}">${gameIcon(k, "gico")}${MODES[k].name}</button>`).join("")}</div>
+    <h3>Level</h3><div class="chips cgchips">${chip("lv", "easy", "Explorer", s.lv)}${chip("lv", "hard", "World Expert", s.lv)}</div>
+    <h3>Countries from</h3><div class="chips cgchips">${chip("cont", "", "The whole world", s.cont)}${Object.keys(CONT).map(k => chip("cont", k, CONT[k].n, s.cont)).join("")}</div>
+    <h3>Questions</h3><div class="chips cgchips">${[5, 10, 15, 20].map(n => chip("n", n, n, s.n)).join("")}</div>
+    <h3>Seconds to answer</h3><div class="chips cgchips">${[10, 20, 30].map(n => chip("dur", n, n + " s", s.dur)).join("")}</div>
+    <p class="plmsg" id="cg-msg"></p>
+    <button class="btn" id="cg-create" type="button">Open the game for students</button></div>`);
+  $("#cg-body").querySelectorAll("[data-mode],[data-lv],[data-cont],[data-n],[data-dur]").forEach(b => b.onclick = () => {
+    sfx("tap"); const d = b.dataset;
+    if (d.mode) s.mode = d.mode; if (d.lv) s.lv = d.lv; if ("cont" in d) s.cont = d.cont; if (d.n) s.n = +d.n; if (d.dur) s.dur = +d.dur;
+    cgSetup();
+  });
+  $("#cg-create").onclick = cgCreate;
+}
+/* Questions for the class: always four choices, from the chosen game, level and continent */
+function cgBuild() {
+  const s = CG.setup, keepLv = S.level; S.level = s.lv;
+  const inCont = id => !s.cont || (BY_ID.get(id) || {}).m === s.cont;
+  const kinds = ["flags", "capitals", "shapes", "clues", "languages", "landmarks", "cities", "animals"];
+  const qs = [], used = new Set(), order = shuffle(kinds);
+  try {
+    for (let i = 0; i < s.n * 3 && qs.length < s.n; i++) {
+      const m = s.mode === "mix" ? order[qs.length % order.length] : s.mode;
+      let q = null;
+      if (m === "animals") { const a = shuffle(ANIMALS).find(a => !used.has("A" + a[1])); if (a) { used.add("A" + a[1]); q = qAnimal(a); } }
+      else if (m === "cities") { const C = shuffle(CITIES.filter(x => inCont(x[2]) && (s.lv === "hard" || EASY.has(x[2])))).find(x => !used.has("C" + x[1])) || shuffle(CITIES).find(x => !used.has("C" + x[1])); if (C) { used.add("C" + C[1]); q = qCity(C); } }
+      else if (m === "landmarks") { const L = shuffle(lmPool().filter(L => L[4] || inCont(L[2]))).find(L => !used.has("L" + L[1])); if (L) { used.add("L" + L[1]); q = qLandmark(L); } }
+      else { const c = shuffle(countryPool(m).filter(c => inCont(c.id))).find(c => !used.has(m + c.id)); if (c) { used.add(m + c.id); q = BUILD[m](c); } }
+      if (q && q.options && q.options.length === 4 && !q.kind) qs.push(q);
+    }
+  } finally { S.level = keepLv; }
+  return qs;
+}
+async function cgCreate() {
+  const btn = $("#cg-create"), msg = t => { $("#cg-msg").textContent = t; };
+  btn.disabled = true; msg("Opening the game…");
+  try {
+    CG.qs = cgBuild(); if (!CG.qs.length) throw new Error("noq");
+    const me = await anonToken().then(() => LS.get("anon", {}).uid);
+    const last = LS.get("cg_last", ""); if (last) rt("DELETE", `class/${last}`).catch(() => {});
+    let code = "";
+    for (let tries = 0; tries < 5 && !code; tries++) {
+      const c = Array.from({ length: 6 }, () => CG_CODE_CHARS[Math.floor(Math.random() * CG_CODE_CHARS.length)]).join("");
+      try { await rt("PUT", `class/${c}`, { host: me, made: RT_NOW, pub: { phase: "lobby", game: MODES[CG.setup.mode].name, lv: CG.setup.lv, n: CG.qs.length, dur: CG.setup.dur, i: -1 } }); code = c; }
+      catch (e) { if (e.message !== "denied" || tries === 4) throw e; }
+    }
+    CG.code = code; CG.i = -1; CG.score = {}; LS.set("cg_last", code); LS.set("cg_host", code);
+    await cgSave(true);
+    await cgHostListen();
+    cgLobby();
+  } catch (e) { btn.disabled = false; msg(e.message === "noq" ? "There aren't enough questions for that choice. Try another game or continent." : cgErr(e)); }
+}
+const cgPlayers = () => Object.entries(CG.data.players || {}).map(([uid, p]) => ({ uid, n: p.n || "?" }));
+function cgJoinURL() { const u = location.protocol === "https:" && !/claude|anthropic/i.test(location.hostname) ? location.origin + location.pathname.replace(/index\.html$/i, "") : SHARE_HOME; return u.replace(/^https?:\/\//, "").replace(/\/$/, ""); }
+function cgLobby() {
+  CG.view = "lobby";
+  cgBody(`<div class="cglobby">
+    <div class="cgjoin panel"><div class="cgstep">Join on your device</div>
+      <div class="cgurl">${esc(cgJoinURL())}</div><div class="cgstep small">Tap <b>Head-to-Head</b> → <b>Join a class game</b>, then type the code</div>
+      <div class="cgcode num" aria-label="Game code">${CG.code.split("").join("<i></i>")}</div>
+      <div class="cgmeta">${esc(MODES[CG.setup.mode].name)} · ${CG.setup.lv === "easy" ? "Explorer" : "World Expert"} · ${CG.qs.length} questions · ${CG.setup.dur} s each</div></div>
+    <div class="cgplayers panel"><h3><span id="cg-pc" class="num">0</span> players</h3><div class="cgnames" id="cg-names"><p class="note">Waiting for students to join…</p></div></div>
+    <div class="cgbar"><button class="btn ghost" id="cg-cancel" type="button">Cancel</button><button class="btn" id="cg-go" type="button" disabled>Start the game</button></div>
+    <p class="cgremotehint">📱 Teacher: to run the game from your phone, open Atlas Explorers on it and tap <b>Head-to-Head → Teacher remote</b>.</p></div>`);
+  $("#cg-cancel").onclick = () => cgEnd(true);
+  $("#cg-go").onclick = () => { sfx("go"); cgAsk(0); };
+  cgHostRefresh();
+}
+/* The host keeps a private copy of the questions and scores in the game (only the host can read it),
+   so a refresh or a closed tab can carry on where it left off. */
+const cgPackQ = q => ({ m: q.mode || "", p: q.prompt || "", v: q.visual || "", c: q.clues ? q.clues.slice(0, 3) : null, o: q.options.map(o => ({ t: String(o.text), f: o.flag ? o.flag.id : "", k: !!o.correct })) });
+const cgUnpackQ = x => ({ mode: x.m, prompt: x.p, visual: x.v, clues: x.c ? Object.values(x.c) : null, options: Object.values(x.o || {}).map(o => ({ text: o.t, flag: o.f ? BY_ID.get(o.f) : null, correct: !!o.k })) });
+async function cgSave(all) {
+  const body = { i: CG.i, score: CG.score, ranked: (CG.ranked || []).map(r => ({ u: r.uid, n: r.n, s: r.s, g: r.g })) };
+  if (all) Object.assign(body, { setup: CG.setup, qs: CG.qs.map(cgPackQ) });
+  try { await rt("PATCH", `class/${CG.code}/key`, body); } catch (e) {}
+}
+async function cgHostListen() {
+  CG.lastCmd = undefined;
+  CG.es = await rtListen(`class/${CG.code}`, d => {
+    CG.data = d || {};
+    const cmd = CG.data.cmd;
+    if (CG.lastCmd === undefined) CG.lastCmd = cmd ? cmd.t : 0;   // commands sent before this screen opened don't count
+    else if (cmd && cmd.t !== CG.lastCmd) { CG.lastCmd = cmd.t; cgRemoteCmd(cmd.a); }
+    cgHostRefresh();
+  }, () => {});
+}
+function cgRemoteCmd(a) {
+  if (a === "start" && CG.view === "lobby" && cgPlayers().length) { sfx("go"); cgAsk(0); }
+  else if (a === "reveal" && CG.view === "q") cgClose();
+  else if (a === "next" && CG.view === "rev") { if (CG.i >= CG.qs.length - 1) cgFinish(); else cgAsk(CG.i + 1); }
+  else if (a === "again" && CG.view === "end") cgAgain();
+  else if (a === "end") cgEnd(false);
+}
+/* A phone asks to be the teacher's remote: the projector asks the teacher to allow it */
+function cgRemoteAsk() {
+  const rq = CG.data.rq || {}, ok = ((CG.data.pub || {}).remote) || {}, wait = Object.keys(rq).filter(u => !ok[u]);
+  let box = $("#cg-rq");
+  if (!wait.length) { if (box) box.remove(); return; }
+  if (!box) { box = document.createElement("div"); box.id = "cg-rq"; box.className = "cgrq panel"; $("#s-class").appendChild(box); }
+  const u = wait[0], d = rq[u] || {};
+  if (box.dataset.u === u) return; box.dataset.u = u;
+  box.innerHTML = `<b>📱 ${/^[AEIOU]/i.test(d.d || "device") ? "An" : "A"} ${esc(d.d || "device")} wants to be the teacher remote for this game.</b><span class="note">Only allow your own phone.</span>
+    <div class="cgbar"><button class="btn ghost" type="button" id="cg-rq-no">Ignore</button><button class="btn" type="button" id="cg-rq-yes">Allow</button></div>`;
+  $("#cg-rq-yes").onclick = async () => { sfx("tap"); box.remove(); try { await rt("PATCH", `class/${CG.code}`, { [`pub/remote/${u}`]: true, [`rq/${u}`]: null }); toast("📱", "Remote connected", "You can run the game from your phone."); } catch (e) {} };
+  $("#cg-rq-no").onclick = async () => { sfx("tap"); box.remove(); try { await rt("DELETE", `class/${CG.code}/rq/${u}`); } catch (e) {} };
+}
+function cgPubCounts(fields) {   // tell the remote (and the class) how many have joined / answered
+  const key = JSON.stringify(fields); if (key === CG.lastCnt) return; CG.lastCnt = key;
+  clearTimeout(CG.cntT); CG.cntT = setTimeout(() => rt("PATCH", `class/${CG.code}/pub`, fields).catch(() => {}), 250);
+}
+function cgHostRefresh() {
+  cgRemoteAsk();
+  const ps = cgPlayers();
+  if (CG.view === "lobby") {
+    $("#cg-pc").textContent = ps.length; $("#cg-go").disabled = !ps.length;
+    if (ps.length) $("#cg-names").innerHTML = ps.map(p => `<span class="cgname">${esc(p.n)}</span>`).join("");
+    cgPubCounts({ np: ps.length });
+  } else if (CG.view === "q") {
+    const a = (CG.data.ans || {})[CG.i] || {}, n = Object.keys(a).length;
+    const el = $("#cg-count"); if (el) el.textContent = `${n} of ${ps.length} answered`;
+    cgPubCounts({ np: ps.length, cnt: n });
+    if (ps.length && n >= ps.length && !CG.closing) { CG.closing = true; setTimeout(cgClose, 600); }
+  }
+}
+function cgOptsHTML(q, rev) {
+  return `<div class="cgopts">${q.options.map((o, k) => `<div class="cgopt${rev ? (o.correct ? " ok" : " no") : ""}" style="--cg:${CG_COL[k][0]}"><span class="cgsh">${CG_COL[k][1]}</span>${o.flag ? flagImg(o.flag) : ""}<span class="t">${esc(o.text)}</span>${rev ? `<b class="num cgn">${rev[k]}</b>` : ""}</div>`).join("")}</div>`;
+}
+function cgVisual(q) {
+  if (q.clues) return `<ol class="cgclues">${q.clues.slice(0, 3).map(c => `<li>${esc(c)}</li>`).join("")}</ol>`;
+  return `<div class="vis cgvis">${q.visual || ""}</div>`;
+}
+async function cgAsk(i) {
+  const q = CG.qs[i]; CG.i = i; CG.view = "q"; CG.closing = false; clearInterval(CG.tick); clearTimeout(CG.timer);
+  const opts = q.options.map(o => String(o.text).slice(0, 60));
+  try { await rt("PATCH", `class/${CG.code}/pub`, { phase: "q", i, rev: null, cnt: 0, cur: { i, prompt: q.prompt || "", opts, open: true, t0: RT_NOW, dur: CG.setup.dur, mode: q.mode || CG.setup.mode } }); }
+  catch (e) { toast("⚠️", "Couldn't send the question", cgErr(e)); return; }
+  cgSave(false);
+  cgDrawQ(i, Date.now() + CG.setup.dur * 1000);
+}
+function cgDrawQ(i, endAt) {
+  const q = CG.qs[i]; CG.i = i; CG.view = "q"; CG.closing = false; clearInterval(CG.tick);
+  cgBody(`<div class="cgq"><div class="cgtop"><span class="cgqn">Question ${i + 1} of ${CG.qs.length}</span><span class="cgtimer num" id="cg-time">${CG.setup.dur}</span><span class="cgqn" id="cg-count">0 of ${cgPlayers().length} answered</span></div>
+    <div class="cgtbar"><i id="cg-tbar"></i></div>
+    <div class="card cgcard">${cgVisual(q)}<div class="prompt cgprompt">${esc(q.prompt || "")}</div></div>
+    ${cgOptsHTML(q)}
+    <div class="cgbar"><button class="btn ghost" id="cg-stop" type="button">Show the answer now</button></div></div>`);
+  $("#cg-stop").onclick = () => cgClose();
+  const end = endAt;
+  CG.tick = setInterval(() => {
+    const left = Math.max(0, end - Date.now()), t = $("#cg-time"), b = $("#cg-tbar");
+    if (t) t.textContent = Math.ceil(left / 1000); if (b) b.style.width = (left / (CG.setup.dur * 1000) * 100) + "%";
+    if (left <= 0) cgClose();
+  }, 200);
+  cgHostRefresh();
+}
+async function cgClose() {
+  if (CG.view !== "q") return; CG.view = "rev"; clearInterval(CG.tick); sfx("tap");
+  try { await rt("PATCH", `class/${CG.code}/pub/cur`, { open: false }); } catch (e) {}
+  // read the answers (after closing, so late ones are in) and score them
+  let ans = {}; try { ans = (await rt("GET", `class/${CG.code}/ans/${CG.i}`)) || {}; } catch (e) { ans = (CG.data.ans || {})[CG.i] || {}; }
+  let t0 = ((CG.data.pub || {}).cur || {}).t0; if (typeof t0 !== "number") { try { t0 = await rt("GET", `class/${CG.code}/pub/cur/t0`); } catch (e) { t0 = 0; } }
+  const q = CG.qs[CG.i], right = q.options.findIndex(o => o.correct), dur = CG.setup.dur * 1000, counts = [0, 0, 0, 0], gain = {};
+  Object.entries(ans).forEach(([uid, a]) => {
+    if (!a || !(a.o >= 0 && a.o <= 3)) return; counts[a.o]++;
+    const ok = a.o === right, secs = Math.max(0, Math.min(dur, (a.t || t0) - t0));
+    gain[uid] = ok ? Math.round(1000 - 500 * secs / dur) : 0;
+  });
+  const ps = cgPlayers();
+  ps.forEach(p => { CG.score[p.uid] = (CG.score[p.uid] || 0) + (gain[p.uid] || 0); });
+  const ranked = ps.map(p => ({ uid: p.uid, n: p.n, s: CG.score[p.uid] || 0, g: gain[p.uid] || 0 })).sort((a, b) => b.s - a.s);
+  const sc = {}; ranked.forEach((p, k) => { sc[p.uid] = { s: p.s, g: p.g, r: k + 1, ok: !!(gain[p.uid] > 0), a: p.uid in ans }; });
+  const last = CG.i >= CG.qs.length - 1;
+  try { await rt("PATCH", `class/${CG.code}/pub`, { phase: "rev", rev: { i: CG.i, ans: right, counts, of: ps.length, last, top: ranked.slice(0, 5).map(p => ({ n: p.n, s: p.s, g: p.g })) }, sc }); } catch (e) {}
+  CG.ranked = ranked; cgSave(false);
+  cgDrawRev(counts, ps.length);
+}
+function cgDrawRev(counts, np) {
+  const q = CG.qs[CG.i], ranked = CG.ranked || [], ps = { length: np }, last = CG.i >= CG.qs.length - 1; CG.view = "rev";
+  cgBody(`<div class="cgq"><div class="cgtop"><span class="cgqn">Question ${CG.i + 1} of ${CG.qs.length}</span><span class="cgqn">${counts.reduce((a, b) => a + b, 0)} of ${ps.length} answered</span></div>
+    <div class="cgrevgrid"><div><div class="card cgcard small">${cgVisual(q)}<div class="prompt cgprompt">${esc(q.prompt || "")}</div></div>${cgOptsHTML(q, counts)}</div>
+    <div class="panel cgtop5"><h3>Leaderboard</h3>${ranked.slice(0, 5).map((p, k) => `<div class="cgrow"><span class="rk">${["🥇", "🥈", "🥉"][k] || k + 1}</span><span class="n">${esc(p.n)}</span>${p.g ? `<small class="num">+${p.g}</small>` : "<small></small>"}<b class="num">${p.s.toLocaleString()}</b></div>`).join("") || `<p class="note">No one has joined.</p>`}</div></div>
+    <div class="cgbar"><button class="btn" id="cg-next" type="button">${last ? "See the winners 🏆" : "Next question"}</button></div></div>`);
+  $("#cg-next").onclick = () => { if (last) cgFinish(); else cgAsk(CG.i + 1); };
+}
+async function cgFinish() {
+  CG.view = "end"; sfx("fanfare");
+  const r = CG.ranked || [];
+  try { await rt("PATCH", `class/${CG.code}/pub`, { phase: "end", fin: r.slice(0, 10).map(p => ({ n: p.n, s: p.s })), of: r.length }); } catch (e) {}
+  cgDrawEnd();
+}
+function cgDrawEnd() {
+  CG.view = "end"; const r = CG.ranked || [];
+  const pod = [1, 0, 2].map(k => r[k] ? `<div class="cgpod p${k + 1}"><div class="cgmedal">${["🥇", "🥈", "🥉"][k]}</div><b>${esc(r[k].n)}</b><span class="num">${r[k].s.toLocaleString()}</span><i></i></div>` : `<div class="cgpod p${k + 1} empty"><i></i></div>`).join("");
+  cgBody(`<div class="cgend"><h2 class="cgwin">🏆 Winners!</h2><div class="cgpodium">${pod}</div>
+    <div class="panel cgall">${r.slice(3).map((p, k) => `<div class="cgrow"><span class="rk">${k + 4}</span><span class="n">${esc(p.n)}</span><small></small><b class="num">${p.s.toLocaleString()}</b></div>`).join("")}</div>
+    <div class="cgbar"><button class="btn ghost" id="cg-done" type="button">End the game</button><button class="btn" id="cg-again" type="button">Play again with the same class</button></div></div>`);
+  $("#cg-done").onclick = () => cgEnd(false);
+  $("#cg-again").onclick = cgAgain;
+}
+async function cgAgain() {
+  CG.qs = cgBuild(); CG.score = {}; CG.ranked = []; CG.i = -1;
+  const remote = ((CG.data || {}).pub || {}).remote || null;
+  try { await rt("PATCH", `class/${CG.code}`, { ans: null, pub: { phase: "lobby", game: MODES[CG.setup.mode].name, lv: CG.setup.lv, n: CG.qs.length, dur: CG.setup.dur, i: -1, remote } }); } catch (e) {}
+  await cgSave(true);
+  cgLobby();
+}
+async function cgEnd(early) {
+  cgStop(); const code = CG.code; CG.code = ""; CG.view = ""; LS.set("cg_host", "");
+  const rq = $("#cg-rq"); if (rq) rq.remove();
+  if (code) { try { await rt("DELETE", `class/${code}`); LS.set("cg_last", ""); } catch (e) {} }
+  $("#app").classList.remove("cg-host"); goHome();
+}
+
+/* ---- carry on after a refresh ---- */
+async function cgResumeCheck() {
+  const code = LS.get("cg_host", ""); if (!code || !navigator.onLine || CG.code) return;
+  let d = null; try { d = await rt("GET", `class/${code}`); } catch (e) { return; }
+  if (CG.code) return;   // a class game was opened on this device meanwhile
+  if (!d || !d.key || !d.pub || d.host !== (LS.get("anon", {}) || {}).uid) { LS.set("cg_host", ""); return; }
+  const where = d.pub.phase === "lobby" ? "waiting for students" : d.pub.phase === "end" ? "on the winners screen" : `on question ${(d.pub.i || 0) + 1} of ${d.pub.n || "?"}`;
+  showInfo(`<div class="cghead"><span class="cgbig">🏫</span><div><h2>Carry on with your class game?</h2><p>Game <b class="num">${esc(code)}</b> is still running, ${where}, with ${Object.keys(d.players || {}).length} students.</p></div></div>
+    <div class="cc-actions"><button class="btn ghost" id="cg-res-no" type="button">End it</button><button class="btn" id="cg-res-yes" type="button">Carry on</button></div>`);
+  $("#cg-res-yes").onclick = () => { $("#info").hidden = true; cgResume(code, d); };
+  $("#cg-res-no").onclick = async () => { $("#info").hidden = true; try { await rt("DELETE", `class/${code}`); } catch (e) {} LS.set("cg_host", ""); };
+}
+async function cgResume(code, d) {
+  cgStop(); CG.role = "host"; CG.code = code; CG.data = d; CG.setup = Object.assign({}, CG.setup, d.key.setup || {});
+  CG.qs = Object.values(d.key.qs || {}).map(cgUnpackQ); CG.score = d.key.score || {}; CG.i = typeof d.pub.i === "number" ? d.pub.i : -1;
+  CG.ranked = Object.values(d.key.ranked || {}).map(r => ({ uid: r.u, n: r.n, s: r.s, g: r.g }));
+  show("s-class"); $("#app").classList.add("cg-host");
+  await cgHostListen();
+  const ph = d.pub.phase;
+  if (ph === "lobby" || CG.i < 0) cgLobby();
+  else if (ph === "q") {
+    const t0 = (d.pub.cur || {}).t0 || Date.now(), endAt = t0 + CG.setup.dur * 1000;
+    if (endAt - Date.now() < 2000) { CG.view = "q"; cgClose(); } else cgDrawQ(CG.i, endAt);
+  }
+  else if (ph === "rev") { const r = d.pub.rev || {}; cgDrawRev(Object.values(r.counts || [0, 0, 0, 0]), r.of || cgPlayers().length); }
+  else cgDrawEnd();
+  toast("🏫", "Back in the game", `Class game ${code}`);
+}
+
+/* ---- the teacher's phone as a remote ---- */
+function cgRemoteForm(code, err) {
+  CG.view = "rjoin";
+  cgBody(`<div class="cgjoinform panel">
+    <div class="cghead"><span class="cgbig">🎛️</span><div><h2>Teacher remote</h2><p class="note">Run the class game from your phone while the projector shows it. Type the code on the big screen, then tap <b>Allow</b> on the projector.</p></div></div>
+    <label class="buglbl" for="cg-code">Game code</label><input id="cg-code" class="acinput cgin num" maxlength="6" autocomplete="off" autocapitalize="characters" spellcheck="false" value="${esc(code || "")}" placeholder="ABC123">
+    <p class="plmsg" id="cg-msg">${esc(err || "")}</p>
+    <button class="btn" id="cg-rjoin" type="button">Connect to the projector</button></div>`);
+  const ci = $("#cg-code"); ci.oninput = () => { const v = ci.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6); if (v !== ci.value) ci.value = v; };
+  $("#cg-rjoin").onclick = cgRemoteJoin;
+  ci.onkeydown = e => { if (e.key === "Enter") cgRemoteJoin(); };
+  setTimeout(() => { try { ci.focus(); } catch (e) {} }, 80);
+}
+async function cgRemoteJoin() {
+  const code = $("#cg-code").value.trim().toUpperCase(), msg = t => { $("#cg-msg").textContent = t; };
+  if (code.length !== 6) { msg("The code has 6 letters and numbers."); return; }
+  $("#cg-rjoin").disabled = true; msg("Connecting…");
+  try {
+    const pub = await rt("GET", `class/${code}/pub`); if (!pub) throw new Error("nogame");
+    const uid = (await anonToken(), LS.get("anon", {}).uid);
+    if (!(pub.remote && pub.remote[uid])) await rt("PUT", `class/${code}/rq/${uid}`, { d: bugPlat(), t: RT_NOW });
+    CG.code = code; CG.uid = uid;
+    CG.es = await rtListen(`class/${code}/pub`, d => { CG.pub = d || {}; cgRemoteView(); }, () => { cgStop(); cgRemoteForm(code, "Disconnected from the game."); });
+  } catch (e) { $("#cg-rjoin").disabled = false; msg(e.message === "nogame" ? "There's no game with that code." : cgErr(e)); }
+}
+async function cgSend(a) {
+  sfx("tap"); if (navigator.vibrate) navigator.vibrate(20);
+  try { await rt("PUT", `class/${CG.code}/cmd`, { a, t: RT_NOW }); } catch (e) { toast("⚠️", "That didn't send", cgErr(e)); }
+}
+function cgRemoteView() {
+  const p = CG.pub || {};
+  if (!CG.code) return;
+  if (!p.phase) { cgStop(); CG.code = ""; cgBody(`<div class="cgwait panel"><span class="cgbig">👋</span><h2>The game has ended</h2><button class="btn" id="cg-home" type="button">Back to the menu</button></div>`); $("#cg-home").onclick = () => goHome(); return; }
+  if (!(p.remote && p.remote[CG.uid])) {
+    CG.view = "rwait";
+    cgBody(`<div class="cgwait panel"><span class="cgbig">📺</span><h2>Tap “Allow” on the projector</h2><p>The big screen is asking whether this phone can run game <b class="num">${esc(CG.code)}</b>.</p></div>`);
+    return;
+  }
+  CG.view = "remote"; clearInterval(CG.tick);
+  const head = `<div class="cgme"><span class="cgname">🎛️ Remote · ${esc(CG.code)}</span><button class="linkbtn cgendlink" id="cg-rend" type="button">End game</button></div>`;
+  let main = "";
+  if (p.phase === "lobby") main = `<div class="cgrem panel"><p class="cgremnum num">${p.np || 0}</p><p>students have joined</p></div>
+    <button class="btn cgrembtn" id="cg-r" data-a="start" type="button" ${p.np ? "" : "disabled"}>▶ Start the game</button>`;
+  else if (p.phase === "q" && p.cur) main = `<div class="cgrem panel"><p class="cgqn2">Question ${p.cur.i + 1} of ${p.n || "?"}</p><p class="cgremnum num">${p.cnt || 0}<small> / ${p.np || 0}</small></p><p>have answered</p><p class="note">${esc(p.cur.prompt || "")}</p><div class="cgtbar"><i id="cg-tbar"></i></div></div>
+    <button class="btn cgrembtn" id="cg-r" data-a="reveal" type="button">👁 Show the answer now</button>`;
+  else if (p.phase === "rev" && p.rev) {
+    const right = ((p.cur && p.cur.opts) || [])[p.rev.ans] || "";
+    main = `<div class="cgrem panel"><p class="cgqn2">Question ${p.rev.i + 1} of ${p.n || "?"}</p><p>Answer: <b>${esc(right)}</b></p>
+      <div class="cgremtop">${Object.values(p.rev.top || {}).map((t, k) => `<div class="cgrow"><span class="rk">${["🥇", "🥈", "🥉"][k] || k + 1}</span><span class="n">${esc(t.n)}</span>${t.g ? `<small class="num">+${t.g}</small>` : "<small></small>"}<b class="num">${(t.s || 0).toLocaleString()}</b></div>`).join("")}</div></div>
+      <button class="btn cgrembtn" id="cg-r" data-a="next" type="button">${p.rev.last ? "🏆 See the winners" : "⏭ Next question"}</button>`;
+  }
+  else if (p.phase === "end") main = `<div class="cgrem panel"><p class="cgqn2">🏆 Winners</p>${Object.values(p.fin || {}).slice(0, 3).map((t, k) => `<div class="cgrow"><span class="rk">${["🥇", "🥈", "🥉"][k]}</span><span class="n">${esc(t.n)}</span><small></small><b class="num">${(t.s || 0).toLocaleString()}</b></div>`).join("")}</div>
+    <button class="btn cgrembtn" id="cg-r" data-a="again" type="button">🔁 Play again with the same class</button>`;
+  cgBody(head + main);
+  const b = $("#cg-r"); if (b) safeTap(b, () => cgSend(b.dataset.a));
+  $("#cg-rend").onclick = () => confirmBox("End the class game?", "Everyone's game will stop.", "End game", () => cgSend("end"));
+  if (p.phase === "q" && p.cur) {
+    const end = Date.now() + (p.cur.dur || 20) * 1000; CG.tick = setInterval(() => { const bar = $("#cg-tbar"), left = Math.max(0, end - Date.now()); if (bar) bar.style.width = (left / ((p.cur.dur || 20) * 1000) * 100) + "%"; if (!left) clearInterval(CG.tick); }, 250);
+  }
+}
+
+/* ---- students ---- */
+function cgJoinForm(code, err) {
+  CG.view = "join";
+  const saved = LS.get("cg_name", "") || (plMe() ? (P.ini || "") : "");
+  cgBody(`<div class="cgjoinform panel">
+    <div class="cghead"><span class="cgbig">📲</span><div><h2>Join a class game</h2><p class="note">Type the code on the big screen and a nickname. Please don't use your full name.</p></div></div>
+    <label class="buglbl" for="cg-code">Game code</label><input id="cg-code" class="acinput cgin num" maxlength="6" autocomplete="off" autocapitalize="characters" spellcheck="false" inputmode="text" value="${esc(code)}" placeholder="ABC123">
+    <label class="buglbl" for="cg-name">Nickname</label><input id="cg-name" class="acinput cgin" maxlength="12" autocomplete="off" spellcheck="false" value="${esc(saved)}" placeholder="Up to 12 letters">
+    <p class="plmsg" id="cg-msg">${esc(err || "")}</p>
+    <button class="btn" id="cg-join" type="button">Join the game</button></div>`);
+  const ci = $("#cg-code"); ci.oninput = () => { const v = ci.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6); if (v !== ci.value) ci.value = v; };
+  $("#cg-join").onclick = cgJoin;
+  $("#cg-name").onkeydown = e => { if (e.key === "Enter") cgJoin(); };
+  setTimeout(() => { try { (code ? $("#cg-name") : ci).focus(); } catch (e) {} }, 80);
+}
+async function cgJoin() {
+  const code = $("#cg-code").value.trim().toUpperCase(), name = cgName($("#cg-name").value), msg = t => { $("#cg-msg").textContent = t; };
+  if (code.length !== 6) { msg("The code has 6 letters and numbers."); return; }
+  if (!name) { msg("Type a nickname."); return; }
+  if (badWord(name)) { msg("Try a different nickname."); return; }
+  $("#cg-join").disabled = true; msg("Joining…");
+  try {
+    const pub = await rt("GET", `class/${code}/pub`);
+    if (!pub) throw new Error("nogame");
+    if (pub.phase === "end") throw new Error("over");
+    const uid = (await anonToken(), LS.get("anon", {}).uid);
+    await rt("PUT", `class/${code}/players/${uid}`, { n: name, t: RT_NOW });
+    LS.set("cg_name", name); CG.code = code; CG.name = name; CG.uid = uid; CG.answered = {};
+    CG.es = await rtListen(`class/${code}/pub`, d => { CG.pub = d || {}; cgPlayerView(); }, () => { cgStop(); cgJoinForm(code, "You were disconnected from the game."); });
+    sfx("go");
+  } catch (e) {
+    $("#cg-join").disabled = false;
+    msg(e.message === "nogame" ? "There's no game with that code. Check the big screen." : e.message === "over" ? "That game has finished." : cgErr(e));
+  }
+}
+function cgPlayerView() {
+  const p = CG.pub || {}, me = (p.sc || {})[CG.uid];
+  if (!CG.code) return;
+  if (!p.phase) { cgStop(); CG.code = ""; cgBody(`<div class="cgwait panel"><span class="cgbig">👋</span><h2>The teacher ended the game</h2><button class="btn" id="cg-home" type="button">Back to the menu</button></div>`); $("#cg-home").onclick = () => goHome(); return; }
+  const head = `<div class="cgme"><span class="cgname">${esc(CG.name)}</span>${me ? `<span class="num">${me.s.toLocaleString()} pts · ${cgOrd(me.r)}</span>` : ""}</div>`;
+  if (p.phase === "lobby") {
+    CG.view = "pwait";
+    cgBody(`${head}<div class="cgwait panel"><span class="cgbig">✅</span><h2>You're in!</h2><p>Look at the big screen. The game starts when your teacher is ready.</p><p class="note">${esc(p.game || "")} · ${p.n || ""} questions</p></div>`);
+    return;
+  }
+  if (p.phase === "q" && p.cur) {
+    const c = p.cur, done = CG.answered[c.i];
+    if (CG.view === "pq" && CG.showing === c.i && !done && c.open) return;   // already showing this question
+    CG.view = "pq"; CG.showing = c.i;
+    if (done !== undefined || !c.open) {
+      cgBody(`${head}<div class="cgwait panel"><span class="cgbig">${c.open ? "⏳" : "⌛"}</span><h2>${c.open ? "Answer locked in!" : "Time's up!"}</h2><p>${c.open ? "Waiting for everyone else…" : "Look at the big screen."}</p>${done !== undefined ? `<div class="cgmine" style="--cg:${CG_COL[done][0]}"><span class="cgsh">${CG_COL[done][1]}</span>${esc(c.opts[done])}</div>` : ""}</div>`);
+      return;
+    }
+    cgBody(`${head}<div class="cgpq"><div class="cgqn">Question ${c.i + 1}${p.n ? ` of ${p.n}` : ""}</div><div class="cgptxt">${esc(c.prompt)}</div><div class="cgtbar"><i id="cg-tbar"></i></div>
+      <div class="cgbtns">${c.opts.map((o, k) => `<button type="button" class="cgbtn" data-o="${k}" style="--cg:${CG_COL[k][0]}"><span class="cgsh">${CG_COL[k][1]}</span><span class="t">${esc(o)}</span></button>`).join("")}</div></div>`);
+    const end = Date.now() + (c.dur || 20) * 1000; clearInterval(CG.tick);
+    CG.tick = setInterval(() => { const b = $("#cg-tbar"); const left = Math.max(0, end - Date.now()); if (b) b.style.width = (left / ((c.dur || 20) * 1000) * 100) + "%"; if (!left) clearInterval(CG.tick); }, 200);
+    $("#cg-body").querySelectorAll(".cgbtn").forEach(b => safeTap(b, async () => {
+      if (CG.answered[c.i] !== undefined) return;
+      const o = +b.dataset.o; CG.answered[c.i] = o; sfx("tap"); if (navigator.vibrate) navigator.vibrate(30);
+      cgPlayerView();
+      try { await rt("PUT", `class/${CG.code}/ans/${c.i}/${CG.uid}`, { o, t: RT_NOW }); }
+      catch (e) { if (e.message === "denied") toast("⌛", "Too late!", "That question had already closed."); else { delete CG.answered[c.i]; toast("⚠️", "Your answer didn't send", "Tap it again."); cgPlayerView(); } }
+    }));
+    return;
+  }
+  if (p.phase === "rev" && p.rev) {
+    clearInterval(CG.tick); CG.view = "prev";
+    const r = p.rev, right = (p.cur && p.cur.opts || [])[r.ans] || "";
+    const ok = me && me.ok, answered = me && me.a;
+    if (CG.revShown !== r.i) { CG.revShown = r.i; sfx(ok ? "right" : "wrong"); }
+    cgBody(`${head}<div class="cgwait panel cgres ${ok ? "ok" : "no"}"><span class="cgbig">${ok ? "🎉" : answered ? "😮" : "⌛"}</span>
+      <h2>${ok ? `Correct! +${me.g}` : answered ? "Not this time" : "No answer"}</h2>
+      ${ok ? "" : `<p>The answer was <b>${esc(right)}</b>.</p>`}
+      ${me ? `<p class="cgplace">You're <b>${cgOrd(me.r)}</b> of ${r.of} with <b class="num">${me.s.toLocaleString()}</b> points</p>` : ""}
+      <p class="note">${r.last ? "That was the last question!" : "Get ready for the next question…"}</p></div>`);
+    return;
+  }
+  if (p.phase === "end") {
+    clearInterval(CG.tick); CG.view = "pend";
+    const r = me ? me.r : 0;
+    cgBody(`${head}<div class="cgwait panel cgres ok"><span class="cgbig">${r === 1 ? "🏆" : r === 2 ? "🥈" : r === 3 ? "🥉" : "🌍"}</span>
+      <h2>${r === 1 ? "You won!" : r ? `You came ${cgOrd(r)}!` : "Game over"}</h2>
+      ${me ? `<p class="cgplace"><b class="num">${me.s.toLocaleString()}</b> points · ${cgOrd(r)} of ${p.of || ""}</p>` : ""}
+      <p class="note">Thanks for playing! Look at the big screen for the winners.</p>
+      <button class="btn" id="cg-home" type="button">Back to the menu</button></div>`);
+    $("#cg-home").onclick = () => { cgStop(); CG.code = ""; goHome(); };
+  }
+}
+/* A link like …/?join=ABC123 opens the join form with the code filled in */
+(function cgDeepLink() {
+  const m = /[?&]join=([A-Za-z0-9]{6})/.exec(location.search);
+  if (m) setTimeout(() => { try { $("#info").hidden = true; } catch (e) {} openClassGame("player", m[1].toUpperCase()); }, 900);
+  else setTimeout(cgResumeCheck, 1600);   // the teacher's device refreshed during a class game: offer to carry on
 })();
 </script>
 
