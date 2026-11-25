@@ -218,6 +218,16 @@ button.pp.new .pn { font-size: clamp(.7rem, 11.5cqi, 1.2rem); }
 #s-class .cgcard.small .lmemoji { font-size: clamp(2rem, 5vh, 4rem); }
 #s-class .cgcard.small .lmname, #s-class .cgcard.small .capital { font-size: clamp(1.3rem, 4.4vh, 3rem); }
 #s-class .cgcard.small .prompt.cgprompt { font-size: clamp(1.05rem, 2.2vw, 1.7rem) !important; }
+
+/* a student's answer screen: exactly one screen tall, no scrolling, buttons that can't be "scrolled" instead of tapped */
+#s-class.cg-pq { display: flex; flex-direction: column; overflow: hidden; box-sizing: border-box; }   /* height comes from the app area (it's shorter than the screen on iPhones) */
+#s-class.cg-pq .cgnav { flex: none; margin-bottom: 6px; }
+#s-class.cg-pq #cg-body { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+#s-class.cg-pq .cgme { flex: none; margin-bottom: 6px; }
+#s-class.cg-pq .cgpq { flex: 1 1 auto; min-height: 0; }
+#s-class.cg-pq .cgbtns { flex: 1 1 0; min-height: 0; grid-template-rows: repeat(2, minmax(0, 1fr)); grid-auto-rows: minmax(0, 1fr); }
+#s-class.cg-pq .cgpq { display: flex; flex-direction: column; }
+.cgbtns, .cgbtn { touch-action: none; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; }
 </style>
 <script>
 /* Security: where the game is hosted on its own site (or packaged as an app), only its own files and its Firebase
@@ -4123,6 +4133,7 @@ function startAllc() {
   draw();
 }
 function acBegin(cont, secs) {
+  NTA.carry = ""; if (NTA.vwait) { clearTimeout(NTA.vwait.t); NTA.vwait = null; }
   sfx("go");
   H.on = false;
   const pool = cont ? GEO.filter(c => c.m === cont).map(c => c.id) : GEO.map(c => c.id);
@@ -5141,7 +5152,7 @@ const QC_SAID_SRC = {
   GH: ["gonna", "garner", "ganna", "gana"], OM: ["oh man", "o man", "omen", "oh mon"], YE: ["yeah men", "yeah man", "yaman"], HT: ["hate e", "hey t", "hay tee", "hi t", "hady"],
   FJ: ["fee gee", "fiji islands", "fiji's", "feejee", "fuji", "fiji", "feegee", "fidgy", "fee jee", "fijee", "phoebe", "fiji island"], CZ: ["check ya", "check republic", "check", "chequia", "czech republic", "checkia", "check yeah"], SC: ["say shells", "say shell", "seashells", "sea shells"],
   KI: ["kiribas", "kiribass", "kitty bass", "kiri bass", "kiri bati", "kiribass"], KG: ["kurdistan", "kirghistan", "kergistan", "curgistan", "kirgizstan", "kyrgystan", "kirgistan", "cure gistan"],
-  LS: ["lesutu", "le soto", "lesoto", "less so too", "le sutu", "lasutu", "lesuto"], SZ: ["swatini", "e swatini", "as watini", "es watini", "eswatini", "a swatini", "s watini"],
+  LS: ["lesutu", "le soto", "lesoto", "less so too", "le sutu", "lasutu", "lesuto", "the sutu", "lisa toe", "lisa tow", "lisa to", "le so toe", "lisutu", "la sue too", "le sue too", "lee sue too", "la sutu", "la soto", "lisotho", "lasotho", "lesothu", "le zoo too", "lisa two", "leso toe", "le soto", "lesso toe", "lee soto", "the soto", "la sooto", "le sooto", "lesotho s", "le suto", "lisoto"], SZ: ["swatini", "e swatini", "as watini", "es watini", "eswatini", "a swatini", "s watini"],
   PW: ["palao", "pulao", "pa lao", "pillow", "pah lao", "belau"], NR: ["now roo", "na ru", "naru", "nah roo", "now ru"], TV: ["two valu", "to value", "too valu", "to valu", "two value"],
   BT: ["baton", "button", "boo tan", "butane", "bhutan's", "boutan"], MM: ["me and mar", "mian mar", "my anmar", "me anmar", "mianmar", "my and mar"], UY: ["your a guy", "you're a guy", "uru guay", "you are a guy", "uruguay's", "oo roo gwai"],
   PY: ["pair a guy", "para guay", "parrot guy", "para gwai"], CI: ["coat de voir", "cote d ivoire", "cote divoire", "coat d ivoire", "code d ivoire", "coat divoire", "cote devoir", "coat devoir", "ivory coast"],
@@ -5152,7 +5163,7 @@ const QC_SAID_SRC = {
   WS: ["some oa", "summer", "sa moa"], TO: ["tonka", "tongue a", "tong a"], VU: ["van watu", "vanawatu", "van a watu", "vanua tu", "van u atu", "van a 2", "vanuatoo"], AZ: ["azer by john", "as a by john", "azerbajan", "azer baijan", "azerbijan"],
   LI: ["lichtenstein", "lick ten stein", "liechtenstein's", "lichten stein", "licktenstein"], LU: ["luxemburg", "lux and burg", "lux em burg"], MD: ["mold over", "moldavia", "mole dova", "mold ova"],
   BY: ["bella roose", "bela roose", "bella russ", "bella ruse", "bellarus", "bell a roos", "belorussia", "byelorussia"], UA: ["you crane", "u crane", "the ukraine", "you crain"], IL: ["is real", "isreal", "is rail"], CY: ["cypress", "sigh press"],
-  TN: ["two nesia", "tunesia", "to nesia", "tune asia", "tunisha"], GY: ["guy anna", "guy ana", "gayana", "guiana", "guy on a"], SR: ["sir name", "surinam", "sir in arm", "surname", "sir in am", "sura nam"], BZ: ["believes", "bell ease", "believe", "beliz"],
+  TN: ["two nesia", "tunesia", "to nesia", "tune asia", "tunisha"], GY: ["guy anna", "guy ana", "gayana", "guiana", "guy on a"], SR: ["sir name", "surinam", "sir in arm", "surname", "sir in am", "sura nam", "sorry name", "sorry nam", "surinamese", "syrian name", "sirinam", "sirinami", "sir in nam", "sure in am", "surin am", "suri nam", "suri nami", "sur name", "surrey name", "sir nam", "sure name", "suri name", "surinam a", "suriname e", "sooner nam", "sue rename", "suri nom", "sirname", "surnam", "sir in on", "sure and am", "sir an am"], BZ: ["believes", "bell ease", "believe", "beliz"],
   TH: ["tie land", "tai land", "thigh land"], VN: ["viet nam", "vietnam's", "v at nam"], NO: ["no way", "nor way"], FI: ["fin land", "thin land"], IS: ["ice land"], NZ: ["new zeeland", "new zealand's", "news eland", "new sealand"],
   QA: ["cutter", "guitar", "kuh tar", "cut are", "catarrh", "cat are", "gutter", "kutta", "cutta", "qatar's", "katar", "kotter", "cotter", "ka tar"], KW: ["q8", "koo wait", "cue wait", "q wait", "queue wait"],
   BH: ["bah rain", "bar rain", "bahrein", "baron", "bar rein"], JO: ["jordon", "jor dan"], LB: ["lebenon", "leben on", "lebanese"], SY: ["cereal", "siria", "serial", "sirya"],
@@ -5165,7 +5176,7 @@ const QC_SAID_SRC = {
   MW: ["ma la we", "malawy", "mallow we", "muh la wee", "mala wee"], TZ: ["tan zania", "tanzanea", "tans a nia", "tan za nee a", "tanzaniya"], UG: ["you ganda", "u ganda", "you gander", "ooganda", "yuganda"], SO: ["so malia", "some alia", "somolia"],
   ET: ["e theopia", "ethiopa", "e t opia", "ithiopia", "utopia"], SD: ["sue dan", "sudan's", "soo dan", "pseudan", "the sudan"], SS: ["south sue dan", "south sudan's", "south soo dan", "southern sudan"], LY: ["libby a", "lybia", "libya's", "livia", "lidia"], DZ: ["al jiria", "algiers", "al geria", "algerian", "al jeria"],
   MA: ["more rocco", "moroco", "marocco", "ma rocko", "more rocko", "morrocco"], EG: ["e gypt", "eejipt", "egypt's"], SN: ["sene gal", "cynical", "sennegal", "send a gal", "senna gall"], GM: ["gamma", "the gambia", "gam bia", "gambya", "gamebia"], GN: ["ginny", "guinea conakry", "gini", "guinny", "ghinny", "ginnie", "gimme"],
-  GW: ["guinea bissau", "ginny bissau", "guinea be sow", "guinea bisau", "ginny be sow", "guinea bisso", "guinea bizau", "ginny bisso"], GQ: ["equatorial ginny", "equatorial guinea", "equatorial gini", "equator guinea", "equitorial guinea", "equatorial ginnie"], SL: ["sierra leon", "sara leone", "sierra leone's", "see era leone", "sierra lyon", "siera leone"],
+  GW: ["guinea bissau", "ginny bissau", "guinea be sow", "guinea bisau", "ginny be sow", "guinea bisso", "guinea bizau", "ginny bisso", "bissau", "bisau", "guinea bissell", "guinea bisou", "guinea basso", "guinea besso", "guinea b sow", "ghini bissau", "guinea bissaw", "guinea bisaw", "guinea bisao", "guinea bee sow", "guinea beso", "guinea bissow", "guinea bassa", "guinea visa", "guinea bisa", "guinea bissa", "guinea biscuit", "guinea be so", "guinea bees ow", "guinea vissau", "guinea bistro", "ginny bissell", "guinea bizarre"], GQ: ["equatorial ginny", "equatorial guinea", "equatorial gini", "equator guinea", "equitorial guinea", "equatorial ginnie"], SL: ["sierra leon", "sara leone", "sierra leone's", "see era leone", "sierra lyon", "siera leone"],
   LR: ["lie beria", "library a", "liberya", "lai beria"], BF: ["burkina", "burkina fasso", "bikini faso", "burkina fazo", "bur keena faso", "berkina faso", "brookina faso"], NG: ["nye jeria", "nigerya", "ni jeria", "nigeria's"], CM: ["cameroun", "camera on", "camaroon", "cameroons", "cam a roon"], CF: ["central africa", "central african republic", "c a r", "central african", "the central african republic"],
   CD: ["democratic republic of congo", "d r c", "dr congo", "d r congo", "democratic congo", "congo kinshasa", "the drc", "democratic republic of the congo", "zaire", "congo democratic republic", "big congo"], CG: ["republic of congo", "congo brazzaville", "republic of the congo", "the congo", "congo republic", "little congo"],
   AO: ["an gola", "and gola", "angora", "an goalie"], NA: ["nam ibia", "na mibia", "namibya", "nah mibia"], BW: ["bots wana", "botswanna", "bought swana", "bot swana", "botswana's"], ZA: ["south africa's", "southafrica", "r s a", "south african", "republic of south africa"], KM: ["comoros islands", "comoro", "come or us", "camaros", "cameras", "comoro islands", "komoros", "the comoros", "comorose"],
@@ -5625,14 +5636,48 @@ const VX_HOLD = (() => {   // countries whose name begins another country's name
   names.forEach(([id, n]) => { if (names.some(([j, o]) => j !== id && o.startsWith(n) && o !== n)) m.set(id, [n]); });
   return m;
 })();
+/* iPhones often finish a phrase part-way through a name ("Sir" … "name", "Guinea" … "Bissau"). So the last words of the
+   previous finished phrase are carried over and heard together with the new words, and a country whose name starts a
+   longer one (Guinea, Niger, Dominica) waits a moment before it counts, in case the longer name is still coming. */
+const VX_LONGER = (() => {   // e.g. GN -> every way of saying Guinea-Bissau / Equatorial… that starts with "guinea"
+  const m = new Map();
+  VX_HOLD.forEach((names, id) => {
+    const n = names[0], longer = [];
+    GEO.forEach(c => { const s = vxPlain(c.n); if (c.id !== id && s.startsWith(n) && s !== n) longer.push({ id: c.id, s }); });
+    QC_SAID.forEach((cid, s) => { if (cid !== id && s.startsWith(n) && s !== n) longer.push({ id: cid, s }); });
+    m.set(id, longer);
+  });
+  return m;
+})();
+function vxMightGrow(id, tail) {   // the phrase ends with this country's name, or with the start of a longer name that begins with it
+  const n = VX_HOLD.get(id)[0], at = tail.lastIndexOf(n);
+  if (at < 0) return false;
+  const rest = tail.slice(at);
+  return rest === n || (VX_LONGER.get(id) || []).some(L => L.s.startsWith(rest) && L.s !== rest);
+}
 function acHear(text, final) {
   if (!NTA.on || NTA.done || NTA.paused) return;
   NTA.vjust = NTA.vjust || new Set();
   const todo = final ? NTA.pool.filter(id => !NTA.found[id]) : null;
-  let ids = vxFind(text, final, todo);
-  // While a phrase is still being said, a country at the very end that could be the start of a longer
-  // name waits for the rest: "Guinea…" might become "Guinea-Bissau", "Niger…" "Nigeria", "Dominica…" "Dominican Republic".
-  if (!final) { const tail = vxPlain(text); ids = ids.filter(id => !(VX_HOLD.has(id) && VX_HOLD.get(id).some(w => tail.endsWith(w)))); }
+  const heard = ((NTA.carry || "") + " " + text).trim();
+  // carried-over words only count when they join up with the new words ("sir" + "name"), never on their own again
+  const carryOnly = NTA.carry ? new Set(vxFind(NTA.carry, final, todo)) : new Set(), fromText = new Set(vxFind(text, final, todo));
+  let ids = vxFind(heard, final, todo).filter(id => fromText.has(id) || !carryOnly.has(id));
+  const tail = vxPlain(heard);
+  // a longer name arrived: the shorter one waiting for it doesn't count ("Guinea" … "Bissau" is only Guinea-Bissau)
+  if (NTA.vwait && ids.some(id => (VX_LONGER.get(NTA.vwait.id) || []).some(L => L.id === id))) { clearTimeout(NTA.vwait.t); NTA.vwait = null; }
+  ids = ids.filter(id => {
+    if (!VX_HOLD.has(id) || NTA.found[id] || !vxMightGrow(id, tail)) return true;
+    if (!NTA.vwait || NTA.vwait.id !== id) {
+      if (NTA.vwait) clearTimeout(NTA.vwait.t);
+      const w = NTA.vwait = { id, t: setTimeout(() => {   // nothing longer came: now it counts
+        if (NTA.vwait !== w) return; NTA.vwait = null;
+        if (NTA.on && !NTA.done && !NTA.found[id] && NTA.inPool.has(id)) acAccept(id, "voice");
+      }, 1300) };
+    }
+    return false;
+  });
+  if (final) NTA.carry = vxPlain(text).split(" ").slice(-2).join(" ");
   let got = 0, note = "";
   ids.forEach(id => {
     if (NTA.found[id]) { if (final && !NTA.vjust.has(id)) note = `You already have <b>${esc(BY_ID.get(id).n)}</b>!`; return; }
@@ -6431,7 +6476,7 @@ if (window.history && history.pushState) {
 }
 
 /* ================= check for updates ================= */
-const APP_VERSION = "atlas-v57";
+const APP_VERSION = "atlas-v59";
 const verNum = v => +((String(v).match(/(\d+)\s*$/) || [0, 0])[1]);
 async function remoteVersion() {
   const res = await fetch("sw.js?check=" + Date.now(), { cache: "no-store" });
@@ -6886,6 +6931,7 @@ function openClassGame(role, code) {
 const cgBody = html => {
   // the back arrow steps aside while a question is up on the projector (an End game button is there instead)
   $("#s-class").classList.toggle("cg-live", CG.role === "host" && (CG.view === "q" || CG.view === "rev"));
+  $("#s-class").classList.toggle("cg-pq", CG.role === "player" && CG.view === "pq");   // a student's answer screen fits the screen exactly
   $("#cg-body").innerHTML = html;
 };
 function cgBack() {
@@ -7238,6 +7284,7 @@ async function cgJoin() {
     const uid = (await anonToken(), LS.get("anon", {}).uid);
     await rt("PUT", `class/${code}/players/${uid}`, { n: name, t: RT_NOW });
     LS.set("cg_name", name); CG.code = code; CG.name = name; CG.uid = uid; CG.answered = {};
+    try { document.activeElement && document.activeElement.blur(); } catch (e) {}   // close the keyboard, so it can't swallow the first answer tap
     CG.es = await rtListen(`class/${code}/pub`, d => { CG.pub = d || {}; cgPlayerView(); }, () => { cgStop(); cgJoinForm(code, "You were disconnected from the game."); });
     sfx("go");
   } catch (e) {
@@ -7257,7 +7304,7 @@ function cgPlayerView() {
   }
   if (p.phase === "q" && p.cur) {
     const c = p.cur, done = CG.answered[c.i];
-    if (CG.view === "pq" && CG.showing === c.i && !done && c.open) return;   // already showing this question
+    if (CG.view === "pq" && CG.showing === c.i && done === undefined && c.open) return;   // already showing this question (answer 0, the orange one, is a real answer: compare with undefined)
     CG.view = "pq"; CG.showing = c.i;
     if (done !== undefined || !c.open) {
       cgBody(`${head}<div class="cgwait panel"><span class="cgbig">${c.open ? "⏳" : "⌛"}</span><h2>${c.open ? "Answer locked in!" : "Time's up!"}</h2><p>${c.open ? "Waiting for everyone else…" : "Look at the big screen."}</p>${done !== undefined ? `<div class="cgmine" style="--cg:${CG_COL[done][0]}"><span class="cgsh">${CG_COL[done][1]}</span>${esc(c.opts[done])}</div>` : ""}</div>`);
@@ -7267,13 +7314,21 @@ function cgPlayerView() {
       <div class="cgbtns">${c.opts.map((o, k) => `<button type="button" class="cgbtn" data-o="${k}" style="--cg:${CG_COL[k][0]}"><span class="cgsh">${CG_COL[k][1]}</span><span class="t">${esc(o)}</span></button>`).join("")}</div></div>`);
     const end = Date.now() + (c.dur || 20) * 1000; clearInterval(CG.tick);
     CG.tick = setInterval(() => { const b = $("#cg-tbar"); const left = Math.max(0, end - Date.now()); if (b) b.style.width = (left / ((c.dur || 20) * 1000) * 100) + "%"; if (!left) clearInterval(CG.tick); }, 200);
-    $("#cg-body").querySelectorAll(".cgbtn").forEach(b => safeTap(b, async () => {
+    // An answer locks in the moment a finger touches a button (a tiny slide can't cancel it, and the page can't scroll);
+    // a mouse click or the keyboard works too.
+    const pickAns = async b => {
       if (CG.answered[c.i] !== undefined) return;
-      const o = +b.dataset.o; CG.answered[c.i] = o; sfx("tap"); if (navigator.vibrate) navigator.vibrate(30);
-      cgPlayerView();
+      const o = +b.dataset.o; CG.answered[c.i] = o;
+      cgPlayerView();   // show "Answer locked in!" straight away, then the sound
+      sfx("tap"); if (navigator.vibrate) navigator.vibrate(30);
       try { await rt("PUT", `class/${CG.code}/ans/${c.i}/${CG.uid}`, { o, t: RT_NOW }); }
-      catch (e) { if (e.message === "denied") toast("⌛", "Too late!", "That question had already closed."); else { delete CG.answered[c.i]; toast("⚠️", "Your answer didn't send", "Tap it again."); cgPlayerView(); } }
-    }));
+      catch (e) { if (e.message === "denied") toast("⌛", "Too late!", "That question had already closed."); else { delete CG.answered[c.i]; toast("⚠️", "Your answer didn't send", "Tap it again."); CG.view = ""; cgPlayerView(); } }
+    };
+    $("#cg-body").querySelectorAll(".cgbtn").forEach(b => {
+      b.addEventListener("touchstart", e => { e.preventDefault(); pickAns(b); }, { passive: false });   // iPhones: the earliest touch signal
+      b.addEventListener("pointerdown", e => { if (e.pointerType !== "mouse") { e.preventDefault(); pickAns(b); } });
+      b.addEventListener("click", () => pickAns(b));
+    });
     return;
   }
   if (p.phase === "rev" && p.rev) {
