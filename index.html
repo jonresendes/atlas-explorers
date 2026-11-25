@@ -182,7 +182,10 @@ img { max-width: 100%; }
 .cgq { min-height: 0; }
 .cgcard .bigflag { width: min(46vw, 30vh * 4 / 3, 520px) !important; }
 .cgcard .shapebox svg { width: min(32vh, 56vw); height: min(32vh, 56vw); }
-.cgcode { font-size: clamp(2.6rem, 6.5vw, 7rem); max-width: 100%; box-sizing: border-box; }
+/* the game code is sized to its own box, so all 6 letters always fit (Cinzel letters are wide: about 1.1em each with the gaps) */
+.cgjoin { container-type: inline-size; }
+.cgcode { font-size: clamp(1.8rem, 12cqi, 7.5rem); max-width: 100%; box-sizing: border-box; letter-spacing: .02em; gap: .06em; padding: .08em .3em; white-space: nowrap; }
+.cgcode i { width: .06em; }
 
 /* back arrows for the class game and the passport picker */
 .cgnav { display: flex; align-items: center; gap: 10px; max-width: 1400px; margin: 0 auto 10px; width: 100%; }
@@ -195,6 +198,26 @@ img { max-width: 100%; }
 /* passport names only break between words (a long single word still wraps rather than overflowing) */
 button.pp .pn { overflow-wrap: break-word; word-break: normal; hyphens: manual; }
 button.pp.new .pn { font-size: clamp(.7rem, 11.5cqi, 1.2rem); }
+/* lobby: the code panel gets most of the projector; panels stack on narrower screens */
+#s-class .cglobby { grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr); }
+@media (max-width: 900px) { #s-class .cglobby { grid-template-columns: minmax(0, 1fr); } }
+
+/* projector: the picture sits in its own box above the question, sized from the screen height so the card,
+   the answers and the buttons always fit (these rules outrank the single-player game's .vis sizing) */
+#s-class .cgcard { display: flex; flex-direction: column; align-items: center; height: auto; }
+#s-class .cgcard .vis { container-type: normal; flex: none; height: auto; min-height: 0; max-height: none; width: 100%; display: grid; place-items: center; overflow: visible; }
+#s-class .cgcard .bigflag { position: static; display: block; width: min(46vw, 30vh * 4 / 3, 520px) !important; height: auto !important; max-height: none; aspect-ratio: 4 / 3; object-fit: cover; }
+#s-class .cgcard .shapebox { width: auto; height: auto; }
+#s-class .cgcard .shapebox svg { width: min(30vh, 56vw); height: min(30vh, 56vw); }
+#s-class .cgcard .lmwrap { position: static; }
+#s-class .cgcard .lmemoji { font-size: clamp(2.6rem, 7vh, 5.5rem); line-height: 1.1; }
+#s-class .cgcard .lmname, #s-class .cgcard .capital { font-size: clamp(1.6rem, 6vh, 4rem); line-height: 1.15; }
+#s-class .cgcard .prompt.cgprompt { position: static; margin-top: 8px; }
+#s-class .cgcard.small .bigflag { width: min(28vw, 22vh * 4 / 3, 360px) !important; }
+#s-class .cgcard.small .shapebox svg { width: 22vh; height: 22vh; }
+#s-class .cgcard.small .lmemoji { font-size: clamp(2rem, 5vh, 4rem); }
+#s-class .cgcard.small .lmname, #s-class .cgcard.small .capital { font-size: clamp(1.3rem, 4.4vh, 3rem); }
+#s-class .cgcard.small .prompt.cgprompt { font-size: clamp(1.05rem, 2.2vw, 1.7rem) !important; }
 </style>
 <script>
 /* Security: where the game is hosted on its own site (or packaged as an app), only its own files and its Firebase
@@ -6408,7 +6431,7 @@ if (window.history && history.pushState) {
 }
 
 /* ================= check for updates ================= */
-const APP_VERSION = "atlas-v55";
+const APP_VERSION = "atlas-v56";
 const verNum = v => +((String(v).match(/(\d+)\s*$/) || [0, 0])[1]);
 async function remoteVersion() {
   const res = await fetch("sw.js?check=" + Date.now(), { cache: "no-store" });
