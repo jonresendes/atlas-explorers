@@ -228,6 +228,11 @@ button.pp.new .pn { font-size: clamp(.7rem, 11.5cqi, 1.2rem); }
 #s-class.cg-pq .cgbtns { flex: 1 1 0; min-height: 0; grid-template-rows: repeat(2, minmax(0, 1fr)); grid-auto-rows: minmax(0, 1fr); }
 #s-class.cg-pq .cgpq { display: flex; flex-direction: column; }
 .cgbtns, .cgbtn { touch-action: none; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; }
+
+/* passport picker: room around the passports so the selected one's gold border is never clipped,
+   and space at the bottom so the ladybug button doesn't sit on the buttons */
+#s-who #who-grid { overflow: visible; padding: 10px 6px; }
+#s-who { padding-bottom: calc(var(--pad-y, 16px) + 58px); }
 </style>
 <script>
 /* Security: where the game is hosted on its own site (or packaged as an app), only its own files and its Firebase
@@ -5152,7 +5157,7 @@ const QC_SAID_SRC = {
   GH: ["gonna", "garner", "ganna", "gana"], OM: ["oh man", "o man", "omen", "oh mon"], YE: ["yeah men", "yeah man", "yaman"], HT: ["hate e", "hey t", "hay tee", "hi t", "hady"],
   FJ: ["fee gee", "fiji islands", "fiji's", "feejee", "fuji", "fiji", "feegee", "fidgy", "fee jee", "fijee", "phoebe", "fiji island"], CZ: ["check ya", "check republic", "check", "chequia", "czech republic", "checkia", "check yeah"], SC: ["say shells", "say shell", "seashells", "sea shells"],
   KI: ["kiribas", "kiribass", "kitty bass", "kiri bass", "kiri bati", "kiribass"], KG: ["kurdistan", "kirghistan", "kergistan", "curgistan", "kirgizstan", "kyrgystan", "kirgistan", "cure gistan"],
-  LS: ["lesutu", "le soto", "lesoto", "less so too", "le sutu", "lasutu", "lesuto", "the sutu", "lisa toe", "lisa tow", "lisa to", "le so toe", "lisutu", "la sue too", "le sue too", "lee sue too", "la sutu", "la soto", "lisotho", "lasotho", "lesothu", "le zoo too", "lisa two", "leso toe", "le soto", "lesso toe", "lee soto", "the soto", "la sooto", "le sooto", "lesotho s", "le suto", "lisoto"], SZ: ["swatini", "e swatini", "as watini", "es watini", "eswatini", "a swatini", "s watini"],
+  LS: ["lesutu", "le soto", "lesoto", "less so too", "le sutu", "lasutu", "lesuto", "the sutu", "lisa toe", "lisa tow", "lisa to", "le so toe", "lisutu", "la sue too", "le sue too", "lee sue too", "la sutu", "la soto", "lisotho", "lasotho", "lesothu", "le zoo too", "lisa two", "leso toe", "le soto", "lesso toe", "lee soto", "the soto", "la sooto", "le sooto", "lesotho s", "le suto", "lisoto", "lizzo", "lizo", "lizzo tow", "lizzo toe", "soto", "la soto", "le soto", "lisa soto", "lisa so too", "the soto", "suto", "sotho", "le sotho", "la sotho", "lisa sue too", "lizzie toe", "lizzy toe"], SZ: ["swatini", "e swatini", "as watini", "es watini", "eswatini", "a swatini", "s watini"],
   PW: ["palao", "pulao", "pa lao", "pillow", "pah lao", "belau"], NR: ["now roo", "na ru", "naru", "nah roo", "now ru"], TV: ["two valu", "to value", "too valu", "to valu", "two value"],
   BT: ["baton", "button", "boo tan", "butane", "bhutan's", "boutan"], MM: ["me and mar", "mian mar", "my anmar", "me anmar", "mianmar", "my and mar"], UY: ["your a guy", "you're a guy", "uru guay", "you are a guy", "uruguay's", "oo roo gwai"],
   PY: ["pair a guy", "para guay", "parrot guy", "para gwai"], CI: ["coat de voir", "cote d ivoire", "cote divoire", "coat d ivoire", "code d ivoire", "coat divoire", "cote devoir", "coat devoir", "ivory coast"],
@@ -5163,7 +5168,7 @@ const QC_SAID_SRC = {
   WS: ["some oa", "summer", "sa moa"], TO: ["tonka", "tongue a", "tong a"], VU: ["van watu", "vanawatu", "van a watu", "vanua tu", "van u atu", "van a 2", "vanuatoo"], AZ: ["azer by john", "as a by john", "azerbajan", "azer baijan", "azerbijan"],
   LI: ["lichtenstein", "lick ten stein", "liechtenstein's", "lichten stein", "licktenstein"], LU: ["luxemburg", "lux and burg", "lux em burg"], MD: ["mold over", "moldavia", "mole dova", "mold ova"],
   BY: ["bella roose", "bela roose", "bella russ", "bella ruse", "bellarus", "bell a roos", "belorussia", "byelorussia"], UA: ["you crane", "u crane", "the ukraine", "you crain"], IL: ["is real", "isreal", "is rail"], CY: ["cypress", "sigh press"],
-  TN: ["two nesia", "tunesia", "to nesia", "tune asia", "tunisha"], GY: ["guy anna", "guy ana", "gayana", "guiana", "guy on a"], SR: ["sir name", "surinam", "sir in arm", "surname", "sir in am", "sura nam", "sorry name", "sorry nam", "surinamese", "syrian name", "sirinam", "sirinami", "sir in nam", "sure in am", "surin am", "suri nam", "suri nami", "sur name", "surrey name", "sir nam", "sure name", "suri name", "surinam a", "suriname e", "sooner nam", "sue rename", "suri nom", "sirname", "surnam", "sir in on", "sure and am", "sir an am"], BZ: ["believes", "bell ease", "believe", "beliz"],
+  TN: ["two nesia", "tunesia", "to nesia", "tune asia", "tunisha"], GY: ["guy anna", "guy ana", "gayana", "guiana", "guy on a"], SR: ["sir name", "surinam", "sir in arm", "surname", "sir in am", "sura nam", "sorry name", "sorry nam", "surinamese", "syrian name", "sirinam", "sirinami", "sir in nam", "sure in am", "surin am", "suri nam", "suri nami", "sur name", "surrey name", "sir nam", "sure name", "suri name", "surinam a", "suriname e", "sooner nam", "sue rename", "suri nom", "sirname", "surnam", "sir in on", "sure and am", "sir an am", "serena", "sereena", "sirena", "serina", "sir ena", "sir rena", "sarina", "sabrina m", "serena m"], BZ: ["believes", "bell ease", "believe", "beliz"],
   TH: ["tie land", "tai land", "thigh land"], VN: ["viet nam", "vietnam's", "v at nam"], NO: ["no way", "nor way"], FI: ["fin land", "thin land"], IS: ["ice land"], NZ: ["new zeeland", "new zealand's", "news eland", "new sealand"],
   QA: ["cutter", "guitar", "kuh tar", "cut are", "catarrh", "cat are", "gutter", "kutta", "cutta", "qatar's", "katar", "kotter", "cotter", "ka tar"], KW: ["q8", "koo wait", "cue wait", "q wait", "queue wait"],
   BH: ["bah rain", "bar rain", "bahrein", "baron", "bar rein"], JO: ["jordon", "jor dan"], LB: ["lebenon", "leben on", "lebanese"], SY: ["cereal", "siria", "serial", "sirya"],
@@ -5176,7 +5181,7 @@ const QC_SAID_SRC = {
   MW: ["ma la we", "malawy", "mallow we", "muh la wee", "mala wee"], TZ: ["tan zania", "tanzanea", "tans a nia", "tan za nee a", "tanzaniya"], UG: ["you ganda", "u ganda", "you gander", "ooganda", "yuganda"], SO: ["so malia", "some alia", "somolia"],
   ET: ["e theopia", "ethiopa", "e t opia", "ithiopia", "utopia"], SD: ["sue dan", "sudan's", "soo dan", "pseudan", "the sudan"], SS: ["south sue dan", "south sudan's", "south soo dan", "southern sudan"], LY: ["libby a", "lybia", "libya's", "livia", "lidia"], DZ: ["al jiria", "algiers", "al geria", "algerian", "al jeria"],
   MA: ["more rocco", "moroco", "marocco", "ma rocko", "more rocko", "morrocco"], EG: ["e gypt", "eejipt", "egypt's"], SN: ["sene gal", "cynical", "sennegal", "send a gal", "senna gall"], GM: ["gamma", "the gambia", "gam bia", "gambya", "gamebia"], GN: ["ginny", "guinea conakry", "gini", "guinny", "ghinny", "ginnie", "gimme"],
-  GW: ["guinea bissau", "ginny bissau", "guinea be sow", "guinea bisau", "ginny be sow", "guinea bisso", "guinea bizau", "ginny bisso", "bissau", "bisau", "guinea bissell", "guinea bisou", "guinea basso", "guinea besso", "guinea b sow", "ghini bissau", "guinea bissaw", "guinea bisaw", "guinea bisao", "guinea bee sow", "guinea beso", "guinea bissow", "guinea bassa", "guinea visa", "guinea bisa", "guinea bissa", "guinea biscuit", "guinea be so", "guinea bees ow", "guinea vissau", "guinea bistro", "ginny bissell", "guinea bizarre"], GQ: ["equatorial ginny", "equatorial guinea", "equatorial gini", "equator guinea", "equitorial guinea", "equatorial ginnie"], SL: ["sierra leon", "sara leone", "sierra leone's", "see era leone", "sierra lyon", "siera leone"],
+  GW: ["guinea bissau", "ginny bissau", "guinea be sow", "guinea bisau", "ginny be sow", "guinea bisso", "guinea bizau", "ginny bisso", "bissau", "bisau", "guinea bissell", "guinea bisou", "guinea basso", "guinea besso", "guinea b sow", "ghini bissau", "guinea bissaw", "guinea bisaw", "guinea bisao", "guinea bee sow", "guinea beso", "guinea bissow", "guinea bassa", "guinea visa", "guinea bisa", "guinea bissa", "guinea biscuit", "guinea be so", "guinea bees ow", "guinea vissau", "guinea bistro", "ginny bissell", "guinea bizarre", "guinea south", "guinea sow", "guinea sao", "guinea sous", "guinea souse", "ginny south", "guinea say oh", "guinea sell", "guinea bus", "guinea b south"], GQ: ["equatorial ginny", "equatorial guinea", "equatorial gini", "equator guinea", "equitorial guinea", "equatorial ginnie"], SL: ["sierra leon", "sara leone", "sierra leone's", "see era leone", "sierra lyon", "siera leone"],
   LR: ["lie beria", "library a", "liberya", "lai beria"], BF: ["burkina", "burkina fasso", "bikini faso", "burkina fazo", "bur keena faso", "berkina faso", "brookina faso"], NG: ["nye jeria", "nigerya", "ni jeria", "nigeria's"], CM: ["cameroun", "camera on", "camaroon", "cameroons", "cam a roon"], CF: ["central africa", "central african republic", "c a r", "central african", "the central african republic"],
   CD: ["democratic republic of congo", "d r c", "dr congo", "d r congo", "democratic congo", "congo kinshasa", "the drc", "democratic republic of the congo", "zaire", "congo democratic republic", "big congo"], CG: ["republic of congo", "congo brazzaville", "republic of the congo", "the congo", "congo republic", "little congo"],
   AO: ["an gola", "and gola", "angora", "an goalie"], NA: ["nam ibia", "na mibia", "namibya", "nah mibia"], BW: ["bots wana", "botswanna", "bought swana", "bot swana", "botswana's"], ZA: ["south africa's", "southafrica", "r s a", "south african", "republic of south africa"], KM: ["comoros islands", "comoro", "come or us", "camaros", "cameras", "comoro islands", "komoros", "the comoros", "comorose"],
@@ -5655,8 +5660,10 @@ function vxMightGrow(id, tail) {   // the phrase ends with this country's name, 
   const rest = tail.slice(at);
   return rest === n || (VX_LONGER.get(id) || []).some(L => L.s.startsWith(rest) && L.s !== rest);
 }
+const VX_SOLO = new Map([["sir", "SR"], ["suit", "LS"], ["sir name", "SR"], ["suits", "LS"]]);   // only when that's all that was heard
 function acHear(text, final) {
   if (!NTA.on || NTA.done || NTA.paused) return;
+  if (final && VX_SOLO.has(vxPlain(text)) && !(NTA.carry && /guinea|equatorial|papua/.test(NTA.carry))) { const id = VX_SOLO.get(vxPlain(text)); if (!NTA.found[id] && NTA.inPool.has(id)) { acAccept(id, "voice"); NTA.carry = vxPlain(text); return; } }
   NTA.vjust = NTA.vjust || new Set();
   const todo = final ? NTA.pool.filter(id => !NTA.found[id]) : null;
   const heard = ((NTA.carry || "") + " " + text).trim();
@@ -5673,7 +5680,7 @@ function acHear(text, final) {
       const w = NTA.vwait = { id, t: setTimeout(() => {   // nothing longer came: now it counts
         if (NTA.vwait !== w) return; NTA.vwait = null;
         if (NTA.on && !NTA.done && !NTA.found[id] && NTA.inPool.has(id)) acAccept(id, "voice");
-      }, 1300) };
+      }, 2000) };
     }
     return false;
   });
@@ -6400,7 +6407,8 @@ function sizeWho() {
   const g = $("#who-grid"); if (!g || $("#s-who").hidden) return;
   const n = g.children.length, gap = parseFloat(getComputedStyle(g).rowGap) || 14;
   const scr = $("#s-who"), rest = [...scr.children].filter(el => el !== g && !el.hidden).reduce((a, el) => a + el.offsetHeight, 0);
-  const W = g.clientWidth - 8, H = scr.clientHeight - rest - 2 * (parseFloat(getComputedStyle(scr).rowGap) || 12) - parseFloat(getComputedStyle(scr).paddingTop) - parseFloat(getComputedStyle(scr).paddingBottom) - 20;
+  const avail = Math.min((scr.parentElement || document.body).clientHeight || innerHeight, innerHeight);   // the screen's height, not the picker's (which grows with the passports)
+  const W = g.clientWidth - 20, H = avail - 20 - rest - 2 * (parseFloat(getComputedStyle(scr).rowGap) || 12) - parseFloat(getComputedStyle(scr).paddingTop) - parseFloat(getComputedStyle(scr).paddingBottom) - 20;
   let best = { w: 0, c: 1 };
   for (let c = 1; c <= n; c++) {
     const r = Math.ceil(n / c), w = Math.min((W - (c - 1) * gap) / c, ((H - (r - 1) * gap) / r) / 1.37, 230);
@@ -6476,7 +6484,7 @@ if (window.history && history.pushState) {
 }
 
 /* ================= check for updates ================= */
-const APP_VERSION = "atlas-v59";
+const APP_VERSION = "atlas-v60";
 const verNum = v => +((String(v).match(/(\d+)\s*$/) || [0, 0])[1]);
 async function remoteVersion() {
   const res = await fetch("sw.js?check=" + Date.now(), { cache: "no-store" });
