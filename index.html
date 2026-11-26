@@ -3762,17 +3762,29 @@ function badWord(s) {
 }
 const INI_MAX = 6, iniClean = v => Array.from(String(v || "").toUpperCase().replace(/[^\x21-\x7E]/g, "")).slice(0, INI_MAX).join("");
 // Remember what this round achieved, for the leaderboard (and keep the best one for the online board).
+/* Name Them All points: 10 per country, and for naming them all, a bonus for every second under the longest round
+   (20 min on World Expert, 10 min on Explorer). The same clock for everyone, so the faster perfect round always ranks higher,
+   whichever round length was chosen. Older scores (worked out from the time left in the chosen round) are re-worked from
+   their recorded countries and time whenever they're shown or compared. */
+const AC_CAP = { hard: 1200, easy: 600 };
+const acPts = (n, of, used, lv) => n * 10 + (n >= of && used >= 0 ? Math.max(0, (AC_CAP[lv] || 1200) - Math.round(used)) : 0);
+function lbNorm(mode, lv, e) {
+  if (mode !== "allc" || !e) return e;
+  const m = /^(\d+)\s*\/\s*(\d+)/.exec(e.a || "");
+  return m ? Object.assign({}, e, { s: acPts(+m[1], +m[2], e.t >= 0 ? e.t : -1, lv) }) : e;
+}
 function lbNote(mode, lv, score, ach, secs) {
   statPlay();
   G.lbAch = ach; G.lbSecs = secs;
   const key = bestKey(mode, lv), b = BEST[key] || (BEST[key] = { score: 0, stars: 0 });
+  if (mode === "allc" && b.lb) b.lb = lbNorm(mode, lv, b.lb);
   if (score > 0 && (!b.lb || score > b.lb.s || (score === b.lb.s && secs >= 0 && secs < (b.lb.t >= 0 ? b.lb.t : 1e9)))) { b.lb = { _lb: 1, s: score, a: ach, t: secs, d: Date.now() }; LS.set("best", BEST); }
 }
 const lbKey = (m, lv) => m + "_" + lv;
 // Leaderboard order: higher score first; on the same score, the faster time wins (a score with no time goes after one with a time).
 const lbSecsOf = e => (e && e.t >= 0 ? e.t : 1e9);
 const lbBetter = (a, b) => (b.s - a.s) || (lbSecsOf(a) - lbSecsOf(b));
-const lbList = (m, lv) => (LB[lbKey(m, lv)] || []).slice().sort(lbBetter);
+const lbList = (m, lv) => (LB[lbKey(m, lv)] || []).map(e => lbNorm(m, lv, e)).sort(lbBetter);
 function lbRank(m, lv, s, t = G.lbSecs) {
   if (s <= 0) return 0;
   const l = lbList(m, lv), me = { s, t }; let r = l.findIndex(e => lbBetter(me, e) < 0); if (r < 0) r = l.length;
@@ -4349,7 +4361,7 @@ function acFinish(title) {
   $("#ac-again").onclick = () => { $("#info").hidden = true; startAllc(); };
   $("#ac-menu").onclick = () => { $("#info").hidden = true; acExit(); };
   // Leaderboard points: 10 per country named, plus a bonus for every second left if you named them all.
-  const pts = n * 10 + (n >= of ? Math.round(Math.max(0, NTA.left)) : 0);
+  const pts = acPts(n, of, used, S.level);
   lbNote("allc", S.level, pts, `${n}/${of} countries`, Math.round(used));
   const rk = lbRank("allc", S.level, pts);
   if (rk) { G.mode = "allc"; G.score = pts; setTimeout(() => askInitials(rk), 900); }
@@ -6102,9 +6114,10 @@ async function cloudBoardPost() {
   let ini = iniClean(P.ini || me.name) || "???"; if (badWord(ini)) ini = "???";
   for (const [key, b] of Object.entries(BEST)) {
     // Post the best run that has its achievement and time; an older best (from before times were kept) only if it's higher.
-    const [m] = key.split("_"), withT = b.lb && b.lb.a ? b.lb : null, oldS = m === "allc" ? 0 : (b.score || 0);
+    const [m, klv] = key.split("_"), withT = b.lb && b.lb.a ? lbNorm(m, klv, b.lb) : null, oldS = m === "allc" ? 0 : (b.score || 0);
     const lb = withT && withT.s >= oldS ? withT : {}, sc = lb.s || oldS;
-    const pv = posted[key], pvS = typeof pv === "number" ? pv : (pv && pv.s) || 0, pvFull = !!(pv && pv.full), pvT = pv && pv.t >= 0 ? pv.t : 1e9;
+    const pv = m === "allc" && !(posted[key] && posted[key].v === 2) ? null : posted[key];   // Name Them All: post once more with the new points
+    const pvS = typeof pv === "number" ? pv : (pv && pv.s) || 0, pvFull = !!(pv && pv.full), pvT = pv && pv.t >= 0 ? pv.t : 1e9;
     const faster = sc === pvS && lb.a && lb.t >= 0 && lb.t < pvT;
     if (!MODES[m] || !(sc > 0) || sc < pvS || (sc === pvS && (pvFull || !lb.a) && !faster)) continue;
     try {
@@ -6114,19 +6127,19 @@ async function cloudBoardPost() {
       let r = await put(Object.assign({ ini: { stringValue: ini } }, base, lb.a ? { ach: { stringValue: String(lb.a).slice(0, 40) } } : {}, lb.t >= 0 ? { secs: { integerValue: String(lb.t) } } : {})), full = !!lb.a;
       if (r.status === 403) { r = await put(Object.assign({ ini: { stringValue: ini.slice(0, 3) } }, base)); full = false; if (r.ok && lb.a) LS.set("lbrules", Date.now()); }   // older Firestore rules: try again once they're updated
       if (r.ok && full) LS.set("lbrules", 0);
-      if (r.ok) { posted[key] = { s: sc, full, t: full && lb.t >= 0 ? lb.t : undefined }; LS.set("lbposted_" + me.uid, posted); boardCache[key] = null; }
+      if (r.ok) { posted[key] = { s: sc, full, t: full && lb.t >= 0 ? lb.t : undefined, v: 2 }; LS.set("lbposted_" + me.uid, posted); boardCache[key] = null; }
     } catch (e) { return; }
   }
 }
 const boardCache = {};
 async function cloudBoardTop(key) {
-  const body = { structuredQuery: { from: [{ collectionId: "players" }], orderBy: [{ field: { fieldPath: "score" }, direction: "DESCENDING" }], limit: 40 } };
+  const body = { structuredQuery: { from: [{ collectionId: "players" }], orderBy: [{ field: { fieldPath: "score" }, direction: "DESCENDING" }], limit: 60 } };
   const headers = { "Content-Type": "application/json" };
   try { if (plMe()) headers.Authorization = "Bearer " + await idToken(); } catch (e) {}
   const r = await fetch(`${boardUrl(key)}:runQuery`, { method: "POST", headers, body: JSON.stringify(body) });
   if (!r.ok) throw new Error(r.status === 403 ? "rules" : "net");
   const j = await r.json();
-  return boardCache[key] = j.filter(x => x.document).map(x => { const f = x.document.fields || {}; const ti = iniClean((f.ini && f.ini.stringValue) || ""); return { i: !ti || badWord(ti) ? "???" : ti, s: +((f.score && f.score.integerValue) || 0), d: +((f.at && f.at.integerValue) || 0), a: (f.ach && f.ach.stringValue) || "", t: f.secs ? +f.secs.integerValue : -1, uid: x.document.name.split("/").pop() }; }).sort(lbBetter).slice(0, 10);
+  return boardCache[key] = j.filter(x => x.document).map(x => { const f = x.document.fields || {}; const ti = iniClean((f.ini && f.ini.stringValue) || ""); return { i: !ti || badWord(ti) ? "???" : ti, s: +((f.score && f.score.integerValue) || 0), d: +((f.at && f.at.integerValue) || 0), a: (f.ach && f.ach.stringValue) || "", t: f.secs ? +f.secs.integerValue : -1, uid: x.document.name.split("/").pop() }; }).map(e => lbNorm(key.split("_")[0], key.split("_")[1], e)).sort(lbBetter).slice(0, 10);
 }
 
 function cloudDirty() { if (CL.quiet || !CL.active) return; clearTimeout(CL.timer); CL.timer = setTimeout(cloudSync, 4000); }
@@ -6484,7 +6497,7 @@ if (window.history && history.pushState) {
 }
 
 /* ================= check for updates ================= */
-const APP_VERSION = "atlas-v60";
+const APP_VERSION = "atlas-v61";
 const verNum = v => +((String(v).match(/(\d+)\s*$/) || [0, 0])[1]);
 async function remoteVersion() {
   const res = await fetch("sw.js?check=" + Date.now(), { cache: "no-store" });
